@@ -38,12 +38,13 @@ export default function GeneratedImagesGallery() {
   const [data, setData] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   // 페이지네이션/정렬
-  const [limit, setLimit] = useState<number>(30);
+  const [limit, setLimit] = useState<number>(12);
   const [offset, setOffset] = useState<number>(0);
   const [sort, setSort] = useState<string>("-mtime");
-
+  
   // 모달(큰 보기)
   const [selected, setSelected] = useState<ImageItem | null>(null);
 
@@ -58,6 +59,8 @@ export default function GeneratedImagesGallery() {
 
   useEffect(() => {
     let cancelled = false;
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
 
     async function fetchImages() {
       setLoading(true);
@@ -87,6 +90,7 @@ export default function GeneratedImagesGallery() {
     fetchImages();
     return () => {
       cancelled = true;
+      window.removeEventListener('resize', handleResize);
     };
   }, [queryString]);
 
@@ -95,15 +99,17 @@ export default function GeneratedImagesGallery() {
 
   const canPrev = offset > 0;
   const canNext = offset + limit < total;
+  const [loaded, setLoaded] = React.useState(false);
 
   // 같은 도메인이면 relative_url 우선 사용 (없으면 url fallback)
   const resolveSrc = (item: ImageItem) => item.relative_url ?? item.url ?? "";
 
   return (
     <div style={{ padding: 16, maxWidth: 1200, margin: "0 auto" }}>
-      <h2 style={{ marginBottom: 12 }}>Generated Images</h2>
+      {!isMobile && ( <h2 style={{ marginBottom: 12 }}>Generated Images</h2> )}
 
       {/* Controls */}
+      {!isMobile && (
       <div
         style={{
           display: "flex",
@@ -126,7 +132,7 @@ export default function GeneratedImagesGallery() {
         <label>
           Page size&nbsp;
           <select value={limit} onChange={(e) => { setOffset(0); setLimit(Number(e.target.value)); }}>
-            <option value={20}>20</option>
+            <option value={8}>8</option>
             <option value={30}>30</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
@@ -148,13 +154,14 @@ export default function GeneratedImagesGallery() {
           </button>
         </div>
       </div>
+      )}
 
       {/* Status */}
       <div style={{ marginBottom: 12 }}>
         {loading && <div>Loading...</div>}
         {error && <div style={{ color: "crimson" }}>{error}</div>}
         {!loading && !error && (
-          <div style={{ color: "#555" }}>
+          <div style={{ display: 'none', color: "#555" }}>
             Showing {Math.min(total, offset + 1)}–{Math.min(total, offset + results.length)} of {total}
           </div>
         )}
@@ -168,8 +175,11 @@ export default function GeneratedImagesGallery() {
           gap: 12,
         }}
       >
-        {results.map((item) => {
+        {results.map((item, index) => {
           const src = resolveSrc(item);
+          const eagerCount = isMobile ? 1 : 8;
+          const isEager = index < eagerCount;
+          const isHighPriority = index < 6;
           return (
             <div
               key={item.filename}
@@ -183,13 +193,24 @@ export default function GeneratedImagesGallery() {
               onClick={() => setSelected(item)}
               title={item.filename}
             >
-              <div style={{ aspectRatio: "4 / 3", background: "#f3f3f3" }}>
+              <div style={{ aspectRatio: 1, background: "#f3f3f3" }}>
                 {src ? (
                   <img
                     src={src}
-                    alt={item.filename}
-                    loading="lazy"
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    alt={item.alt ?? item.filename}
+                    loading={isEager ? "eager" : "lazy"}
+                    fetchPriority={isHighPriority ? "high" : "auto"}
+                    decoding="async"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                      opacity: loaded ? 1 : 0,
+                      transition: "opacity 220ms ease",
+                      background: "rgba(255,255,255,0.04)",
+                    }}
+                    onLoad={() => setLoaded(true)}
                     onError={(e) => {
                       // 이미지가 깨지는 경우를 빠르게 확인하기 위해 콘솔 로그
                       console.warn("Image load failed:", item.filename, src);
@@ -264,7 +285,8 @@ export default function GeneratedImagesGallery() {
               <img
                 src={resolveSrc(selected)}
                 alt={selected.filename}
-                style={{ width: "100%", height: "auto", display: "block" }}
+                onClick={() => setSelected(null)}
+                style={{ width: "60%", height: "auto", display: "block" }}
               />
             </div>
 

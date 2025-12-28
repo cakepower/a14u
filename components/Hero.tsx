@@ -60,15 +60,16 @@ function AnimatedBackground() {
 
 type HeroProps = {
   children?: React.ReactNode;
+  isMobile?: boolean;
 };
 
-export default function Hero({ children }: HeroProps) {
+export default function Hero({ children, isMobile }: HeroProps) {
   return (
     <section
       style={{
         position: 'relative',
         width: '100%',
-        height: '100vh',
+        height: isMobile ? '120vh' : '100vh',
         overflow: 'hidden',
         color: 'white',
       }}
@@ -92,6 +93,7 @@ export default function Hero({ children }: HeroProps) {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'flex-start',
           padding: '0 1.5rem',
         }}
       >
@@ -141,10 +143,10 @@ export default function Hero({ children }: HeroProps) {
         {/* 하단 오버레이 슬롯: 갤러리 같은 콘텐츠를 Hero 위에 “텍스트처럼” 얹기 */}
         {children && (
           <div style={{ 
-            marginTop: 'auto', 
+            marginTop: '1rem', 
             paddingBottom: '4vh',
-            maxHeight: '55vh',
-            overflowY: 'auto', }}>
+            maxHeight: '155vh',
+            overflowY: 'hidden', }}>
             {children}
           </div>
         )}
