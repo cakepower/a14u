@@ -126,15 +126,6 @@ export default function News() {
     },
   ];
 
-  // Daily Tweet strip
-  const dailyTweets = [
-    "오늘의 메모: 매거진은 ‘정렬’이 아니라 ‘편집’이다.",
-    "Hero는 인상, Main은 체류. 둘의 역할을 분리하자.",
-    "카드의 덱(요약문) 2줄이 UX를 바꾼다.",
-    "섹션 간 리듬(여백)이 곧 품질이다.",
-    "토픽 블록은 ‘더보기’ 동선이 핵심.",
-  ];
-
   // Latest grid
   const latest: DummyPost[] = useMemo(() => {
     const cats = [

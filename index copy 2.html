@@ -3,11 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap"
-      rel="stylesheet"
-    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>미적 지능 연구소 매거진 A14U</title>
 
@@ -33,6 +28,18 @@
       };
     </script>
 
+    <!-- Tailwind 유틸리티 레이어 -->
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .clip-path-circle-start {
+          clip-path: circle(0% at 50% 50%);
+        }
+        .clip-path-circle-end {
+          clip-path: circle(150% at 50% 50%);
+        }
+      }
+    </style>
+
     <!-- React 19 import map (브라우저에서 React를 직접 로드) -->
     <script type="importmap">
       {
@@ -50,4 +57,3 @@
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
-

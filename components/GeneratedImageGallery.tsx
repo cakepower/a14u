@@ -35,13 +35,19 @@ function formatDate(iso?: string) {
 }
 
 export default function GeneratedImagesGallery() {
+  // 1. 초기 상태 결정 로직 분리
+  const getInitialLimit = () => {
+    const isMobileInitial = window.innerWidth <= 768;
+    return isMobileInitial ? 1 : 4; // 모바일 1장, 데스크탑 4장
+  };
+
   const [data, setData] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   // 페이지네이션/정렬
-  const [limit, setLimit] = useState<number>(12);
+  const [limit, setLimit] = useState<number>(getInitialLimit());
   const [offset, setOffset] = useState<number>(0);
   const [sort, setSort] = useState<string>("-mtime");
   
@@ -57,9 +63,14 @@ export default function GeneratedImagesGallery() {
     return qs.toString();
   }, [limit, offset, sort]);
 
+
+
   useEffect(() => {
     let cancelled = false;
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+    };
     window.addEventListener('resize', handleResize);
 
     async function fetchImages() {
@@ -132,7 +143,7 @@ export default function GeneratedImagesGallery() {
         <label>
           Page size&nbsp;
           <select value={limit} onChange={(e) => { setOffset(0); setLimit(Number(e.target.value)); }}>
-            <option value={8}>8</option>
+            <option value={4}>4</option>
             <option value={30}>30</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
@@ -177,7 +188,7 @@ export default function GeneratedImagesGallery() {
       >
         {results.map((item, index) => {
           const src = resolveSrc(item);
-          const eagerCount = isMobile ? 1 : 8;
+          const eagerCount = isMobile ? 1 : 4;
           const isEager = index < eagerCount;
           const isHighPriority = index < 6;
           return (

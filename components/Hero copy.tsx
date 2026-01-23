@@ -3,7 +3,6 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import React, { useRef, useMemo } from 'react';
 import { SoftShadows } from "@react-three/drei";
-import SF from "./SF";
 
 const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1)
 
@@ -37,7 +36,29 @@ function Spheres({ number = 20 }: { number?: number }) {
 }
 
 function AnimatedBackground() {
-  return <SF />;
+  return (
+    <>
+      <SoftShadows size={25} focus={0} samples={10} />
+      <fog attach="fog" args={["white", 0, 40]} />
+      <ambientLight intensity={0.5} />
+      <directionalLight castShadow position={[2.5, 8, 5]} intensity={1.5} shadow-mapSize={1024}>
+        <orthographicCamera attach="shadow-camera" args={[-10, 10, -10, 10, 0.1, 50]} />
+      </directionalLight>
+      <pointLight position={[-10, 0, -20]} color="white" intensity={1} />
+      <pointLight position={[0, -10, 0]} intensity={1} />
+      <group position={[0, -3.5, 0]}>
+        <mesh receiveShadow castShadow>
+          <boxGeometry args={[4, 1, 1]} />
+          <meshLambertMaterial />
+        </mesh>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
+          <planeGeometry args={[100, 100]} />
+          <shadowMaterial transparent opacity={0.4} />
+        </mesh>
+        <Spheres />
+      </group>
+    </>
+  );
 }
 
 type HeroProps = {
@@ -56,10 +77,14 @@ export default function Hero({ children, isMobile }: HeroProps) {
         color: 'white',
       }}
     >
-      {/* WebGL 배경: 상호작용을 위해 컨테이너 설정 */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-        <SF />
-      </div>
+      {/* WebGL 배경: 이벤트를 가로채지 않도록 pointerEvents none */}
+      <Canvas
+        shadows
+        camera={{ position: [-5, 2, 10], fov: 60 }}
+        style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
+      >
+        <AnimatedBackground />
+      </Canvas>
 
       {/* 오버레이 콘텐츠 */}
       <div
@@ -73,14 +98,13 @@ export default function Hero({ children, isMobile }: HeroProps) {
           flexDirection: 'column',
           justifyContent: 'flex-start',
           padding: '0 1.5rem',
-          pointerEvents: 'none', // Allow background interaction
         }}
       >
         {/* 상단(또는 중앙) 텍스트 영역 */}
-        <div style={{ paddingTop: isMobile ? '12vh' : '18vh' }}>
+        <div style={{ paddingTop: '18vh' }}>
           <h1
             style={{
-              fontSize: isMobile ? '2rem' : '3rem',
+              fontSize: '3rem',
               fontWeight: 800,
               marginBottom: '1rem',
             }}
@@ -94,10 +118,10 @@ export default function Hero({ children, isMobile }: HeroProps) {
               opacity: 0.9,
             }}
           >
-            A14U는 인간지능이 결합된 사물과의 관계를 새로운 시각으로 바라봅니다.
+            A14U Web Magazine 이 곧 12월호를 출간할 예정입니다.
           </p>
 
-          <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', pointerEvents: 'auto' }}>
+          <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
             <button
               onClick={() => {
                 window.location.href = 'https://www.cakepower.net/blog';
@@ -119,13 +143,11 @@ export default function Hero({ children, isMobile }: HeroProps) {
 
         {/* 하단 오버레이 슬롯: 갤러리 같은 콘텐츠를 Hero 위에 “텍스트처럼” 얹기 */}
         {children && (
-          <div style={{
-            marginTop: '1rem',
+          <div style={{ 
+            marginTop: '1rem', 
             paddingBottom: '4vh',
             maxHeight: '155vh',
-            overflowY: 'hidden',
-            pointerEvents: 'auto', // Allow interaction in child gallery
-          }}>
+            overflowY: 'hidden', }}>
             {children}
           </div>
         )}
