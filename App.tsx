@@ -71,7 +71,7 @@ function App() {
     <div
       style={{
         minHeight: '90vh',
-        backgroundColor: '#020617',
+        backgroundColor: isMobile ? '#363636' :'#020617',
         color: 'white',
         display: "flex",
         flexDirection: "column",

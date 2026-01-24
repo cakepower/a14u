@@ -502,7 +502,7 @@ const SFScene = () => {
     return (
         <>
             <PerspectiveCamera makeDefault position={[0, 0, cameraDistance]} fov={50} />
-            <color attach="background" args={['#020617']} />
+            <color attach="background" args={[isMobile ? '#363636' :'#020617']} />
             <group scale={isMobile ? [1.1, 1.56, 1.1] : [1, 1, 1]}>
                 <ProxyCylinder onHover={handleHover} onClick={handleClick} onPointerMove={handlePointerMove} />
 
