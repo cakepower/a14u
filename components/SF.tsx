@@ -6,7 +6,7 @@ import * as THREE from 'three';
 /**
  * Proxy Cylinder for Raycasting and Interaction Detection
  */
-const ProxyCylinder = ({ onHover, onClick, onPointerMove }: { onHover: (hovered: boolean) => void; onClick: () => void; onPointerMove: (point: THREE.Vector3) => void }) => {
+const ProxyCylinder = ({ onHover, onPointerMove }: { onHover: (hovered: boolean) => void; onPointerMove: (point: THREE.Vector3) => void }) => {
     return (
         <mesh
             onPointerOver={() => {
@@ -20,13 +20,13 @@ const ProxyCylinder = ({ onHover, onClick, onPointerMove }: { onHover: (hovered:
             onPointerMove={(e) => {
                 onPointerMove(e.point);
             }}
-            onClick={onClick}
         >
             <cylinderGeometry args={[2.0, 2.0, 4, 32, 1, true]} />
             <meshBasicMaterial transparent opacity={0} side={THREE.DoubleSide} depthWrite={false} />
         </mesh>
     );
 };
+
 
 // Helper to create a text texture
 const createTextTexture = () => {
@@ -124,7 +124,7 @@ const CylinderShaderMaterial = {
       // Constrained Repulsion: push away from mouse but preserve cylinder form
       vec3 mouseToParticle = pos - uMousePoint;
       float distToMouse = length(mouseToParticle);
-      float repulsionRange = 2.2; 
+      float repulsionRange = 1.0; 
       
       // Front-side mask to focus interaction on the visible half
       float frontMask = smoothstep(-0.4, 0.4, pos.z); 
@@ -286,6 +286,95 @@ const ConnectionShaderMaterial = {
   `,
 };
 
+const TriangleShaderMaterial = {
+    uniforms: {
+        uTime: { value: 0 },
+        uHover: { value: 0 },
+        uExplosion: { value: 0 },
+        uFloating: { value: 0 },
+        uTilt: { value: new THREE.Vector2(0, 0) },
+    },
+    vertexShader: `
+    uniform float uTime;
+    uniform float uHover;
+    uniform float uExplosion;
+    uniform float uFloating;
+    uniform vec2 uTilt;
+    attribute vec4 aData; // Same as particle [radius, phi, y, speed]
+    attribute float aStartTime;
+    varying float vAlpha;
+    varying vec3 vPos;
+    varying float vAge;
+
+    float random(vec2 st) {
+        return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+    }
+
+    void main() {
+      float radius = aData.x;
+      float phi = aData.y + uTime * 0.1; 
+      float y = aData.z;
+      float speed = aData.w;
+      
+      vec3 basePos = vec3(cos(phi) * radius, y, sin(phi) * radius);
+      float wave = sin(y * 2.0 + uTime * 2.0) * 0.1 * (1.0 - uHover * 0.5);
+      float hoverEffect = uHover * 0.4;
+      vec3 explodeDir = normalize(vec3(cos(phi), (random(vec2(phi, y)) - 0.5) * 2.0, sin(phi)));
+      float explosionDist = uExplosion * (5.0 + random(vec2(y, phi)) * 5.0);
+      vec3 jitter = vec3(
+        sin(uTime * 0.5 + phi) * 0.2,
+        cos(uTime * 0.4 + y) * 0.2,
+        sin(uTime * 0.6 + speed) * 0.2
+      ) * uFloating;
+
+      vec3 pos = basePos;
+      pos += normalize(basePos) * wave;
+      pos += normalize(basePos) * hoverEffect;
+      pos += explodeDir * explosionDist;
+      pos += jitter;
+      pos.xz += uTilt * y * 0.5 * (1.0 - uExplosion);
+
+      vPos = pos;
+      vAge = uTime - aStartTime;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+      vAlpha = (1.0 - uExplosion * 0.8) * 0.3;
+    }
+  `,
+    fragmentShader: `
+    varying float vAlpha;
+    varying vec3 vPos;
+    varying float vAge;
+    uniform float uTime;
+
+    vec3 getRainbowColor(float z) {
+      float t = mod(z * 0.5 + 0.5, 1.0);
+      vec3 c1 = vec3(1.0, 0.0, 0.0);
+      vec3 c2 = vec3(1.0, 0.5, 0.0);
+      vec3 c3 = vec3(1.0, 1.0, 0.0);
+      vec3 c4 = vec3(0.0, 1.0, 0.0);
+      vec3 c5 = vec3(0.0, 0.0, 1.0);
+      vec3 c6 = vec3(0.5, 0.0, 0.5);
+      
+      float step = 1.0 / 5.0;
+      if (t < step) return mix(c1, c2, t / step);
+      if (t < 2.0 * step) return mix(c2, c3, (t - step) / step);
+      if (t < 3.0 * step) return mix(c3, c4, (t - 2.0 * step) / step);
+      if (t < 4.0 * step) return mix(c4, c5, (t - 3.0 * step) / step);
+      return mix(c5, c6, (t - 4.0 * step) / step);
+    }
+
+    void main() {
+      if (vAge < 0.0 || vAge > 1.5) discard;
+      
+      vec3 color = getRainbowColor(vPos.z);
+      // Fade in/out over 1.5s
+      float life = smoothstep(0.0, 0.2, vAge) * smoothstep(1.5, 1.0, vAge);
+      gl_FragColor = vec4(color, vAlpha * life);
+    }
+  `,
+};
+
+
 const Satellites = ({ count = 3 }) => {
     const meshRef = useRef<THREE.Group>(null);
     const sats = useMemo(() => {
@@ -381,6 +470,116 @@ const Connections = ({ particleData, count = 200, uniforms }: { particleData: Fl
         </lineSegments>
     );
 };
+
+const Triangles = ({ particleData, count = 12, uniforms }: { particleData: Float32Array; count?: number; uniforms: any }) => {
+    const meshRef = useRef<THREE.Mesh>(null);
+    const particleCount = particleData.length / 4;
+
+    const [triangleData, startTimes] = useMemo(() => {
+        const data = new Float32Array(count * 3 * 4); // 3 vertices per triangle, 4 floats each
+        const times = new Float32Array(count * 3); // 1 start time per vertex (repeated)
+
+        // Initialize with random particles and staggered start times
+        for (let i = 0; i < count; i++) {
+            const idx1 = Math.floor(Math.random() * particleCount);
+            const idx2 = (idx1 + 1 + Math.floor(Math.random() * 50)) % particleCount;
+            const idx3 = (idx1 + 1 + Math.floor(Math.random() * 100)) % particleCount;
+
+            const st = -Math.random() * 1.5; // Start in the past to stagger
+
+            for (let j = 0; j < 4; j++) {
+                data[i * 12 + j] = particleData[idx1 * 4 + j];
+                data[i * 12 + 4 + j] = particleData[idx2 * 4 + j];
+                data[i * 12 + 8 + j] = particleData[idx3 * 4 + j];
+            }
+            times[i * 3] = st;
+            times[i * 3 + 1] = st;
+            times[i * 3 + 2] = st;
+        }
+        return [data, times];
+    }, [particleData, count, particleCount]);
+
+    const activeTriangles = useRef(Array.from({ length: count }, (_, i) => ({
+        startTime: startTimes[i * 3],
+        indices: [0, 0, 0] // placeholders
+    })));
+
+    useFrame((state) => {
+        if (meshRef.current) {
+            const t = state.clock.getElapsedTime();
+            const mat = meshRef.current.material as THREE.ShaderMaterial;
+            mat.uniforms.uTime.value = t;
+            mat.uniforms.uHover.value = uniforms.uHover.value;
+            mat.uniforms.uExplosion.value = uniforms.uExplosion.value;
+            mat.uniforms.uFloating.value = uniforms.uFloating.value;
+            mat.uniforms.uTilt.value.copy(uniforms.uTilt.value);
+
+            const geo = meshRef.current.geometry;
+            const aData = geo.getAttribute('aData') as THREE.BufferAttribute;
+            const aStartTime = geo.getAttribute('aStartTime') as THREE.BufferAttribute;
+
+            let needsUpdate = false;
+            for (let i = 0; i < count; i++) {
+                if (t - activeTriangles.current[i].startTime > 1.5) {
+                    // Recycle triangle
+                    const idx1 = Math.floor(Math.random() * particleCount);
+                    const idx2 = (idx1 + 1 + Math.floor(Math.random() * 60)) % particleCount;
+                    const idx3 = (idx1 + 2 + Math.floor(Math.random() * 120)) % particleCount;
+
+                    activeTriangles.current[i].startTime = t;
+
+                    for (let j = 0; j < 4; j++) {
+                        aData.setXYZW(i * 3, particleData[idx1 * 4 + 0], particleData[idx1 * 4 + 1], particleData[idx1 * 4 + 2], particleData[idx1 * 4 + 3]);
+                        aData.setXYZW(i * 3 + 1, particleData[idx2 * 4 + 0], particleData[idx2 * 4 + 1], particleData[idx2 * 4 + 2], particleData[idx2 * 4 + 3]);
+                        aData.setXYZW(i * 3 + 2, particleData[idx3 * 4 + 0], particleData[idx3 * 4 + 1], particleData[idx3 * 4 + 2], particleData[idx3 * 4 + 3]);
+                    }
+                    aStartTime.setX(i * 3, t);
+                    aStartTime.setX(i * 3 + 1, t);
+                    aStartTime.setX(i * 3 + 2, t);
+                    needsUpdate = true;
+                }
+            }
+
+            if (needsUpdate) {
+                aData.needsUpdate = true;
+                aStartTime.needsUpdate = true;
+            }
+        }
+    });
+
+    return (
+        <mesh ref={meshRef}>
+            <bufferGeometry>
+                <bufferAttribute
+                    attach="attributes-position"
+                    count={count * 3}
+                    array={new Float32Array(count * 3 * 3)}
+                    itemSize={3}
+                />
+                <bufferAttribute
+                    attach="attributes-aData"
+                    count={count * 3}
+                    array={triangleData}
+                    itemSize={4}
+                />
+                <bufferAttribute
+                    attach="attributes-aStartTime"
+                    count={count * 3}
+                    array={startTimes}
+                    itemSize={1}
+                />
+            </bufferGeometry>
+            <shaderMaterial
+                args={[TriangleShaderMaterial]}
+                transparent
+                depthWrite={false}
+                side={THREE.DoubleSide}
+                blending={THREE.AdditiveBlending}
+            />
+        </mesh>
+    );
+};
+
 
 type SceneState = 'READY' | 'EXPLODING' | 'FLOATING' | 'RETURNING';
 
@@ -482,31 +681,25 @@ const SFScene = () => {
         setIsHovered(hovered);
     };
 
-    const handleClick = () => {
-        if (sceneState === 'READY') {
-            setSceneState('EXPLODING');
-        } else if (sceneState === 'FLOATING') {
-            setSceneState('RETURNING');
-        }
-    };
-
     const handlePointerMove = (point: THREE.Vector3) => {
+
         mousePointRef.current.copy(point);
     };
 
     // Dynamic Camera distance based on Aspect Ratio (Ultra-Close for Mobile)
     const aspect = size.width / size.height;
-    // Bring camera even closer for mobile to make cylinder feel massive
-    const cameraDistance = isMobile ? Math.min(11, 7 / aspect) : 8;
+    // PC: closer camera (6.0), Mobile: stay same
+    const cameraDistance = isMobile ? Math.min(11, 7 / aspect) : 6.0;
 
     return (
         <>
             <PerspectiveCamera makeDefault position={[0, 0, cameraDistance]} fov={50} />
-            <color attach="background" args={[isMobile ? '#363636' :'#020617']} />
+            <color attach="background" args={[isMobile ? '#363636' : '#020617']} />
             <group scale={isMobile ? [1.1, 1.56, 1.1] : [1, 1, 1]}>
                 <ProxyCylinder onHover={handleHover} onClick={handleClick} onPointerMove={handlePointerMove} />
 
                 <points ref={pointsRef}>
+
                     <bufferGeometry>
                         <bufferAttribute attach="attributes-position" count={particleCount} array={positions} itemSize={3} />
                         <bufferAttribute attach="attributes-aData" count={particleCount} array={particleData} itemSize={4} />
@@ -520,8 +713,15 @@ const SFScene = () => {
                     />
                 </points>
                 <Satellites count={isMobile ? 4 : 8} />
-                {currentUniforms && <Connections particleData={particleData} count={isMobile ? 150 : 300} uniforms={currentUniforms} />}
+                {currentUniforms && (
+                    <>
+                        <Connections key={isMobile ? 'conn-m' : 'conn-pc'} particleData={particleData} count={isMobile ? 150 : 300} uniforms={currentUniforms} />
+                        <Triangles key={isMobile ? 'tri-m' : 'tri-pc'} particleData={particleData} count={isMobile ? 6 : 14} uniforms={currentUniforms} />
+                    </>
+                )}
             </group>
+
+
 
             <OrbitControls enablePan={false} enableZoom={false} makeDefault />
 
