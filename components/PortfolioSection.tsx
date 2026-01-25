@@ -23,7 +23,7 @@ export default function PortfolioSection({ items }: { items: DummyPost[] }) {
           gap: 12,
         }}
       >
-        {items.slice(0, 3).map((p, idx) => {
+        {items.slice(0, 6).map((p, idx) => {
           const href = postUrl(p.slug);
           return (
             <article key={p.id} style={{ ...cardBase, padding: 14, background: "rgba(2,6,23,0.50)" }}>
