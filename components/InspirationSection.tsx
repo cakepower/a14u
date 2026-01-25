@@ -2,6 +2,13 @@ import React from "react";
 import type { DummyPost } from "./newsTypes";
 import { cardBase, placeholderCardStyle, SectionHeader } from "./newsUi";
 
+const SITE_ORIGIN = "https://www.cakepower.net";
+
+function postUrl(slug?: string) {
+  if (!slug) return "";
+  return `${SITE_ORIGIN}/post/${slug}/`;
+}
+
 export default function InspirationSection({
   items,
   isMobile = false,
@@ -26,16 +33,58 @@ export default function InspirationSection({
             gap: 12,
           }}
         >
-          {items.map((p, i) => (
-            <article key={p.id} style={{ ...cardBase, padding: 14, background: "rgba(2,6,23,0.48)" }}>
-              <div style={{ ...placeholderCardStyle(200 + i), height: 170 }} />
-              <div style={{ marginTop: 10, opacity: 0.78, fontSize: 12 }}>
-                {p.category} · {p.date}
-              </div>
-              <div style={{ marginTop: 8, fontSize: 15, fontWeight: 800, lineHeight: 1.25 }}>{p.title}</div>
-              <div style={{ marginTop: 8, opacity: 0.88, fontSize: 13, lineHeight: 1.55 }}>{p.dek}</div>
-            </article>
-          ))}
+          {items.map((p, i) => {
+            const href = postUrl(p.slug);
+            return (
+              <article key={p.id} style={{ ...cardBase, padding: 14, background: "rgba(2,6,23,0.48)" }}>
+                {p.thumb ? (
+                  <a href={href} style={{ display: "block", marginBottom: 10 }}>
+                    <img
+                      src={p.thumb}
+                      alt=""
+                      loading="lazy"
+                      style={{
+                        width: "100%",
+                        height: 170,
+                        objectFit: "cover",
+                        borderRadius: 12,
+                        display: "block",
+                      }}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = "none";
+                      }}
+                    />
+                  </a>
+                ) : (
+                  <div style={{ ...placeholderCardStyle(200 + i), height: 170, marginBottom: 10 }} />
+                )}
+                <div style={{ marginTop: 10, opacity: 0.78, fontSize: 12 }}>
+                  {p.category} · {p.date}
+                </div>
+                {href ? (
+                  <a
+                    href={href}
+                    style={{
+                      display: "block",
+                      marginTop: 8,
+                      fontSize: 15,
+                      fontWeight: 800,
+                      lineHeight: 1.25,
+                      color: "inherit",
+                      textDecoration: "none",
+                    }}
+                  >
+                    {p.title}
+                  </a>
+                ) : (
+                  <div style={{ marginTop: 8, fontSize: 15, fontWeight: 800, lineHeight: 1.25 }}>
+                    {p.title}
+                  </div>
+                )}
+                <div style={{ marginTop: 8, opacity: 0.88, fontSize: 13, lineHeight: 1.55 }}>{p.dek}</div>
+              </article>
+            );
+          })}
         </div>
       </div>
     );
@@ -54,6 +103,7 @@ export default function InspirationSection({
             { c: 3, r: 1 }, // 세 번째 아이템: 1/4 차지
           ];
           const s = spans[i % spans.length];
+          const href = postUrl(p.slug);
 
           return (
             <article
@@ -66,11 +116,56 @@ export default function InspirationSection({
                 background: "rgba(2,6,23,0.48)",
               }}
             >
-              <div style={{ ...placeholderCardStyle(200 + i), height: s.r === 2 ? 220 : 150 }} />
+              {p.thumb ? (
+                <a href={href} style={{ display: "block", marginBottom: 10 }}>
+                  <img
+                    src={p.thumb}
+                    alt=""
+                    loading="lazy"
+                    style={{
+                      width: "100%",
+                      height: s.r === 2 ? 220 : 150,
+                      objectFit: "cover",
+                      borderRadius: 12,
+                      display: "block",
+                    }}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                </a>
+              ) : (
+                <div
+                  style={{
+                    ...placeholderCardStyle(200 + i),
+                    height: s.r === 2 ? 220 : 150,
+                    marginBottom: 10,
+                  }}
+                />
+              )}
               <div style={{ marginTop: 10, opacity: 0.78, fontSize: 12 }}>
                 {p.category} · {p.date}
               </div>
-              <div style={{ marginTop: 8, fontSize: 15, fontWeight: 800, lineHeight: 1.25 }}>{p.title}</div>
+              {href ? (
+                <a
+                  href={href}
+                  style={{
+                    display: "block",
+                    marginTop: 8,
+                    fontSize: 15,
+                    fontWeight: 800,
+                    lineHeight: 1.25,
+                    color: "inherit",
+                    textDecoration: "none",
+                  }}
+                >
+                  {p.title}
+                </a>
+              ) : (
+                <div style={{ marginTop: 8, fontSize: 15, fontWeight: 800, lineHeight: 1.25 }}>
+                  {p.title}
+                </div>
+              )}
               <div style={{ marginTop: 8, opacity: 0.88, fontSize: 13, lineHeight: 1.55 }}>{p.dek}</div>
             </article>
           );

@@ -11,20 +11,21 @@ import LatestSection from "./components/LatestSection";
 import PortfolioSection from "./components/PortfolioSection";
 import { createNewsDemoData } from "./components/newsDummyData";
 import { SectionDivider } from "./components/newsUi";
-import type { DailyTweetItem } from "./components/newsTypes";
-import type { TopicBlock } from "./components/newsTypes";
+import type { DailyTweetItem, TopicBlock, DummyPost } from "./components/newsTypes";
 
 function App() {
   const demo = useMemo(() => createNewsDemoData(), []);
-  const { featuredLead, picks, inspiration, latest, portfolio } = demo;
+  const { featuredLead, picks, inspiration: demoInspiration, latest, portfolio: demoPortfolio } = demo;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [dailyTweets, setDailyTweets] = useState<DailyTweetItem[]>(demo.dailyTweetsItems ?? []);
   const [topics, setTopics] = useState<TopicBlock[]>(demo.topics);
+  const [inspiration, setInspiration] = useState<DummyPost[]>(demoInspiration);
+  const [portfolio, setPortfolio] = useState<DummyPost[]>(demoPortfolio);
   const [loadingTweets, setLoadingTweets] = useState(false);
 
   React.useEffect(() => {
-    let alive =true;
+    let alive = true;
     (async () => {
       try {
         const res = await fetch("/api/news/daily-tweets/?limit=12", {
@@ -41,7 +42,7 @@ function App() {
         // 실패 시 demo 유지(이미 demo로 초기화되어 있으니 굳이 set 안 해도 됨)
       }
     })();
-    
+
     (async () => {
       try {
         // 2) Topics
@@ -58,6 +59,36 @@ function App() {
       }
     })();
 
+    (async () => {
+      try {
+        // 3) Inspiration
+        const res = await fetch("/api/news/inspiration/", {
+          headers: { Accept: "application/json" },
+        });
+        if (!res.ok) throw new Error(`Inspiration HTTP ${res.status}`);
+        const data: { items: DummyPost[] } = await res.json();
+        if (!alive) return;
+        setInspiration(data.items);
+      } catch (e) {
+        console.error("Inspiration API failed.", e);
+      }
+    })();
+
+    (async () => {
+      try {
+        // 4) Portfolio
+        const res = await fetch("/api/news/portfolio/", {
+          headers: { Accept: "application/json" },
+        });
+        if (!res.ok) throw new Error(`Portfolio HTTP ${res.status}`);
+        const data: { items: DummyPost[] } = await res.json();
+        if (!alive) return;
+        setPortfolio(data.items);
+      } catch (e) {
+        console.error("Portfolio API failed.", e);
+      }
+    })();
+
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
     handleResize();
@@ -71,15 +102,15 @@ function App() {
     <div
       style={{
         minHeight: '90vh',
-        backgroundColor: isMobile ? '#363636' :'#020617',
+        backgroundColor: isMobile ? '#363636' : '#020617',
         color: 'white',
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         position: "relative",
         overflow: "hidden"
-//        padding: '40px 20px',
-//        fontFamily: '-apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+        //        padding: '40px 20px',
+        //        fontFamily: '-apple-system, BlinkMacSystemFont, system-ui, sans-serif',
       }}
     >
       {/* 1) Hero: 100vh */}
@@ -101,24 +132,24 @@ function App() {
         </div>
       </Hero>
       {/* 2) Hero 아래로 “쌓이는” Main Sections */}
-      <main style={{ marginTop: isMobile? 2 : 5 }}>
+      <main style={{ marginTop: isMobile ? 2 : 5 }}>
         <News isMobile={isMobile}>
           <FeaturedSection lead={featuredLead} picks={picks} isMobile={isMobile} />
           <SectionDivider />
 
           <DailyTweetSection tweets={dailyTweets} />
           <SectionDivider />
-          
+
           <TopicsSection topics={topics} />
           <SectionDivider />
 
-        {/*  <InspirationSection isMobile={isMobile} items={inspiration} />
+          <InspirationSection isMobile={isMobile} items={inspiration} />
           <SectionDivider />
 
-          <LatestSection items={latest} />
-          <SectionDivider />
+          {/* <LatestSection items={latest} />
+          <SectionDivider /> */}
 
-          <PortfolioSection items={portfolio} /> */}
+          <PortfolioSection items={portfolio} />
         </News>
       </main>
     </div>

@@ -7,6 +7,8 @@ export type DummyPost = {
   dek: string;
   date: string;
   badge?: string;
+  slug?: string;
+  thumb?: string;
 };
 
 export type TopicPostItem = {
