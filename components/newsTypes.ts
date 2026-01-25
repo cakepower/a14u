@@ -36,6 +36,7 @@ export type TopicBlock = {
 
 export type DailyTweetItem = {
   id: string | number;
+  title: string;
   text: string;      // 요약 텍스트(HTML 제거된 것이 이상적)
   date?: string;     // "2026-01-02"
   slug?: string;

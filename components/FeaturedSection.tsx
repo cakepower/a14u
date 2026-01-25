@@ -107,7 +107,7 @@ export default function FeaturedSection({ isMobile = false }: { isMobile?: boole
 
   return (
     <div ref={ref} style={{ marginBottom: 42 }}>
-      <h2 style={sectionTitleStyle}>Featured</h2>
+      <h2 style={sectionTitleStyle}>Featured Section</h2>
       <p style={sectionSubStyle}>
         2026년 1월 특집 기사
       </p>

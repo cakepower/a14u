@@ -38,6 +38,7 @@ export default function DailyTweetSection({ tweets = [] }: { tweets: DailyTweetI
       >
         {visible.map((t) => {
           const href = postUrl(t.slug);
+          const title = t.title || ""; 
           const text = stripHtml(t.text || "");
           const date = t.date ?? new Date().toISOString().slice(0, 10);
 
@@ -91,7 +92,7 @@ export default function DailyTweetSection({ tweets = [] }: { tweets: DailyTweetI
                   />
                 )
               ) : null}
-
+              <div style={{ opacity: 0.92, lineHeight: 1.8, fontSize: "1.1rem",  fontWeight: 700 }}>{title}</div>
               <div style={{ opacity: 0.92, lineHeight: 1.6 }}>{text}</div>
 
               <div style={{ marginTop: 10, opacity: 0.65, fontSize: 12 }}>

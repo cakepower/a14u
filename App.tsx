@@ -112,13 +112,13 @@ function App() {
           <TopicsSection topics={topics} />
           <SectionDivider />
 
-          <InspirationSection isMobile={isMobile} items={inspiration} />
+        {/*  <InspirationSection isMobile={isMobile} items={inspiration} />
           <SectionDivider />
 
           <LatestSection items={latest} />
           <SectionDivider />
 
-          <PortfolioSection items={portfolio} />
+          <PortfolioSection items={portfolio} /> */}
         </News>
       </main>
     </div>
