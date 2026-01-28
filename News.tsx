@@ -28,8 +28,9 @@ export default function News({ children, isMobile }: NewsProps) {
       >
         <div style={{ position: "sticky", top: 0, height: "100vh", width: "100%" }}>
           <Canvas
-            dpr={[1, 1.5]}
-            camera={{ position: [0, 0, 5], fov: 60 }}
+            orthographic
+            dpr={[1, 2]}
+            camera={{ position: [0, 0, 10], zoom: 200 }}
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
           >
             <NewsBackground />
