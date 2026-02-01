@@ -1,6 +1,6 @@
 // src/components/DailyTweetSection.tsx
 import React from "react";
-import { cardBase, SectionHeader } from "./newsUi";
+import { cardBase, SectionHeader, sectionTitleStyle, sectionSubStyle } from "./newsUi";
 import type { DailyTweetItem  } from "./newsTypes";
 
 const SITE_ORIGIN = "https://www.cakepower.net";
@@ -92,8 +92,8 @@ export default function DailyTweetSection({ tweets = [] }: { tweets: DailyTweetI
                   />
                 )
               ) : null}
-              <div style={{ opacity: 0.92, lineHeight: 1.8, fontSize: "1.1rem",  fontWeight: 700 }}>{title}</div>
-              <div style={{ opacity: 0.92, lineHeight: 1.6 }}>{text}</div>
+              <div style={ { marginTop: 8, fontSize: 15, fontWeight: 750, lineHeight: 1.3 } }>{title}</div>
+              <div style={ { marginTop: 8, opacity: 0.88, fontSize: 13, lineHeight: 1.55 } }>{text}</div>
 
               <div style={{ marginTop: 10, opacity: 0.65, fontSize: 12 }}>
                 Daily Tweet · {date}
