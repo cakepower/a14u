@@ -1,8 +1,10 @@
 /* index.css */
 
+@import "tailwindcss";
+
 @font-face {
   font-family: 'Space Grotesk';
-  src: url('/media/a14u/SpaceGrotesk/woff2/SpaceGrotesk[wght].woff2') format('woff2-variations');
+  src: url('/fonts/SpaceGrotesk/woff2/SpaceGrotesk[wght].woff2') format('woff2-variations');
   font-weight: 300 700;
   font-style: normal;
   font-display: swap;

@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import React, { useRef, useMemo } from 'react';
 import { SoftShadows } from "@react-three/drei";
+import Plines from "./Plines";
 import SF from "./SF";
 
 const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1)
@@ -37,7 +38,7 @@ function Spheres({ number = 20 }: { number?: number }) {
 }
 
 function AnimatedBackground() {
-  return <SF />;
+  return <Plines />;
 }
 
 type HeroProps = {
@@ -46,6 +47,9 @@ type HeroProps = {
 };
 
 export default function Hero({ children, isMobile }: HeroProps) {
+  const BackgroundComponent = useMemo(() => {
+    return Math.random() > 0.5 ? <Plines /> : <SF />;
+  }, []);
   return (
     <section
       style={{
@@ -58,7 +62,7 @@ export default function Hero({ children, isMobile }: HeroProps) {
     >
       {/* WebGL 배경: 상호작용을 위해 컨테이너 설정 */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-        <SF />
+        {BackgroundComponent}
       </div>
 
       {/* 오버레이 콘텐츠 */}
