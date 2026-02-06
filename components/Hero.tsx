@@ -1,44 +1,8 @@
-// Hero.tsx
-import { Canvas, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
-import React, { useRef, useMemo } from 'react';
-import { SoftShadows } from "@react-three/drei";
+import React, { useRef, useMemo, useState } from 'react';
+import Plines from "./Plines";
 import SF from "./SF";
-
-const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1)
-
-function Sphere({ position = [0, 0, 0], ...props }: any) {
-  const ref = useRef<any>()
-  const factor = useMemo(() => 0.5 + Math.random(), [])
-  useFrame((state) => {
-    const t = easeInOutCubic((1 + Math.sin(state.clock.getElapsedTime() * factor)) / 2)
-    ref.current.position.y = position[1] + t * 4
-    ref.current.scale.y = 1 + t * 3
-  })
-  return (
-    <mesh ref={ref} position={position} {...props} castShadow receiveShadow>
-      <sphereGeometry args={[0.5, 32, 32]} />
-      <meshLambertMaterial color="white" roughness={0} metalness={0.1} />
-    </mesh>
-  )
-}
-
-function Spheres({ number = 20 }: { number?: number }) {
-  const ref = useRef<any>()
-  const positions = useMemo(() => [...new Array(number)].map(() => [3 - Math.random() * 6, Math.random() * 4, 3 - Math.random() * 6]), [])
-  useFrame((state) => (ref.current.rotation.y = Math.sin(state.clock.getElapsedTime() / 2) * Math.PI))
-  return (
-    <group ref={ref}>
-      {positions.map((pos: any, index: number) => (
-        <Sphere key={index} position={pos} />
-      ))}
-    </group>
-  )
-}
-
-function AnimatedBackground() {
-  return <SF />;
-}
+import SLines from "./SLines";
+import Outlines from "./Outlines";
 
 type HeroProps = {
   children?: React.ReactNode;
@@ -46,6 +10,22 @@ type HeroProps = {
 };
 
 export default function Hero({ children, isMobile }: HeroProps) {
+  const [backgroundType, setBackgroundType] = useState<'SF' | 'Plines' | 'SLines' | 'Outlines'>('Plines');
+  const [plinesTheme, setPlinesTheme] = useState(0);
+
+
+
+  const themes = [
+    { name: 'SF Cylinder', color: 'linear-gradient(135deg, #00f2ff, #0066ff)' },
+    { name: 'SLines', color: 'linear-gradient(135deg, #7c3aed, #22d3ee)' },
+    { name: 'Outlines', color: 'linear-gradient(135deg, #00f2ff, #7c3aed)' },
+    { name: 'Original', color: '#00f2ff' },
+    { name: 'Sunset', color: '#ff6600' },
+    { name: 'Aurora', color: '#00ff80' },
+    { name: 'Cyber', color: '#ff00cc' },
+    { name: 'Dynamic', color: '#ff3333' }
+  ];
+
   return (
     <section
       style={{
@@ -56,9 +36,75 @@ export default function Hero({ children, isMobile }: HeroProps) {
         color: 'white',
       }}
     >
-      {/* WebGL 배경: 상호작용을 위해 컨테이너 설정 */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-        <SF />
+        {backgroundType === 'SF' ? (
+          <SF />
+        ) : backgroundType === 'SLines' ? (
+          <SLines />
+        ) : backgroundType === 'Outlines' ? (
+          <Outlines />
+        ) : (
+          <Plines theme={plinesTheme} />
+        )}
+      </div>
+
+      {/* 테마 스위처 UI (Hero 섹션 상단 또는 하단에 배치) */}
+      <div style={{
+        position: 'absolute',
+        bottom: isMobile ? '10vh' : '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        display: 'flex',
+        gap: '12px',
+        background: 'rgba(15, 23, 42, 0.4)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        padding: '10px 18px',
+        borderRadius: '50px',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        zIndex: 10,
+        pointerEvents: 'auto'
+      }}>
+        {themes.map((t, i) => {
+          const isActive =
+            (i === 0 && backgroundType === 'SF') ||
+            (i === 1 && backgroundType === 'SLines') ||
+            (i === 2 && backgroundType === 'Outlines') ||
+            (i > 2 && backgroundType === 'Plines' && plinesTheme === i - 3);
+          return (
+            <button
+              key={i}
+              onClick={() => {
+                if (i === 0) {
+                  setBackgroundType('SF');
+                } else if (i === 1) {
+                  setBackgroundType('SLines');
+                } else if (i === 2) {
+                  setBackgroundType('Outlines');
+                } else {
+                  setBackgroundType('Plines');
+                  setPlinesTheme(i - 3);
+                }
+              }}
+              style={{
+                padding: '6px 14px',
+                backgroundColor: isActive ? (i > 2 ? t.color : undefined) : 'rgba(255, 255, 255, 0.05)',
+                backgroundImage: isActive && i <= 2 ? t.color : undefined,
+                color: isActive ? '#000' : '#fff',
+                border: 'none',
+                borderRadius: '20px',
+                cursor: 'pointer',
+                fontSize: '11px',
+                fontWeight: '700',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                whiteSpace: 'nowrap',
+                boxShadow: isActive ? '0 0 15px rgba(255,255,255,0.2)' : 'none'
+              }}
+            >
+              {t.name}
+            </button>
+          );
+        })}
       </div>
 
       {/* 오버레이 콘텐츠 */}
@@ -85,7 +131,7 @@ export default function Hero({ children, isMobile }: HeroProps) {
               marginBottom: '1rem',
             }}
           >
-            Welcome to A14U Magazine
+            A14U Magazine
           </h1>
           <p
             style={{
@@ -94,7 +140,7 @@ export default function Hero({ children, isMobile }: HeroProps) {
               opacity: 0.9,
             }}
           >
-            A14U는 인간지능이 결합된 사물과의 관계를 새로운 시각으로 바라봅니다.
+            A14U는 인공지능이 결합된 사물과의 관계를 새로운 시각으로 바라봅니다.
           </p>
 
           <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', pointerEvents: 'auto' }}>
@@ -117,7 +163,7 @@ export default function Hero({ children, isMobile }: HeroProps) {
           </div>
         </div>
 
-        {/* 하단 오버레이 슬롯: 갤러리 같은 콘텐츠를 Hero 위에 “텍스트처럼” 얹기 */}
+        {/* 하단 오버레이 슬롯: 갤러리 같은 콘텐츠를 Hero 위에 “텍스트처럼” 얹기  
         {children && (
           <div style={{
             marginTop: '1rem',
@@ -128,8 +174,8 @@ export default function Hero({ children, isMobile }: HeroProps) {
           }}>
             {children}
           </div>
-        )}
+        )} */}
       </div>
-    </section>
+    </section >
   );
 }

@@ -33,7 +33,7 @@ export default function News({ children, isMobile }: NewsProps) {
             camera={{ position: [0, 0, 10], zoom: 200 }}
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
           >
-            <NewsBackground />
+
           </Canvas>
 
           <div

@@ -1,0 +1,5 @@
+dog.png
+horse.png
+elepant.png
+skate.png
+board.png
