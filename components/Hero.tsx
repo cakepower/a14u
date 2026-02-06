@@ -10,19 +10,13 @@ type HeroProps = {
 };
 
 export default function Hero({ children, isMobile }: HeroProps) {
-  const [backgroundType, setBackgroundType] = useState<'SF' | 'Plines' | 'SLines' | 'Outlines'>('Plines');
+  const [backgroundType, setBackgroundType] = useState<'SF' | 'Plines' | 'SLines' | 'Outlines'>('Outlines');
   const [plinesTheme, setPlinesTheme] = useState(0);
-
-
 
   const themes = [
     { name: 'SF Cylinder', color: 'linear-gradient(135deg, #00f2ff, #0066ff)' },
     { name: 'SLines', color: 'linear-gradient(135deg, #7c3aed, #22d3ee)' },
     { name: 'Outlines', color: 'linear-gradient(135deg, #00f2ff, #7c3aed)' },
-    { name: 'Original', color: '#00f2ff' },
-    { name: 'Sunset', color: '#ff6600' },
-    { name: 'Aurora', color: '#00ff80' },
-    { name: 'Cyber', color: '#ff00cc' },
     { name: 'Dynamic', color: '#ff3333' }
   ];
 
@@ -70,7 +64,7 @@ export default function Hero({ children, isMobile }: HeroProps) {
             (i === 0 && backgroundType === 'SF') ||
             (i === 1 && backgroundType === 'SLines') ||
             (i === 2 && backgroundType === 'Outlines') ||
-            (i > 2 && backgroundType === 'Plines' && plinesTheme === i - 3);
+            (i === 3 && backgroundType === 'Plines');
           return (
             <button
               key={i}
@@ -83,12 +77,12 @@ export default function Hero({ children, isMobile }: HeroProps) {
                   setBackgroundType('Outlines');
                 } else {
                   setBackgroundType('Plines');
-                  setPlinesTheme(i - 3);
+                  setPlinesTheme(0);
                 }
               }}
               style={{
                 padding: '6px 14px',
-                backgroundColor: isActive ? (i > 2 ? t.color : undefined) : 'rgba(255, 255, 255, 0.05)',
+                backgroundColor: isActive ? (i === 3 ? t.color : undefined) : 'rgba(255, 255, 255, 0.05)',
                 backgroundImage: isActive && i <= 2 ? t.color : undefined,
                 color: isActive ? '#000' : '#fff',
                 border: 'none',
@@ -163,18 +157,17 @@ export default function Hero({ children, isMobile }: HeroProps) {
           </div>
         </div>
 
-        {/* 하단 오버레이 슬롯: 갤러리 같은 콘텐츠를 Hero 위에 “텍스트처럼” 얹기  
-        {children && (
+        {backgroundType === 'Plines' && children && (
           <div style={{
             marginTop: '1rem',
             paddingBottom: '4vh',
             maxHeight: '155vh',
             overflowY: 'hidden',
-            pointerEvents: 'auto', // Allow interaction in child gallery
+            pointerEvents: 'auto',
           }}>
             {children}
           </div>
-        )} */}
+        )}
       </div>
     </section >
   );
