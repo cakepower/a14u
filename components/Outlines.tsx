@@ -6,11 +6,13 @@ import * as THREE from 'three';
 /**
  * CONFIGURATION
  */
-const PARTICLE_COUNT = 5000;
+const PARTICLE_COUNT_DESKTOP = 5000;
+const PARTICLE_COUNT_MOBILE = 1500;
 const DISPLAY_DURATION = 10.0;
 const MORPH_DURATION = 1.5;
 const BASE_URL = '/a14u';
-const BASE_PARTICLE_SIZE = 55.0;
+const BASE_PARTICLE_SIZE_DESKTOP = 55.0;
+const BASE_PARTICLE_SIZE_MOBILE = 35.0;
 
 // Background Lines Configuration
 const MASK_SIZE = 128;
@@ -30,6 +32,7 @@ const vertexShader = `
   uniform float uIndexNext;
   uniform float uTotalImages;
   uniform float uBaseSize;
+  uniform float uParticleCount;
 
   attribute float aIndex;
   attribute float aRandom;
@@ -46,7 +49,7 @@ const vertexShader = `
   }
 
   void main() {
-    float u = (aIndex + 0.5) / 3000.0;
+    float u = (aIndex + 0.5) / uParticleCount;
     float vCur  = (uIndexCurrent + 0.5) / uTotalImages;
     float vNext = (uIndexNext + 0.5) / uTotalImages;
 
@@ -273,14 +276,14 @@ function processEdges(img: HTMLImageElement): {
     return { edgeData, binary, width: w, height: h };
 }
 
-function generateShapeData(edgeData: { pos: THREE.Vector3, angle: number }[]): Float32Array {
-    const arr = new Float32Array(PARTICLE_COUNT * 4);
+function generateShapeData(edgeData: { pos: THREE.Vector3, angle: number }[], particleCount: number): Float32Array {
+    const arr = new Float32Array(particleCount * 4);
 
     if (edgeData.length === 0) {
         edgeData.push({ pos: new THREE.Vector3(), angle: 0 });
     }
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+    for (let i = 0; i < particleCount; i++) {
         const idx = Math.floor(Math.random() * edgeData.length);
         const p = edgeData[idx];
         arr[i * 4 + 0] = p.pos.x;
@@ -360,6 +363,10 @@ const BackgroundLines = ({ maskTexture, uniforms, imageAspect }: {
 };
 
 const OutlineParticles = () => {
+    const isMobile = useMemo(() => window.innerWidth <= 768, []);
+    const particleCount = isMobile ? PARTICLE_COUNT_MOBILE : PARTICLE_COUNT_DESKTOP;
+    const baseSize = isMobile ? BASE_PARTICLE_SIZE_MOBILE : BASE_PARTICLE_SIZE_DESKTOP;
+
     const pointsRef = useRef<THREE.Points>(null);
     const [pointsGeo, setPointsGeo] = useState<THREE.BufferGeometry | null>(null);
     const [texture, setTexture] = useState<THREE.DataTexture | null>(null);
@@ -382,7 +389,8 @@ const OutlineParticles = () => {
         uIndexCurrent: { value: 0.0 },
         uIndexNext: { value: 0.0 },
         uTotalImages: { value: 1.0 },
-        uBaseSize: { value: BASE_PARTICLE_SIZE }
+        uBaseSize: { value: baseSize },
+        uParticleCount: { value: particleCount }
     }), []);
 
     useEffect(() => {
@@ -409,7 +417,7 @@ const OutlineParticles = () => {
                         });
 
                         const { edgeData, binary, width, height } = processEdges(img);
-                        const shapeData = generateShapeData(edgeData);
+                        const shapeData = generateShapeData(edgeData, particleCount);
                         imagePixels.push(shapeData);
 
                         const maskData = createMaskData(binary, width, height);
@@ -429,14 +437,14 @@ const OutlineParticles = () => {
                 setImageAspect(firstAspect);
 
                 // Particle DataTexture
-                const combinedData = new Float32Array(PARTICLE_COUNT * imagePixels.length * 4);
+                const combinedData = new Float32Array(particleCount * imagePixels.length * 4);
                 for (let i = 0; i < imagePixels.length; i++) {
-                    combinedData.set(imagePixels[i], i * PARTICLE_COUNT * 4);
+                    combinedData.set(imagePixels[i], i * particleCount * 4);
                 }
 
                 const tex = new THREE.DataTexture(
                     combinedData,
-                    PARTICLE_COUNT,
+                    particleCount,
                     imagePixels.length,
                     THREE.RGBAFormat,
                     THREE.FloatType
@@ -471,15 +479,15 @@ const OutlineParticles = () => {
 
                 // Points Geometry
                 const geo = new THREE.BufferGeometry();
-                const indices = new Float32Array(PARTICLE_COUNT);
-                const randoms = new Float32Array(PARTICLE_COUNT);
-                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                const indices = new Float32Array(particleCount);
+                const randoms = new Float32Array(particleCount);
+                for (let i = 0; i < particleCount; i++) {
                     indices[i] = i;
                     randoms[i] = Math.random();
                 }
                 geo.setAttribute('aIndex', new THREE.BufferAttribute(indices, 1));
                 geo.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1));
-                const pos = new Float32Array(PARTICLE_COUNT * 3);
+                const pos = new Float32Array(particleCount * 3);
                 geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
                 geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 100);
                 setPointsGeo(geo);
