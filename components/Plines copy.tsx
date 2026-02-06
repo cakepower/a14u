@@ -11,31 +11,16 @@ const PARTICLE_COUNT = 2000;
 // Shaders
 const vertexShader = `
   uniform float uTime;
-  uniform float uTheme;
   attribute float aSize;
   attribute vec3 aRandom;
-  attribute float aFalling;
   varying vec3 vColor;
 
   void main() {
-    vec3 color = vec3(0.0, 0.95, 1.0); // Default Neon Blue
-    
-    // Using range checks for more robust theme selection
-    if (uTheme > 0.5 && uTheme < 1.5) { // 1.0: Sunset Horizon
-        color = mix(vec3(1.0, 0.4, 0.0), vec3(0.9, 0.0, 0.5), position.y * 0.2 + 0.5);
-    } else if (uTheme > 1.5 && uTheme < 2.5) { // 2.0: Arctic Aurora
-        // Make it very obvious for testing: Bright Green/Purple gradient
-        color = mix(vec3(0.0, 1.0, 0.2), vec3(0.6, 0.0, 1.0), sin(uTime + position.x * 0.3) * 0.5 + 0.5);
-    } else if (uTheme > 2.5 && uTheme < 3.5) { // 3.0: Cyberpunk Night
-        color = mix(vec3(1.0, 0.0, 0.8), vec3(0.0, 0.8, 1.0), aRandom.x);
-    } else if (uTheme > 3.5 && uTheme < 4.5) { // 4.0: Dynamic Velocity
-        color = mix(vec3(0.1, 0.4, 1.0), vec3(1.0, 0.2, 0.2), aFalling);
-    }
-    
-    vColor = color;
+    vColor = vec3(0.0, 0.95, 1.0); // Neon Blue
     
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
     
+    // Twinkling/Size pulsing module
     float pulsation = 1.0 + sin(uTime * 2.5 + aRandom.y * 20.0) * 0.8;
     gl_PointSize = aSize * (200.0 / -mvPosition.z) * pulsation;
     
@@ -55,12 +40,11 @@ const fragmentShader = `
   }
 `;
 
-const ParticleAlphabet = ({ theme }: { theme: number }) => {
+const ParticleAlphabet = () => {
     const { mouse, camera } = useThree();
     const pointsRef = useRef<THREE.Points>(null);
     const [geo, setGeo] = useState<THREE.BufferGeometry | null>(null);
 
-    // Stable particles data - remains constant once initialized
     const particles = useMemo(() => {
         return new Array(PARTICLE_COUNT).fill(0).map(() => ({
             basePos: new THREE.Vector3(),
@@ -73,18 +57,6 @@ const ParticleAlphabet = ({ theme }: { theme: number }) => {
         }));
     }, []);
 
-    // Stable uniforms object - prevents material re-initialization
-    const uniforms = useMemo(() => ({
-        uTime: { value: 0 },
-        uTheme: { value: theme }
-    }), []);
-
-    // Reactive update for uTheme when prop changes
-    useEffect(() => {
-        uniforms.uTheme.value = theme;
-    }, [theme, uniforms]);
-
-    // Load font and create geometry ONLY ONCE
     useEffect(() => {
         const loader = new FontLoader();
         loader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', (font) => {
@@ -108,7 +80,6 @@ const ParticleAlphabet = ({ theme }: { theme: number }) => {
             const positions = new Float32Array(PARTICLE_COUNT * 3);
             const sizes = new Float32Array(PARTICLE_COUNT);
             const randoms = new Float32Array(PARTICLE_COUNT * 3);
-            const fallings = new Float32Array(PARTICLE_COUNT);
 
             const tempPosition = new THREE.Vector3();
             for (let i = 0; i < PARTICLE_COUNT; i++) {
@@ -127,14 +98,12 @@ const ParticleAlphabet = ({ theme }: { theme: number }) => {
                 randoms[i * 3] = particles[i].random.x;
                 randoms[i * 3 + 1] = particles[i].random.y;
                 randoms[i * 3 + 2] = particles[i].random.z;
-                fallings[i] = 0;
             }
 
             const bufferGeo = new THREE.BufferGeometry();
             bufferGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
             bufferGeo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
             bufferGeo.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 3));
-            bufferGeo.setAttribute('aFalling', new THREE.BufferAttribute(fallings, 1));
 
             setGeo(bufferGeo);
             textGeo.dispose();
@@ -145,10 +114,7 @@ const ParticleAlphabet = ({ theme }: { theme: number }) => {
         if (!pointsRef.current || !geo) return;
 
         const time = state.clock.elapsedTime;
-        uniforms.uTime.value = time;
-
         const posAttr = geo.attributes.position as THREE.BufferAttribute;
-        const fallAttr = geo.attributes.aFalling as THREE.BufferAttribute;
 
         const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
         vector.unproject(camera);
@@ -162,6 +128,7 @@ const ParticleAlphabet = ({ theme }: { theme: number }) => {
             const p = particles[i];
 
             if (!p.isFalling) {
+                // Wave + Subtle Jitter in CPU loop
                 const wave = Math.sin(time * 1.2 + p.basePos.y * 0.8) * 0.3;
                 const jitterX = Math.sin(time * 1.5 + p.basePos.y * 2.0) * 0.03 * p.random.x;
                 const jitterY = Math.cos(time * 1.2 + p.basePos.x * 2.0) * 0.03 * p.random.y;
@@ -178,10 +145,8 @@ const ParticleAlphabet = ({ theme }: { theme: number }) => {
                         (Math.random() - 0.2) * 0.05,
                         (Math.random() - 0.5) * 0.1
                     );
-                    fallAttr.setX(i, 1.0);
                 } else {
                     p.currPos.copy(animatedPos);
-                    fallAttr.setX(i, 0.0);
                 }
             }
 
@@ -201,7 +166,6 @@ const ParticleAlphabet = ({ theme }: { theme: number }) => {
                     if (p.currPos.distanceTo(targetPos) < 0.01) {
                         p.isFalling = false;
                         p.vel.set(0, 0, 0);
-                        fallAttr.setX(i, 0.0);
                     }
                 }
             }
@@ -210,7 +174,8 @@ const ParticleAlphabet = ({ theme }: { theme: number }) => {
         }
 
         posAttr.needsUpdate = true;
-        fallAttr.needsUpdate = true;
+        const material = pointsRef.current.material as THREE.ShaderMaterial;
+        material.uniforms.uTime.value = time;
     });
 
     if (!geo) return null;
@@ -221,7 +186,9 @@ const ParticleAlphabet = ({ theme }: { theme: number }) => {
             <shaderMaterial
                 vertexShader={vertexShader}
                 fragmentShader={fragmentShader}
-                uniforms={uniforms}
+                uniforms={{
+                    uTime: { value: 0 }
+                }}
                 transparent
                 depthWrite={false}
                 blending={THREE.AdditiveBlending}
@@ -230,7 +197,7 @@ const ParticleAlphabet = ({ theme }: { theme: number }) => {
     );
 };
 
-const PlinesScene = ({ theme }: { theme: number }) => {
+const PlinesScene = () => {
     return (
         <>
             <PerspectiveCamera makeDefault position={[0, 0, 15]} fov={50} />
@@ -240,13 +207,13 @@ const PlinesScene = ({ theme }: { theme: number }) => {
             <pointLight position={[10, 10, 10]} intensity={1} />
 
             <group position={[0, 2.5, 0]}>
-                <ParticleAlphabet theme={theme} />
+                <ParticleAlphabet />
             </group>
         </>
     );
 };
 
-const Plines = ({ theme }: { theme: number }) => {
+const Plines = () => {
     return (
         <div style={{ position: 'absolute', inset: 0, width: '100vw', height: '100%', overflow: 'hidden' }}>
             <Canvas
@@ -254,7 +221,7 @@ const Plines = ({ theme }: { theme: number }) => {
                 dpr={[1, 2]}
                 style={{ width: '100%', height: '100%' }}
             >
-                <PlinesScene theme={theme} />
+                <PlinesScene />
             </Canvas>
         </div>
     );
