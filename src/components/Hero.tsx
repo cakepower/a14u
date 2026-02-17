@@ -10,7 +10,7 @@ type HeroProps = {
 };
 
 export default function Hero({ children, isMobile }: HeroProps) {
-  const [backgroundType, setBackgroundType] = useState<'SF' | 'Plines' | 'SLines' | 'Outlines'>('Outlines');
+  const [backgroundType, setBackgroundType] = useState<'SF' | 'Plines' | 'SLines' | 'Outlines'>('Plines');
   const [plinesTheme, setPlinesTheme] = useState(0);
 
   const themes = [

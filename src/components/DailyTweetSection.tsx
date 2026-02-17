@@ -61,8 +61,9 @@ export default function DailyTweetSection({ tweets = [] }: { tweets: DailyTweetI
                       loading="lazy"
                       style={{
                         width: "100%",
-                        height: 140,
+                        height: 160,
                         objectFit: "cover",
+                        objectPosition: "top center",
                         borderRadius: 12,
                         marginBottom: 10,
                         display: "block",
@@ -80,8 +81,9 @@ export default function DailyTweetSection({ tweets = [] }: { tweets: DailyTweetI
                     loading="lazy"
                     style={{
                       width: "100%",
-                      height: 140,
+                      height: 160,
                       objectFit: "cover",
+                      objectPosition: "top center",
                       borderRadius: 12,
                       marginBottom: 10,
                       display: "block",
@@ -92,8 +94,8 @@ export default function DailyTweetSection({ tweets = [] }: { tweets: DailyTweetI
                   />
                 )
               ) : null}
-              <div style={{ opacity: 0.92, lineHeight: 1.8, fontSize: "1.1rem",  fontWeight: 700 }}>{title}</div>
-              <div style={{ opacity: 0.92, lineHeight: 1.6 }}>{text}</div>
+              <div style={{ opacity: 0.92, lineHeight: 1.6, fontSize: 15, fontWeight: 700 }}>{title}</div>
+              <div style={{ opacity: 0.92, lineHeight: 1.55, fontSize: 13 }}>{text}</div>
 
               <div style={{ marginTop: 10, opacity: 0.65, fontSize: 12 }}>
                 Daily Tweet · {date}

@@ -114,14 +114,22 @@ export default function FeaturedSection({ isMobile = false }: { isMobile?: boole
 
       <div style={layout}>
         {/* Lead */}
-        <article onClick={() => handleCardClick(lead.slug)} style={{ ...cardBase, padding: 16, background: "rgba(2,6,23,0.55)", cursor: "pointer" }}>
+        <article
+          onClick={() => handleCardClick(lead.slug)}
+          style={{
+            ...cardBase,
+            padding: 16,
+            background: isMobile ? "rgba(255,255,255,0.08)" : "rgba(2,6,23,0.55)",
+            cursor: "pointer",
+          }}
+        >
           <div 
             style={{ 
               ...placeholderCardStyle(1), 
               // 데이터에 이미지가 있으면 해당 이미지를 배경으로 사용, 없으면 기존 스타일 유지
               backgroundImage: lead.image ? `linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%), url(${lead.image})` : undefined,
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundPosition: isMobile ? "top center" : "center",
               position: 'relative',
               overflow: 'hidden',
               height: isMobile ? "280px" : "380px",
@@ -178,7 +186,16 @@ export default function FeaturedSection({ isMobile = false }: { isMobile?: boole
         {/* Picks */}
         <div style={{ display: "grid", gap: 12 }}>
           {picks.map((p, idx) => (
-            <article key={p.id} onClick={() => handleCardClick(p.slug)} style={{ ...cardBase, padding: 14, cursor: 'pointer', background: "rgba(2,6,23,0.50)" }}>
+            <article
+              key={p.id}
+              onClick={() => handleCardClick(p.slug)}
+              style={{
+                ...cardBase,
+                padding: 14,
+                cursor: "pointer",
+                background: isMobile ? "rgba(255,255,255,0.07)" : "rgba(2,6,23,0.50)",
+              }}
+            >
               <div
                 style={
                   isMobile
@@ -190,9 +207,10 @@ export default function FeaturedSection({ isMobile = false }: { isMobile?: boole
                   <div 
                     style={{ 
                       ...smallThumbStyle(idx + 2), 
+                      height: isMobile ? 150 : smallThumbStyle(idx + 2).height,
                       backgroundImage: p.image ? `linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%), url(${p.image})` : undefined,
                       backgroundSize: 'cover',
-                      backgroundPosition: 'center'
+                      backgroundPosition: isMobile ? "top center" : "center"
                     }} 
                   />
 
