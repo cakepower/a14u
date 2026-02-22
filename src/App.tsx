@@ -9,6 +9,7 @@ import TopicsSection from "./components/TopicsSection";
 import InspirationSection from "./components/InspirationSection";
 import LatestSection from "./components/LatestSection";
 import PortfolioSection from "./components/PortfolioSection";
+import RoughMotionPlayground from "./components/RoughMotionPlayground";
 import { createNewsDemoData } from "./components/newsDummyData";
 import { SectionDivider } from "./components/newsUi";
 import type { DailyTweetItem, TopicBlock, DummyPost } from "./components/newsTypes";
@@ -133,6 +134,7 @@ function App() {
       </Hero>
       {/* 2) Hero 아래로 “쌓이는” Main Sections */}
       <main style={{ marginTop: isMobile ? 2 : 5 }}>
+        <RoughMotionPlayground isMobile={isMobile} />
         <News isMobile={isMobile}>
           <FeaturedSection lead={featuredLead} picks={picks} isMobile={isMobile} />
           <SectionDivider />
