@@ -10,55 +10,71 @@ A14U is a React-based magazine/blog landing page with interactive 3D WebGL backg
 
 ```bash
 npm install        # Install dependencies
-npm run dev        # Start Vite dev server
+npm run dev        # Start Vite dev server (localhost:5173/a14u)
 npm run build      # Production build
 npm run preview    # Preview production build
 ```
 
 ## Architecture
 
-### Entry Point & Layout
-- `index.tsx` - React root mount
-- `App.tsx` - Main layout orchestrator; fetches data from `/api/news/*` endpoints with demo data fallback
-
 ### Two-Layer Visual Structure
-1. **Hero Section** (`components/Hero.tsx`)
-   - Full viewport 3D background via `components/SF.tsx`
-   - SF.tsx contains a custom WebGL particle cylinder system using @react-three/fiber with GLSL shaders
-   - Particles respond to mouse interaction with repulsion effects
 
-2. **News Section** (`News.tsx`)
-   - Contains `components/NewsBackground.tsx` - a separate R3F Canvas with orthographic camera
-   - Foreground content sections: FeaturedSection, DailyTweetSection, TopicsSection, InspirationSection, PortfolioSection
+The app has two main visual layers, each with its own R3F Canvas:
 
-### 3D Graphics (Three.js / React Three Fiber)
-- Uses @react-three/fiber and @react-three/drei
-- `SF.tsx` implements custom ShaderMaterial with:
-  - CylinderShaderMaterial - rainbow-colored particle system
-  - ConnectionShaderMaterial - animated line connections
-  - TriangleShaderMaterial - ephemeral triangle overlays
-- Mobile-responsive: adjusts particle count (2500 mobile vs 8000 desktop) and camera positioning
+1. **Hero Section** (`src/components/Hero.tsx`)
+   - Full viewport 3D background with switchable themes
+   - Theme selector at bottom allows switching between: SF Cylinder, SLines, Outlines, Dynamic (Plines)
+   - `children` prop only renders when Plines/Dynamic theme is active
+
+2. **News Section** (`src/News.tsx`)
+   - Contains sticky R3F Canvas with orthographic camera as background
+   - Gradient overlay on top of canvas
+   - Content sections rendered as children: Featured, DailyTweet, Topics, Inspiration, Portfolio
+
+### 3D Background Components
+
+All backgrounds are in `src/components/`:
+
+| Component | Description |
+|-----------|-------------|
+| `SF.tsx` | Rainbow particle cylinder with mouse repulsion. Uses custom GLSL shaders (CylinderShaderMaterial, ConnectionShaderMaterial, TriangleShaderMaterial). Particles rotate via shader, not mesh. |
+| `Outlines.tsx` | Edge-detected particle silhouettes from images. Loads images from `/a14u/images.txt`, morphs between shapes. Includes masked horizontal background lines. |
+| `Plines.tsx` | Dynamic particle lines with theme variations |
+| `SLines.tsx` | Stylized line-based background |
+
+### Mobile Responsiveness
+
+- Breakpoint: `window.innerWidth <= 768`
+- All 3D components adjust particle count, camera distance, and base sizes for mobile
+- SF.tsx: 2500 particles (mobile) vs 8000 (desktop)
+- Outlines.tsx: 1500 particles (mobile) vs 5000 (desktop)
+- Background colors: `#363636` (mobile), `#020617` (desktop)
+
+### Data Flow
+
+`App.tsx` fetches from four API endpoints in parallel on mount, with demo data fallback:
+- `/api/news/daily-tweets/` → DailyTweetSection
+- `/api/news/topics/` → TopicsSection
+- `/api/news/inspiration/` → InspirationSection
+- `/api/news/portfolio/` → PortfolioSection
+
+Uses `alive` flag pattern for cleanup to prevent state updates after unmount.
 
 ### Type Definitions
-- `types.ts` - Core Slide type
-- `components/newsTypes.ts` - DummyPost, TopicBlock, DailyTweetItem, PostFromDB, etc.
 
-### API Endpoints (Backend Integration)
-- `/api/news/daily-tweets/` - Daily tweet items
-- `/api/news/topics/` - Topic blocks
-- `/api/news/inspiration/` - Inspiration posts
-- `/api/news/portfolio/` - Portfolio items
-- `/api/generated-images` - Generated image gallery with pagination
+- `src/types.ts` - Core Slide type
+- `src/components/newsTypes.ts` - DummyPost, TopicBlock, DailyTweetItem, PostFromDB, FeaturedConfig
 
-### Styling
-- Tailwind CSS v4 with custom config
+### Build Configuration
+
+- Base path: `/a14u` (assets served from this subpath)
+- Path alias: `@/*` maps to `src/`
+- Vendor chunk: react, react-dom, three, @react-three/fiber, @react-three/drei
+- Tailwind CSS v4 via `@tailwindcss/vite` plugin
+
+### Key Patterns
+
+- Async data fetching with `alive` flag cleanup pattern
+- Demo data fallback in `src/components/newsDummyData.ts`
+- Inline styles used extensively (not Tailwind classes) in components
 - Custom font: GmarketSans
-- Dark theme colors: `#020617` (desktop), `#363636` (mobile)
-- Inline styles used extensively in components
-
-## Key Patterns
-
-- Mobile detection via `window.innerWidth <= 768` with resize listeners
-- Async data fetching with `alive` flag cleanup pattern to prevent state updates after unmount
-- Demo data fallback in `components/newsDummyData.ts`
-- Path alias: `@/*` maps to project root
