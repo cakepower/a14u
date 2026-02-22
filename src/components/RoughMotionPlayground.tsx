@@ -70,10 +70,14 @@ export default function RoughMotionPlayground({ isMobile }: RoughMotionPlaygroun
     if (!canvas) return;
 
     drawScene(canvas);
+    const redrawInterval = window.setInterval(() => drawScene(canvas), 2600);
 
     const onResize = () => drawScene(canvas);
     window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      window.clearInterval(redrawInterval);
+    };
   }, []);
 
   return (
@@ -89,14 +93,24 @@ export default function RoughMotionPlayground({ isMobile }: RoughMotionPlaygroun
         overflow: "hidden",
       }}
     >
-      <canvas
+      <motion.canvas
         ref={canvasRef}
+        animate={{
+          x: [0, 6, -6, 0],
+          y: [0, -4, 5, 0],
+          rotate: [0, 0.35, -0.35, 0],
+          opacity: [0.58, 0.75, 0.62, 0.75],
+        }}
+        transition={{
+          duration: 11,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "easeInOut",
+        }}
         style={{
           position: "absolute",
           inset: 0,
           width: "100%",
           height: "100%",
-          opacity: 0.75,
         }}
       />
 
@@ -142,12 +156,15 @@ export default function RoughMotionPlayground({ isMobile }: RoughMotionPlaygroun
           {["Sketch Orbit", "Signal Bloom", "Noise Garden"].map((title, index) => (
             <motion.button
               key={title}
+              animate={{ y: [0, -8, 0], rotate: [0, -0.5, 0.5, 0] }}
+              transition={{
+                duration: 3.6 + index * 0.5,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+                delay: index * 0.15,
+              }}
               whileHover={{ y: -6, scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.16 + index * 0.08, duration: 0.42 }}
-              viewport={{ once: true, amount: 0.5 }}
               onClick={() => {
                 const canvas = canvasRef.current;
                 if (canvas) drawScene(canvas);
