@@ -20,6 +20,7 @@ Note: there are historical `copy`/`_old` files in the repo; prefer editing activ
 - `npm run watch:css`: watch and rebuild Tailwind CSS during UI work.
 
 Before opening a PR, run at least `npm run build` to catch type/bundle issues.
+For Codex/agents: do not run `npm run build` automatically. Ask the user to run it directly unless they explicitly request you to execute it.
 
 ## Coding Style & Naming Conventions
 - Use TypeScript/TSX with 2-space indentation and semantically named props/state.
@@ -30,7 +31,7 @@ Before opening a PR, run at least `npm run build` to catch type/bundle issues.
 
 ## Testing Guidelines
 No automated test framework is currently configured. Until one is added:
-- Validate changes via `npm run dev` and `npm run build`.
+- Validate changes via `npm run dev`; `npm run build` should be run by the user directly.
 - Manually check key flows: hero/slider rendering, news sections, responsive layouts.
 - If adding tests, use `*.test.ts(x)` naming and place near the related module.
 

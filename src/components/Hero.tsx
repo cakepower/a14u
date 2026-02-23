@@ -125,7 +125,7 @@ export default function Hero({ children, isMobile }: HeroProps) {
               marginBottom: '1rem',
             }}
           >
-            A14U Magazine
+            A14U Magazine 2월호
           </h1>
           <p
             style={{
