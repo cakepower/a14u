@@ -118,6 +118,44 @@ function trimStroke(stroke: Point[], targetLength: number) {
   return result;
 }
 
+function clamp01(value: number) {
+  return Math.max(0, Math.min(1, value));
+}
+
+function easeOutCubic(t: number) {
+  return 1 - (1 - t) ** 3;
+}
+
+function entryOffset(index: number, width: number, height: number): Point {
+  const base = Math.sin((index + 1) * 12.9898) * 43758.5453;
+  const unit = base - Math.floor(base);
+  const angle = unit * Math.PI * 2;
+  const distance = Math.max(width, height) * 0.95 + 160;
+  return [Math.cos(angle) * distance, Math.sin(angle) * distance];
+}
+
+function random01(seed: number) {
+  const value = Math.sin(seed * 12.9898) * 43758.5453;
+  return value - Math.floor(value);
+}
+
+function translateStroke(stroke: Point[], dx: number, dy: number) {
+  return stroke.map(([x, y]) => [x + dx, y + dy] as Point);
+}
+
+function scaleStroke(stroke: Point[], scale: number) {
+  if (stroke.length === 0) return stroke;
+  let cx = 0;
+  let cy = 0;
+  for (const [x, y] of stroke) {
+    cx += x;
+    cy += y;
+  }
+  cx /= stroke.length;
+  cy /= stroke.length;
+  return stroke.map(([x, y]) => [cx + (x - cx) * scale, cy + (y - cy) * scale] as Point);
+}
+
 function drawScene(canvas: HTMLCanvasElement, progress: number) {
   const rect = canvas.getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
@@ -148,26 +186,43 @@ function drawScene(canvas: HTMLCanvasElement, progress: number) {
 
   const strokes = getDrawCommands(PHRASE, startX, startY, phraseSize);
   const lengths = strokes.map((stroke) => strokeLength(stroke));
-  const totalLength = lengths.reduce((acc, len) => acc + len, 0);
-  const targetLength = totalLength * progress;
-  let drawn = 0;
+  const count = strokes.length;
 
-  for (let i = 0; i < strokes.length; i += 1) {
+  for (let i = 0; i < count; i += 1) {
     const stroke = strokes[i];
     const len = lengths[i];
+    const delay = (i / Math.max(1, count)) * 0.72;
+    const duration = 0.28;
+    const local = clamp01((progress - delay) / duration);
+    if (local <= 0) continue;
 
-    if (drawn >= targetLength) break;
-    const remaining = targetLength - drawn;
-    const drawPath = remaining >= len ? stroke : trimStroke(stroke, remaining);
+    const writeProgress = clamp01(local * 1.18);
+    const settled = easeOutCubic(local);
+    const [ox, oy] = entryOffset(i, rect.width, rect.height);
+    const dx = ox * (1 - settled);
+    const dy = oy * (1 - settled);
+    const partial = trimStroke(stroke, len * writeProgress);
+
+    const timeSeed = progress * 1000;
+    const hue = Math.floor(160 + random01(i * 3.1 + timeSeed * 0.75) * 180);
+    const sat = Math.floor(68 + random01(i * 4.7 + timeSeed * 0.58) * 28);
+    const lit = Math.floor(56 + random01(i * 5.9 + timeSeed * 0.63) * 22);
+    const color = `hsl(${hue} ${sat}% ${lit}%)`;
+    const scale = 0.72 + random01(i * 8.3 + timeSeed * 0.82) * 0.95;
+    const jittered = scaleStroke(partial, scale);
+    const drawPath = translateStroke(jittered, dx, dy);
+    const strokeWidth = lineWidth * (0.7 + random01(i * 9.7 + timeSeed * 0.51) * 1.15);
+    const roughness = 1.1 + random01(i * 6.2 + timeSeed * 0.66) * 2.1;
+    const bowing = 0.8 + random01(i * 7.4 + timeSeed * 0.43) * 1.6;
+
     if (drawPath.length >= 2) {
       rc.linearPath(drawPath, {
-        stroke: "#f8fafc",
-        strokeWidth: lineWidth,
-        roughness: 1.5,
-        bowing: 1.1,
+        stroke: color,
+        strokeWidth,
+        roughness,
+        bowing,
       });
     }
-    drawn += len;
   }
 }
 
