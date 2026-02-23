@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 type RoughMotionPlaygroundProps = {
   isMobile: boolean;
+  phrase?: string;
 };
 
 type Point = [number, number];
@@ -21,16 +22,64 @@ const glyphs: Record<string, Point[][]> = {
     [[0.95, 0], [0.05, 0], [0.05, 1], [0.95, 1]],
     [[0.05, 0.5], [0.7, 0.5]],
   ],
+  B: [
+    [[0.08, 0], [0.08, 1]],
+    [[0.08, 0], [0.72, 0.08], [0.82, 0.28], [0.7, 0.5], [0.08, 0.5]],
+    [[0.08, 0.5], [0.72, 0.56], [0.84, 0.78], [0.72, 1], [0.08, 1]],
+  ],
+  C: [
+    [[0.9, 0.1], [0.28, 0.06], [0.08, 0.28], [0.08, 0.72], [0.28, 0.94], [0.9, 0.9]],
+  ],
+  F: [
+    [[0.08, 0], [0.08, 1]],
+    [[0.08, 0], [0.88, 0]],
+    [[0.08, 0.5], [0.68, 0.5]],
+  ],
+  G: [
+    [[0.9, 0.15], [0.28, 0.06], [0.08, 0.28], [0.08, 0.72], [0.28, 0.94], [0.9, 0.9]],
+    [[0.9, 0.56], [0.58, 0.56]],
+    [[0.9, 0.56], [0.9, 0.9]],
+  ],
+  H: [
+    [[0.08, 0], [0.08, 1]],
+    [[0.92, 0], [0.92, 1]],
+    [[0.08, 0.5], [0.92, 0.5]],
+  ],
   I: [
     [[0.1, 0], [0.9, 0]],
     [[0.5, 0], [0.5, 1]],
     [[0.1, 1], [0.9, 1]],
+  ],
+  J: [
+    [[0.1, 0], [0.9, 0]],
+    [[0.55, 0], [0.55, 0.8], [0.42, 1], [0.16, 0.9]],
+  ],
+  K: [
+    [[0.08, 0], [0.08, 1]],
+    [[0.88, 0], [0.08, 0.5], [0.88, 1]],
+  ],
+  L: [
+    [[0.08, 0], [0.08, 1], [0.88, 1]],
+  ],
+  M: [
+    [[0.06, 1], [0.06, 0], [0.5, 0.55], [0.94, 0], [0.94, 1]],
   ],
   N: [
     [[0.05, 1], [0.05, 0], [0.95, 1], [0.95, 0]],
   ],
   O: [
     [[0.5, 0], [0.9, 0.25], [0.9, 0.75], [0.5, 1], [0.1, 0.75], [0.1, 0.25], [0.5, 0]],
+  ],
+  P: [
+    [[0.08, 1], [0.08, 0], [0.72, 0.08], [0.86, 0.28], [0.72, 0.5], [0.08, 0.5]],
+  ],
+  Q: [
+    [[0.5, 0], [0.9, 0.25], [0.9, 0.75], [0.5, 1], [0.1, 0.75], [0.1, 0.25], [0.5, 0]],
+    [[0.62, 0.62], [0.95, 1]],
+  ],
+  R: [
+    [[0.08, 1], [0.08, 0], [0.72, 0.08], [0.86, 0.28], [0.72, 0.5], [0.08, 0.5]],
+    [[0.5, 0.5], [0.9, 1]],
   ],
   S: [
     [[0.9, 0.08], [0.2, 0.08], [0.08, 0.4], [0.8, 0.58], [0.88, 0.92], [0.12, 0.92]],
@@ -39,9 +88,81 @@ const glyphs: Record<string, Point[][]> = {
     [[0.05, 0], [0.95, 0]],
     [[0.5, 0], [0.5, 1]],
   ],
+  U: [
+    [[0.08, 0], [0.08, 0.78], [0.28, 1], [0.72, 1], [0.92, 0.78], [0.92, 0]],
+  ],
+  V: [
+    [[0.08, 0], [0.5, 1], [0.92, 0]],
+  ],
+  W: [
+    [[0.06, 0], [0.24, 1], [0.5, 0.4], [0.76, 1], [0.94, 0]],
+  ],
+  X: [
+    [[0.08, 0], [0.92, 1]],
+    [[0.92, 0], [0.08, 1]],
+  ],
+  Y: [
+    [[0.08, 0], [0.5, 0.5], [0.92, 0]],
+    [[0.5, 0.5], [0.5, 1]],
+  ],
+  Z: [
+    [[0.08, 0], [0.92, 0], [0.08, 1], [0.92, 1]],
+  ],
+  "0": [
+    [[0.5, 0], [0.9, 0.25], [0.9, 0.75], [0.5, 1], [0.1, 0.75], [0.1, 0.25], [0.5, 0]],
+  ],
+  "1": [
+    [[0.28, 0.2], [0.5, 0], [0.5, 1], [0.28, 1], [0.72, 1]],
+  ],
+  "2": [
+    [[0.1, 0.22], [0.28, 0], [0.82, 0.08], [0.9, 0.38], [0.12, 1], [0.9, 1]],
+  ],
+  "3": [
+    [[0.12, 0.08], [0.82, 0.08], [0.56, 0.5], [0.86, 0.92], [0.12, 0.92]],
+  ],
+  "4": [
+    [[0.8, 1], [0.8, 0], [0.1, 0.62], [0.92, 0.62]],
+  ],
+  "5": [
+    [[0.9, 0.08], [0.2, 0.08], [0.12, 0.48], [0.82, 0.52], [0.9, 0.92], [0.12, 0.92]],
+  ],
+  "6": [
+    [[0.88, 0.16], [0.32, 0.08], [0.1, 0.46], [0.2, 0.9], [0.72, 0.94], [0.9, 0.72], [0.72, 0.52], [0.2, 0.52]],
+  ],
+  "7": [
+    [[0.08, 0.08], [0.92, 0.08], [0.42, 1]],
+  ],
+  "8": [
+    [[0.5, 0], [0.82, 0.18], [0.5, 0.46], [0.18, 0.18], [0.5, 0]],
+    [[0.5, 0.46], [0.86, 0.72], [0.5, 1], [0.14, 0.72], [0.5, 0.46]],
+  ],
+  "9": [
+    [[0.82, 0.52], [0.28, 0.48], [0.1, 0.22], [0.28, 0.02], [0.8, 0.08], [0.9, 0.54], [0.72, 0.92], [0.12, 0.9]],
+  ],
+  "!": [
+    [[0.5, 0], [0.5, 0.74]],
+    [[0.5, 0.9], [0.5, 1]],
+  ],
+  "?": [
+    [[0.16, 0.18], [0.32, 0.02], [0.76, 0.08], [0.86, 0.32], [0.5, 0.54], [0.5, 0.72]],
+    [[0.5, 0.9], [0.5, 1]],
+  ],
+  ",": [
+    [[0.5, 0.84], [0.42, 1]],
+  ],
+  "-": [
+    [[0.16, 0.56], [0.84, 0.56]],
+  ],
+  "'": [
+    [[0.58, 0], [0.46, 0.18]],
+  ],
+  ":": [
+    [[0.5, 0.26], [0.5, 0.34]],
+    [[0.5, 0.78], [0.5, 0.86]],
+  ],
 };
 
-const PHRASE = "sadi is no dead.";
+const DEFAULT_PHRASE = "sadi is no dead.";
 
 function getDrawCommands(phrase: string, x: number, y: number, size: number) {
   const spacing = size * 0.34;
@@ -71,6 +192,13 @@ function getDrawCommands(phrase: string, x: number, y: number, size: number) {
     }
     const strokes = glyphs[ch];
     if (!strokes) {
+      commands.push([
+        [cursor + letterWidth * 0.12, y + size * 0.08],
+        [cursor + letterWidth * 0.88, y + size * 0.08],
+        [cursor + letterWidth * 0.88, y + size * 0.92],
+        [cursor + letterWidth * 0.12, y + size * 0.92],
+        [cursor + letterWidth * 0.12, y + size * 0.08],
+      ]);
       cursor += letterWidth + spacing;
       continue;
     }
@@ -156,7 +284,7 @@ function scaleStroke(stroke: Point[], scale: number) {
   return stroke.map(([x, y]) => [cx + (x - cx) * scale, cy + (y - cy) * scale] as Point);
 }
 
-function drawScene(canvas: HTMLCanvasElement, progress: number) {
+function drawScene(canvas: HTMLCanvasElement, progress: number, phrase: string) {
   const rect = canvas.getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
   canvas.width = Math.max(1, Math.floor(rect.width * dpr));
@@ -170,9 +298,10 @@ function drawScene(canvas: HTMLCanvasElement, progress: number) {
 
   const rc = new RoughCanvas(canvas);
   const phraseSize = Math.max(22, Math.min(rect.width / 26, 38));
-  const totalLetters = PHRASE.replace(/[\s.]/g, "").length;
-  const spaceCount = (PHRASE.match(/\s/g) || []).length;
-  const dotCount = (PHRASE.match(/\./g) || []).length;
+  const normalized = phrase.toUpperCase();
+  const totalLetters = normalized.replace(/[\s.]/g, "").length;
+  const spaceCount = (normalized.match(/\s/g) || []).length;
+  const dotCount = (normalized.match(/\./g) || []).length;
   const letterWidth = phraseSize * 0.72;
   const spacing = phraseSize * 0.34;
   const phraseWidth =
@@ -184,7 +313,7 @@ function drawScene(canvas: HTMLCanvasElement, progress: number) {
   const startY = rect.height / 2 - phraseSize / 2;
   const lineWidth = Math.max(1.8, phraseSize * 0.085);
 
-  const strokes = getDrawCommands(PHRASE, startX, startY, phraseSize);
+  const strokes = getDrawCommands(normalized, startX, startY, phraseSize);
   const lengths = strokes.map((stroke) => strokeLength(stroke));
   const count = strokes.length;
 
@@ -226,9 +355,13 @@ function drawScene(canvas: HTMLCanvasElement, progress: number) {
   }
 }
 
-export default function RoughMotionPlayground({ isMobile }: RoughMotionPlaygroundProps) {
+export default function RoughMotionPlayground({ isMobile, phrase = DEFAULT_PHRASE }: RoughMotionPlaygroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const durationMs = useMemo(() => 5200, []);
+  const phraseForDraw = useMemo(() => {
+    const cleaned = phrase.trim();
+    return (cleaned || DEFAULT_PHRASE).slice(0, 56);
+  }, [phrase]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -240,7 +373,7 @@ export default function RoughMotionPlayground({ isMobile }: RoughMotionPlaygroun
     const render = (now: number) => {
       const elapsed = (now - startAt) % durationMs;
       const progress = elapsed / durationMs;
-      drawScene(canvas, progress);
+      drawScene(canvas, progress, phraseForDraw);
       rafId = window.requestAnimationFrame(render);
     };
 
@@ -248,14 +381,14 @@ export default function RoughMotionPlayground({ isMobile }: RoughMotionPlaygroun
 
     const onResize = () => {
       startAt = performance.now();
-      drawScene(canvas, 0);
+      drawScene(canvas, 0, phraseForDraw);
     };
     window.addEventListener("resize", onResize);
     return () => {
       window.removeEventListener("resize", onResize);
       window.cancelAnimationFrame(rafId);
     };
-  }, [durationMs]);
+  }, [durationMs, phraseForDraw]);
 
   return (
     <div

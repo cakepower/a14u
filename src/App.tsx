@@ -23,6 +23,7 @@ function App() {
   const [topics, setTopics] = useState<TopicBlock[]>(demo.topics);
   const [inspiration, setInspiration] = useState<DummyPost[]>(demoInspiration);
   const [portfolio, setPortfolio] = useState<DummyPost[]>(demoPortfolio);
+  const [roughText, setRoughText] = useState("sadi is no dead.");
   const [loadingTweets, setLoadingTweets] = useState(false);
 
   React.useEffect(() => {
@@ -134,13 +135,52 @@ function App() {
       </Hero>
       {/* 2) Hero 아래로 “쌓이는” Main Sections */}
       <main style={{ marginTop: isMobile ? 2 : 5 }}>
-        <RoughMotionPlayground isMobile={isMobile} />
+        <div
+          style={{
+            width: "min(1100px, 92vw)",
+            margin: isMobile ? "10px auto 8px" : "16px auto 10px",
+          }}
+        >
+          <label
+            htmlFor="rough-text-input"
+            style={{
+              display: "block",
+              fontSize: isMobile ? 12 : 13,
+              opacity: 0.82,
+              marginBottom: 8,
+              letterSpacing: "0.01em",
+            }}
+          >
+            Type text for rough line animation
+          </label>
+          <input
+            id="rough-text-input"
+            type="text"
+            value={roughText}
+            onChange={(e) => setRoughText(e.target.value)}
+            placeholder="Type something..."
+            maxLength={56}
+            style={{
+              width: "100%",
+              borderRadius: 12,
+              border: "1px solid rgba(255,255,255,0.22)",
+              background: "rgba(2, 6, 23, 0.72)",
+              color: "#f8fafc",
+              padding: isMobile ? "10px 12px" : "12px 14px",
+              fontSize: isMobile ? 14 : 16,
+              outline: "none",
+              boxShadow: "0 8px 22px rgba(0,0,0,0.25)",
+            }}
+          />
+        </div>
+        <RoughMotionPlayground isMobile={isMobile} phrase={roughText} />
         <News isMobile={isMobile}>
-          <FeaturedSection lead={featuredLead} picks={picks} isMobile={isMobile} />
+        <DailyTweetSection tweets={dailyTweets} />
+        <SectionDivider />
+          {/*       <FeaturedSection lead={featuredLead} picks={picks} isMobile={isMobile} />
           <SectionDivider />
 
-          <DailyTweetSection tweets={dailyTweets} />
-          <SectionDivider />
+
 
           <TopicsSection topics={topics} />
           <SectionDivider />
@@ -148,10 +188,10 @@ function App() {
           <InspirationSection isMobile={isMobile} items={inspiration} />
           <SectionDivider />
 
-          {/* <LatestSection items={latest} />
-          <SectionDivider /> */}
+          <LatestSection items={latest} />
+          <SectionDivider /> 
 
-          <PortfolioSection items={portfolio} />
+          <PortfolioSection items={portfolio} /> */}
         </News>
       </main>
     </div>
