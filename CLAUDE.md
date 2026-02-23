@@ -17,19 +17,23 @@ npm run preview    # Preview production build
 
 ## Architecture
 
-### Two-Layer Visual Structure
+### Visual Structure
 
-The app has two main visual layers, each with its own R3F Canvas:
+The app has three main visual sections:
 
 1. **Hero Section** (`src/components/Hero.tsx`)
    - Full viewport 3D background with switchable themes
-   - Theme selector at bottom allows switching between: SF Cylinder, SLines, Outlines, Dynamic (Plines)
+   - Theme selector at bottom: SF Cylinder, SLines, Outlines, Dynamic (Plines)
    - `children` prop only renders when Plines/Dynamic theme is active
 
-2. **News Section** (`src/News.tsx`)
-   - Contains sticky R3F Canvas with orthographic camera as background
+2. **Motion Playgrounds** (below Hero)
+   - `RoughMotionPlayground.tsx` - Hand-drawn text animation using roughjs with custom glyph definitions
+   - `MatterMotionPlayground.tsx` - Physics-based animation using matter-js
+
+3. **News Section** (`src/News.tsx`)
+   - Sticky R3F Canvas with orthographic camera as background
    - Gradient overlay on top of canvas
-   - Content sections rendered as children: Featured, DailyTweet, Topics, Inspiration, Portfolio
+   - Content sections: DailyTweet, Topics, Inspiration, Portfolio
 
 ### 3D Background Components
 
@@ -71,6 +75,7 @@ Uses `alive` flag pattern for cleanup to prevent state updates after unmount.
 - Path alias: `@/*` maps to `src/`
 - Vendor chunk: react, react-dom, three, @react-three/fiber, @react-three/drei
 - Tailwind CSS v4 via `@tailwindcss/vite` plugin
+- Environment: `GEMINI_API_KEY` exposed as `process.env.GEMINI_API_KEY`
 
 ### Key Patterns
 
