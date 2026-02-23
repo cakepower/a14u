@@ -10,6 +10,7 @@ import InspirationSection from "./components/InspirationSection";
 import LatestSection from "./components/LatestSection";
 import PortfolioSection from "./components/PortfolioSection";
 import RoughMotionPlayground from "./components/RoughMotionPlayground";
+import MatterMotionPlayground from "./components/MatterMotionPlayground";
 import { createNewsDemoData } from "./components/newsDummyData";
 import { SectionDivider } from "./components/newsUi";
 import type { DailyTweetItem, TopicBlock, DummyPost } from "./components/newsTypes";
@@ -23,7 +24,7 @@ function App() {
   const [topics, setTopics] = useState<TopicBlock[]>(demo.topics);
   const [inspiration, setInspiration] = useState<DummyPost[]>(demoInspiration);
   const [portfolio, setPortfolio] = useState<DummyPost[]>(demoPortfolio);
-  const [roughText, setRoughText] = useState("sadi is no dead.");
+  const [roughText, setRoughText] = useState("impossible is nothing");
   const [loadingTweets, setLoadingTweets] = useState(false);
 
   React.useEffect(() => {
@@ -174,6 +175,7 @@ function App() {
           />
         </div>
         <RoughMotionPlayground isMobile={isMobile} phrase={roughText} />
+        <MatterMotionPlayground isMobile={isMobile} phrase={roughText} />
         <News isMobile={isMobile}>
         <DailyTweetSection tweets={dailyTweets} />
         <SectionDivider />

@@ -22,7 +22,7 @@ export default function DailyTweetSection({ tweets = [] }: { tweets: DailyTweetI
   return (
     <div style={{ marginBottom: 42 }}>
       <SectionHeader
-        title="Daily Tweet"
+        title="이 달의 주요 기사"
         subtitle=""
         showMore={tweets.length > 4}
         moreLabel="More →"

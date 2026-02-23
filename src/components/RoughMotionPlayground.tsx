@@ -162,7 +162,7 @@ const glyphs: Record<string, Point[][]> = {
   ],
 };
 
-const DEFAULT_PHRASE = "sadi is no dead.";
+const DEFAULT_PHRASE = "Just Do It!";
 
 function getDrawCommands(phrase: string, x: number, y: number, size: number) {
   const spacing = size * 0.34;
@@ -209,6 +209,24 @@ function getDrawCommands(phrase: string, x: number, y: number, size: number) {
   }
 
   return commands;
+}
+
+export function getRoughTextCommands(phrase: string, width: number, height: number) {
+  const phraseSize = Math.max(22, Math.min(width / 26, 38));
+  const normalized = phrase.toUpperCase();
+  const totalLetters = normalized.replace(/[\s.]/g, "").length;
+  const spaceCount = (normalized.match(/\s/g) || []).length;
+  const dotCount = (normalized.match(/\./g) || []).length;
+  const letterWidth = phraseSize * 0.72;
+  const spacing = phraseSize * 0.34;
+  const phraseWidth =
+    totalLetters * letterWidth +
+    (totalLetters - 1) * spacing +
+    spaceCount * spacing * 1.45 +
+    dotCount * spacing * 1.15;
+  const startX = Math.max(18, (width - phraseWidth) / 2);
+  const startY = height / 2 - phraseSize / 2;
+  return getDrawCommands(normalized, startX, startY, phraseSize);
 }
 
 function strokeLength(stroke: Point[]) {
@@ -297,7 +315,7 @@ function scaleStroke(stroke: Point[], scale: number) {
   return stroke.map(([x, y]) => [cx + (x - cx) * scale, cy + (y - cy) * scale] as Point);
 }
 
-function buildAnimatedSvg(phrase: string, width = 1200, height = 360) {
+export function buildAnimatedSvg(phrase: string, width = 1200, height = 360) {
   const phraseSize = Math.max(22, Math.min(width / 26, 38));
   const totalLetters = phrase.replace(/[\s.]/g, "").length;
   const spaceCount = (phrase.match(/\s/g) || []).length;
@@ -506,59 +524,69 @@ export default function RoughMotionPlayground({ isMobile, phrase = DEFAULT_PHRAS
         margin: isMobile ? "24px auto 40px" : "34px auto 56px",
       }}
     >
-      <motion.h2
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.45 }}
-        style={{
-          fontSize: isMobile ? 24 : 36,
-          lineHeight: 1.1,
-          letterSpacing: "-0.02em",
-          marginBottom: 12,
-          fontFamily: "var(--font-display)",
-        }}
-      >
-        Rough Motion Playground
-      </motion.h2>
       <div
         style={{
           display: "flex",
-          gap: 10,
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 12,
           marginBottom: 12,
           flexWrap: "wrap",
         }}
       >
-        <button
-          type="button"
-          onClick={downloadSvg}
+        <motion.h2
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          viewport={{ once: true, amount: 0.45 }}
           style={{
-            border: "1px solid rgba(255,255,255,0.24)",
-            background: "rgba(15,23,42,0.78)",
-            color: "#e2e8f0",
-            padding: isMobile ? "8px 10px" : "9px 12px",
-            borderRadius: 10,
-            fontSize: isMobile ? 13 : 14,
-            cursor: "pointer",
+            fontSize: isMobile ? 24 : 36,
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
+            margin: 0,
+            fontFamily: "var(--font-display)",
           }}
         >
-          Download SVG
-        </button>
-        <button
-          type="button"
-          onClick={copySvgCode}
+          Rough Motion Playground
+        </motion.h2>
+        <div
           style={{
-            border: "1px solid rgba(255,255,255,0.24)",
-            background: "rgba(15,23,42,0.78)",
-            color: copied ? "#86efac" : "#e2e8f0",
-            padding: isMobile ? "8px 10px" : "9px 12px",
-            borderRadius: 10,
-            fontSize: isMobile ? 13 : 14,
-            cursor: "pointer",
+            display: "flex",
+            gap: 10,
+            flexWrap: "wrap",
           }}
         >
-          {copied ? "Copied SVG code" : "Copy SVG Code"}
-        </button>
+          <button
+            type="button"
+            onClick={downloadSvg}
+            style={{
+              border: "1px solid rgba(255,255,255,0.24)",
+              background: "rgba(15,23,42,0.78)",
+              color: "#e2e8f0",
+              padding: isMobile ? "8px 10px" : "9px 12px",
+              borderRadius: 10,
+              fontSize: isMobile ? 13 : 14,
+              cursor: "pointer",
+            }}
+          >
+            Download SVG
+          </button>
+          <button
+            type="button"
+            onClick={copySvgCode}
+            style={{
+              border: "1px solid rgba(255,255,255,0.24)",
+              background: "rgba(15,23,42,0.78)",
+              color: copied ? "#86efac" : "#e2e8f0",
+              padding: isMobile ? "8px 10px" : "9px 12px",
+              borderRadius: 10,
+              fontSize: isMobile ? 13 : 14,
+              cursor: "pointer",
+            }}
+          >
+            {copied ? "Copied SVG code" : "Copy SVG Code"}
+          </button>
+        </div>
       </div>
 
       <section
