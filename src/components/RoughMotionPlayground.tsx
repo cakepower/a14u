@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { RoughCanvas } from "roughjs/bin/canvas";
 import { motion } from "framer-motion";
 
@@ -267,6 +267,19 @@ function random01(seed: number) {
   return value - Math.floor(value);
 }
 
+function strokeToPoints(stroke: Point[]) {
+  return stroke.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" ");
+}
+
+function escapeXml(input: string) {
+  return input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 function translateStroke(stroke: Point[], dx: number, dy: number) {
   return stroke.map(([x, y]) => [x + dx, y + dy] as Point);
 }
@@ -282,6 +295,78 @@ function scaleStroke(stroke: Point[], scale: number) {
   cx /= stroke.length;
   cy /= stroke.length;
   return stroke.map(([x, y]) => [cx + (x - cx) * scale, cy + (y - cy) * scale] as Point);
+}
+
+function buildAnimatedSvg(phrase: string, width = 1200, height = 360) {
+  const phraseSize = Math.max(22, Math.min(width / 26, 38));
+  const totalLetters = phrase.replace(/[\s.]/g, "").length;
+  const spaceCount = (phrase.match(/\s/g) || []).length;
+  const dotCount = (phrase.match(/\./g) || []).length;
+  const letterWidth = phraseSize * 0.72;
+  const spacing = phraseSize * 0.34;
+  const phraseWidth =
+    totalLetters * letterWidth +
+    (totalLetters - 1) * spacing +
+    spaceCount * spacing * 1.45 +
+    dotCount * spacing * 1.15;
+  const startX = Math.max(18, (width - phraseWidth) / 2);
+  const startY = height / 2 - phraseSize / 2;
+  const lineWidth = Math.max(1.8, phraseSize * 0.085);
+  const strokes = getDrawCommands(phrase.toUpperCase(), startX, startY, phraseSize);
+  const duration = 5.2;
+  const offsetDuration = 1.45;
+  const revealDuration = 1.0;
+
+  const polylines = strokes
+    .map((stroke, i) => {
+      const delay = (i / Math.max(1, strokes.length)) * 3.4;
+      const hue = Math.floor(160 + random01((i + 1) * 3.1) * 180);
+      const sat = Math.floor(68 + random01((i + 1) * 4.7) * 28);
+      const lit = Math.floor(56 + random01((i + 1) * 5.9) * 22);
+      const scale = 0.82 + random01((i + 1) * 8.3) * 0.7;
+      const [ox, oy] = entryOffset(i, width, height);
+      const offsetX = (ox * 0.26).toFixed(2);
+      const offsetY = (oy * 0.26).toFixed(2);
+      const transformed = scaleStroke(stroke, scale);
+      const dash = strokeLength(transformed).toFixed(2);
+      return `<polyline class="stroke s${i}" points="${strokeToPoints(transformed)}" style="--d:${delay.toFixed(
+        2,
+      )}s;--ox:${offsetX}px;--oy:${offsetY}px;--dash:${dash};--sw:${lineWidth.toFixed(
+        2,
+      )};--c:hsl(${hue} ${sat}% ${lit}%);" />`;
+    })
+    .join("\n    ");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="${escapeXml(
+    phrase,
+  )}">
+  <title>${escapeXml(phrase)}</title>
+  <defs>
+    <style>
+      .bg { fill: #020617; }
+      .stroke {
+        fill: none;
+        stroke: var(--c);
+        stroke-width: var(--sw);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: var(--dash);
+        stroke-dashoffset: var(--dash);
+        transform: translate(var(--ox), var(--oy));
+        animation:
+          fly ${offsetDuration}s cubic-bezier(.2,.75,.2,1) var(--d) forwards,
+          draw ${revealDuration}s linear var(--d) forwards;
+      }
+      @keyframes draw { to { stroke-dashoffset: 0; } }
+      @keyframes fly { to { transform: translate(0px, 0px); } }
+    </style>
+  </defs>
+  <rect class="bg" x="0" y="0" width="${width}" height="${height}" />
+  <g>
+    ${polylines}
+  </g>
+</svg>`;
 }
 
 function drawScene(canvas: HTMLCanvasElement, progress: number, phrase: string) {
@@ -357,11 +442,13 @@ function drawScene(canvas: HTMLCanvasElement, progress: number, phrase: string) 
 
 export default function RoughMotionPlayground({ isMobile, phrase = DEFAULT_PHRASE }: RoughMotionPlaygroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [copied, setCopied] = useState(false);
   const durationMs = useMemo(() => 5200, []);
   const phraseForDraw = useMemo(() => {
     const cleaned = phrase.trim();
     return (cleaned || DEFAULT_PHRASE).slice(0, 56);
   }, [phrase]);
+  const exportedSvg = useMemo(() => buildAnimatedSvg(phraseForDraw), [phraseForDraw]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -390,6 +477,28 @@ export default function RoughMotionPlayground({ isMobile, phrase = DEFAULT_PHRAS
     };
   }, [durationMs, phraseForDraw]);
 
+  const downloadSvg = () => {
+    const blob = new Blob([exportedSvg], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "rough-motion-animation.svg";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  const copySvgCode = async () => {
+    try {
+      await navigator.clipboard.writeText(exportedSvg);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1400);
+    } catch (error) {
+      console.error("Failed to copy SVG code", error);
+    }
+  };
+
   return (
     <div
       style={{
@@ -412,6 +521,45 @@ export default function RoughMotionPlayground({ isMobile, phrase = DEFAULT_PHRAS
       >
         Rough Motion Playground
       </motion.h2>
+      <div
+        style={{
+          display: "flex",
+          gap: 10,
+          marginBottom: 12,
+          flexWrap: "wrap",
+        }}
+      >
+        <button
+          type="button"
+          onClick={downloadSvg}
+          style={{
+            border: "1px solid rgba(255,255,255,0.24)",
+            background: "rgba(15,23,42,0.78)",
+            color: "#e2e8f0",
+            padding: isMobile ? "8px 10px" : "9px 12px",
+            borderRadius: 10,
+            fontSize: isMobile ? 13 : 14,
+            cursor: "pointer",
+          }}
+        >
+          Download SVG
+        </button>
+        <button
+          type="button"
+          onClick={copySvgCode}
+          style={{
+            border: "1px solid rgba(255,255,255,0.24)",
+            background: "rgba(15,23,42,0.78)",
+            color: copied ? "#86efac" : "#e2e8f0",
+            padding: isMobile ? "8px 10px" : "9px 12px",
+            borderRadius: 10,
+            fontSize: isMobile ? 13 : 14,
+            cursor: "pointer",
+          }}
+        >
+          {copied ? "Copied SVG code" : "Copy SVG Code"}
+        </button>
+      </div>
 
       <section
         style={{
