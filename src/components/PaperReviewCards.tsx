@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 type CardTheme = { bg: string; accent: string };
 
@@ -237,6 +238,7 @@ function RegularContent({ card, accent }: { card: CardData; accent: string }) {
 
 export default function PaperReviewCards() {
   const [current, setCurrent] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const touchX = useRef<number | null>(null);
 
   const goNext = () => setCurrent((p) => Math.min(p + 1, CARDS.length - 1));
@@ -247,19 +249,45 @@ export default function PaperReviewCards() {
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goNext();
       if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goPrev();
     };
+    const onResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('resize', onResize);
+    };
   }, []);
 
   const card = CARDS[current];
   const { bg, accent } = card.theme;
   const progress = ((current + 1) / CARDS.length) * 100;
 
+  const cardStyle = isMobile
+    ? { width: '360px', height: '640px', flexShrink: 0 }
+    : { width: 'min(1100px, 92vw)', height: '640px', flexShrink: 0 };
+
   return (
-    <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-4 gap-4">
+    <div style={{ width: 'min(1100px, 92vw)', margin: isMobile ? '24px auto 40px' : '34px auto 56px' }}>
+      <motion.h2
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+        viewport={{ once: true, amount: 0.45 }}
+        style={{
+          fontSize: isMobile ? 24 : 36,
+          lineHeight: 1.1,
+          letterSpacing: '-0.02em',
+          margin: 0,
+          marginBottom: 16,
+          fontFamily: 'var(--font-display)',
+        }}
+      >
+        AI-인간 협업 문헌 리뷰
+      </motion.h2>
+
       {/* Card */}
       <div
-        style={{ width: '360px', height: '640px', flexShrink: 0 }}
+        style={cardStyle}
         className={`relative bg-gradient-to-br ${bg} rounded-3xl overflow-hidden shadow-2xl flex flex-col`}
         onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
         onTouchEnd={(e) => {
@@ -333,7 +361,9 @@ export default function PaperReviewCards() {
       </div>
 
       {/* Keyboard hint */}
-      <p className="text-white/20 text-xs tracking-wide">← → 키보드 탐색 가능</p>
+      <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: 11, marginTop: 10, textAlign: 'center', letterSpacing: '0.05em' }}>
+        ← → 키보드 탐색 가능
+      </p>
     </div>
   );
 }
