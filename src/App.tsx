@@ -11,6 +11,7 @@ import LatestSection from "./components/LatestSection";
 import PortfolioSection from "./components/PortfolioSection";
 import RoughMotionPlayground from "./components/RoughMotionPlayground";
 import MatterMotionPlayground from "./components/MatterMotionPlayground";
+import PaperReviewCards from "./components/PaperReviewCards";
 import { createNewsDemoData } from "./components/newsDummyData";
 import { SectionDivider } from "./components/newsUi";
 import type { DailyTweetItem, TopicBlock, DummyPost } from "./components/newsTypes";
@@ -195,6 +196,7 @@ function App() {
 
           <PortfolioSection items={portfolio} /> */}
         </News>
+        <PaperReviewCards />
       </main>
     </div>
   );
