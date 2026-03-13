@@ -112,8 +112,15 @@ export default function GeneratedImagesGallery() {
   const canNext = offset + limit < total;
   const [loaded, setLoaded] = React.useState(false);
 
-  // 같은 도메인이면 relative_url 우선 사용 (없으면 url fallback)
-  const resolveSrc = (item: ImageItem) => item.relative_url ?? item.url ?? "";
+  const CDN_BASE = "http://a14u.nrt1.vultrobjects.com/generated-images/";
+  const resolveSrc = (item: ImageItem) => {
+    const raw = item.relative_url ?? item.url ?? "";
+    if (raw.includes("media/generated-images/")) {
+      const filename = raw.split("media/generated-images/").pop() ?? "";
+      return `${CDN_BASE}${filename}`;
+    }
+    return raw;
+  };
 
   return (
     <div style={{ padding: 16, maxWidth: 1200, margin: "0 auto" }}>

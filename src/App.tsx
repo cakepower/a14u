@@ -12,6 +12,8 @@ import PortfolioSection from "./components/PortfolioSection";
 import RoughMotionPlayground from "./components/RoughMotionPlayground";
 import MatterMotionPlayground from "./components/MatterMotionPlayground";
 import PaperReviewCards from "./components/PaperReviewCards";
+import FlowerShopLanding from "./components/FlowerShopLanding";
+import { DashboardContent } from "./dashboard/Dashboard";
 import { createNewsDemoData } from "./components/newsDummyData";
 import { SectionDivider } from "./components/newsUi";
 import type { DailyTweetItem, TopicBlock, DummyPost } from "./components/newsTypes";
@@ -176,7 +178,16 @@ function App() {
           />
         </div>
         <RoughMotionPlayground isMobile={isMobile} phrase={roughText} />
-        <MatterMotionPlayground isMobile={isMobile} phrase={roughText} />
+        <FlowerShopLanding />
+        <PaperReviewCards />
+        <div
+          style={{
+            width: "min(1100px, 92vw)",
+            margin: isMobile ? "16px auto" : "32px auto",
+          }}
+        >
+          <DashboardContent />
+        </div>
         <News isMobile={isMobile}>
         <DailyTweetSection tweets={dailyTweets} />
         <SectionDivider />
@@ -195,8 +206,9 @@ function App() {
           <SectionDivider /> 
 
           <PortfolioSection items={portfolio} /> */}
+          
+
         </News>
-        <PaperReviewCards />
       </main>
     </div>
   );
