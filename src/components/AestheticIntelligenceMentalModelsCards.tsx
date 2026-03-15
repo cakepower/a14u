@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 
 type CardTheme = { bg: string; accent: string };
 
+type PaperRef = { label: string; url: string };
+
 type CardData = {
   id: number;
   type: string;
@@ -14,6 +16,7 @@ type CardData = {
   extra?: string;
   body?: string;
   impact?: string;
+  refs?: PaperRef[];
   theme: CardTheme;
 };
 
@@ -52,6 +55,9 @@ const CARDS: CardData[] = [
     title: 'AI는 감정 없이도\n당신의 마음을\n움직일 수 있다.',
     body: 'Zhao & Sun (2024)이 던진 가장 도발적 결론: AI는 진짜 감정이 없어도 보편적 감성 기호(universal emotional symbols)를 정확히 배치해 관객에게 실제 미적 공명(aesthetic resonance)을 이끌어낼 수 있다.\n이는 "예술은 창작자의 진정성에서 나온다"는 전통적 믿음을 정면으로 흔든다. 창작자의 진정성과 관객의 미적 경험은 분리 가능한 변수다.\n그렇다면 우리가 "좋은 미학"이라고 느끼는 것은 진정성의 산물인가, 아니면 패턴 인식의 결과인가?',
     impact: '🎯 핵심: 미적 효과의 원천은 창작자의 내면이 아닐 수 있다 — Zhao & Sun (2024)',
+    refs: [
+      { label: 'Zhao & Sun (2024)', url: 'https://www.semanticscholar.org/paper/459f609239ad3ca9e5b45c49c4ec9e09888eae74' },
+    ],
     theme: THEMES[1],
   },
   // ── Card 3: 멘탈 모델 1 ────────────────────────────────────────
@@ -63,6 +69,10 @@ const CARDS: CardData[] = [
     title: 'Aesthetic Agency\nas a Spectrum\n— 미적 주체성의 스펙트럼',
     body: '전문가들은 창작에서 "인간이 하느냐, AI가 하느냐"를 이진 선택이 아닌 연속 스펙트럼으로 본다. 미적 주체성은 과제·단계·맥락에 따라 실시간으로 이동하며, 이를 설계(modulate)하는 것이 협업의 핵심 역량이다.\nMoruzzi & Margarido (2024)는 이를 조율하는 다차원 프레임워크를 제안했고, Haase & Pokutta (2024)는 Digital Pen → AI Task Specialist → AI Assistant → AI Co-Creator의 4단계 협업 레벨로 구체화했다.',
     impact: '💡 실무 적용: "AI를 쓸 것인가"가 아니라 "이 단계에서 주체성을 얼마나 위임할 것인가"를 설계 변수로 다뤄라.',
+    refs: [
+      { label: 'Moruzzi & Margarido (2024)', url: 'https://www.semanticscholar.org/paper/d211c65840fb3b964c1dc7d1ce06c4aad530f0d7' },
+      { label: 'Haase & Pokutta (2024)', url: 'https://www.semanticscholar.org/paper/1ea7f8af484c9a823648b988e1214d99daa0e288' },
+    ],
     theme: THEMES[2],
   },
   // ── Card 4: 멘탈 모델 2 ────────────────────────────────────────
@@ -74,6 +84,10 @@ const CARDS: CardData[] = [
     title: 'Replication ≠\nCreation\n— 재조합은 창조가 아니다',
     body: '생성형 AI는 근본적으로 재조합 엔진이다. 기존 패턴을 정교하게 재배열할 수는 있지만, 패러다임을 깨는 미적 혁신은 아직 인간의 고유 영역이다. AI의 "새로움"은 조합적 신선함(combinatorial novelty)이지 개념적 돌파(conceptual breakthrough)가 아니다.\n이는 Sternberg (2024)가 32회 인용된 논문에서 강조한 핵심이다: "Generative AI is replicative. It can recombine and re-sort ideas, but is unlikely to generate the paradigm-breaking ideas the world needs."',
     impact: '💡 실무 적용: AI에게 "새로운 방향"을 묻지 말고, "이 방향의 다양한 변주"를 요청하라. 방향 설정은 인간이, 변주는 AI가.',
+    refs: [
+      { label: 'Sternberg (2024)', url: 'https://www.semanticscholar.org/paper/e1456b0dae79cc595fd10c07bc64b2950719c510' },
+      { label: 'Zhao & Sun (2024)', url: 'https://www.semanticscholar.org/paper/459f609239ad3ca9e5b45c49c4ec9e09888eae74' },
+    ],
     theme: THEMES[3],
   },
   // ── Card 5: 멘탈 모델 3 ────────────────────────────────────────
@@ -85,6 +99,9 @@ const CARDS: CardData[] = [
     title: 'Aesthetic Resonance\nWithout Emotion\n— 감성 공명의 역설',
     body: 'AI는 진짜 감정 없이도 보편적 감성 기호를 배치해 실제 미적 공명을 유도할 수 있다. "창작자의 진정성"과 "관객의 미적 경험"은 분리 가능한 변수다.\nZhao & Sun (2024): AI는 인간 미적 경험을 학습해 보편 감성 기호를 작품에 활용하고, 관객에게 미적 공명을 이끌어낸다. 그러나 AI의 감성 표현은 여전히 "시뮬레이션"에 머물며, 인간 감성 경험과의 간극은 존재한다.',
     impact: '💡 실무 적용: AI 생성 콘텐츠를 "진정성 없음"으로 기각하기보다, 어떤 감성 기호가 공명을 유도하는지 데이터로 검증하라.',
+    refs: [
+      { label: 'Zhao & Sun (2024)', url: 'https://www.semanticscholar.org/paper/459f609239ad3ca9e5b45c49c4ec9e09888eae74' },
+    ],
     theme: THEMES[4],
   },
   // ── Card 6: 멘탈 모델 4 ────────────────────────────────────────
@@ -96,6 +113,9 @@ const CARDS: CardData[] = [
     title: 'The Automation\nSweet Spot\n— 자동화의 황금 비율',
     body: 'AI 자동화는 "많을수록 좋다"가 아니다. Qiao et al. (2025)의 79명 대상 실험: 자동화가 낮으면 효율 이득이 없고, 극단적으로 높으면 인간 창의성 자극이 억제된다. 미적 품질과 창작 경험이 동시에 최대화되는 "중간 자동화 지점"이 존재한다.\n"Moderate automation most effective in lowering task load... extreme automation may be counterproductive. Highly automated GAI rapidly enhances visual aesthetics but limits creativity stimulation."',
     impact: '💡 실무 적용: "가장 자동화된 옵션"이 아닌 "창작자 참여도를 최적화하는 자동화 수준"을 기준으로 툴을 선택하라.',
+    refs: [
+      { label: 'Qiao et al. (2025)', url: 'https://www.semanticscholar.org/paper/2de5462e938185f23bea6812661603dd4918a37c' },
+    ],
     theme: THEMES[5],
   },
   // ── Card 7: 멘탈 모델 5 ────────────────────────────────────────
@@ -107,6 +127,10 @@ const CARDS: CardData[] = [
     title: 'Critical Engagement\nas the Activator\n— 비판적 참여가 증강의 열쇠',
     body: 'AI가 인간의 미적 역량을 증강하느냐 잠식하느냐는 AI 자체의 능력보다 사용자의 참여 방식에 달렸다. 수동적 소비(passive use)는 창의적 퇴화로, 능동적 비판 평가(active critical evaluation)는 미적 역량 향상으로 이어진다.\nRana et al. (2025): 112명 학생 연구에서 GenAI로 수업한 학생들이 "passive user → critical evaluator"로 진화. AI 리터러시는 창의성·윤리·비판적 추론을 아우르는 다차원 역량이다.',
     impact: '💡 실무 적용: 협업 워크플로우에서 "AI 출력 수용 단계"를 제거하고, 매 단계마다 인간의 비판적 선택 체크포인트를 의무화하라.',
+    refs: [
+      { label: 'Rana et al. (2025)', url: 'https://www.semanticscholar.org/paper/cf60203109e8132b0a47700f2ca8046e0a17879e' },
+      { label: 'Sternberg (2024)', url: 'https://www.semanticscholar.org/paper/e1456b0dae79cc595fd10c07bc64b2950719c510' },
+    ],
     theme: THEMES[6],
   },
   // ── Card 8: 교차 주제 ───────────────────────────────────────────
@@ -239,6 +263,24 @@ function RegularContent({ card, accent }: { card: CardData; accent: string }) {
           <p className="text-xs font-semibold leading-relaxed" style={{ color: accent }}>
             {card.impact}
           </p>
+        </div>
+      )}
+
+      {/* Paper refs */}
+      {card.refs && card.refs.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 flex-shrink-0">
+          {card.refs.map((ref) => (
+            <a
+              key={ref.url}
+              href={ref.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs px-2 py-0.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+              style={{ color: 'rgba(255,255,255,0.5)' }}
+            >
+              📄 {ref.label}
+            </a>
+          ))}
         </div>
       )}
     </div>
