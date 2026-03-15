@@ -12,8 +12,8 @@ import PortfolioSection from "./components/PortfolioSection";
 import RoughMotionPlayground from "./components/RoughMotionPlayground";
 import MatterMotionPlayground from "./components/MatterMotionPlayground";
 import PaperReviewCards from "./components/PaperReviewCards";
+import AestheticIntelligenceMentalModelsCards from "./components/AestheticIntelligenceMentalModelsCards";
 import FlowerShopLanding from "./components/FlowerShopLanding";
-import { DashboardContent } from "./dashboard/Dashboard";
 import { createNewsDemoData } from "./components/newsDummyData";
 import { SectionDivider } from "./components/newsUi";
 import type { DailyTweetItem, TopicBlock, DummyPost } from "./components/newsTypes";
@@ -180,18 +180,12 @@ function App() {
         <RoughMotionPlayground isMobile={isMobile} phrase={roughText} />
         <FlowerShopLanding />
         <PaperReviewCards />
-        <div
-          style={{
-            width: "min(1100px, 92vw)",
-            margin: isMobile ? "16px auto" : "32px auto",
-          }}
-        >
-          <DashboardContent />
-        </div>
+        <AestheticIntelligenceMentalModelsCards />
+              
         <News isMobile={isMobile}>
-        <DailyTweetSection tweets={dailyTweets} />
+        {/*  <DailyTweetSection tweets={dailyTweets} />
         <SectionDivider />
-          {/*       <FeaturedSection lead={featuredLead} picks={picks} isMobile={isMobile} />
+        <FeaturedSection lead={featuredLead} picks={picks} isMobile={isMobile} />
           <SectionDivider />
 
 
