@@ -11,9 +11,12 @@ import LatestSection from "./components/LatestSection";
 import PortfolioSection from "./components/PortfolioSection";
 import RoughMotionPlayground from "./components/RoughMotionPlayground";
 import MatterMotionPlayground from "./components/MatterMotionPlayground";
-import PaperReviewCards from "./components/PaperReviewCards";
-import AestheticIntelligenceMentalModelsCards from "./components/AestheticIntelligenceMentalModelsCards";
+import PaperReviewCards from "./components/News/PaperReviewCards";
+import AestheticIntelligenceMentalModelsCards from "./components/News/AestheticIntelligenceMentalModelsCards";
 import FlowerShopLanding from "./components/FlowerShopLanding";
+import FashionTrendCards from "./components/Trends/Fashion";
+import BWEditorialCards from "./components/Trends/Photo";
+import AirbnbResearch from "./components/Trends/airbnb";
 import { createNewsDemoData } from "./components/newsDummyData";
 import { SectionDivider } from "./components/newsUi";
 import type { DailyTweetItem, TopicBlock, DummyPost } from "./components/newsTypes";
@@ -134,7 +137,7 @@ function App() {
             maxHeight: '60vh',       // 화면 하단에서 과도하게 커지지 않도록
           }}
         >
-          <GeneratedImagesGallery />
+         {/* <GeneratedImagesGallery /> */}
         </div>
       </Hero>
       {/* 2) Hero 아래로 “쌓이는” Main Sections */}
@@ -145,7 +148,7 @@ function App() {
             margin: isMobile ? "10px auto 8px" : "16px auto 10px",
           }}
         >
-          <label
+          {/* <label
             htmlFor="rough-text-input"
             style={{
               display: "block",
@@ -175,12 +178,14 @@ function App() {
               outline: "none",
               boxShadow: "0 8px 22px rgba(0,0,0,0.25)",
             }}
-          />
+          /> */}
         </div>
+        <AirbnbResearch />
+        {/* <FlowerShopLanding /> */}
+        <FashionTrendCards />
+        <BWEditorialCards />
         <RoughMotionPlayground isMobile={isMobile} phrase={roughText} />
-        <FlowerShopLanding />
         <PaperReviewCards />
-        <AestheticIntelligenceMentalModelsCards />
               
         <News isMobile={isMobile}>
         {/*  <DailyTweetSection tweets={dailyTweets} />

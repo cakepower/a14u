@@ -1,0 +1,73 @@
+# Human-AI Collaboration - 논문 검색 결과
+검색일: 2026-03-09
+검색어: Human-AI Collaboration
+총 검색 결과: 988편 중 상위 10편
+
+================================================================================
+
+1. Exploring automation bias in human–AI collaboration: a review and implications for explainable AI
+   저자: Giuseppe Romeo, Daniela Conti
+   발행연도: 2025
+   인용수: 32
+   링크: https://www.semanticscholar.org/paper/5858572fc526bb2d264623df679e04c3d84a2476
+
+2. Examining human–AI collaboration in hybrid intelligence learning environments: insight from the Synergy Degree Model
+   저자: Xinmei Kong, Haiguang Fang, Wenli Chen, Jianjun Xiao, Muhua Zhang
+   발행연도: 2025
+   인용수: 16
+   링크: https://www.semanticscholar.org/paper/e267ac4ccaa002995ac6bdc4c986f07e5dcd598d
+
+3. A Multifaceted Vision of the Human-AI Collaboration: A Comprehensive Review
+   저자: Maite Puerta-Beldarrain, Oihane Gómez-Carmona, Rubén Sánchez-Corcuera, D. Casado-Mansilla, Diego López-de-Ipiña, Liming Chen
+   발행연도: 2025
+   인용수: 19
+   PDF: https://doi.org/10.1109/access.2025.3536095
+   링크: https://www.semanticscholar.org/paper/20e85add1df3a99cfd56a6974684bcb8ae18fed6
+
+4. Human-AI collaboration patterns in AI-assisted academic writing
+   저자: Andy Nguyen, Yvonne Hong, Belle Dang, Xiaoshan Huang
+   발행연도: 2024
+   인용수: 229
+   PDF: https://www.tandfonline.com/doi/pdf/10.1080/03075079.2024.2323593?needAccess=true
+   링크: https://www.semanticscholar.org/paper/55b7e681e14e775600b341d8cc9bf53f3e9a4567
+
+5. Reflections and attentiveness on eXplainable Artificial Intelligence (XAI). The journey ahead from criticisms to human-AI collaboration
+   저자: Francisco Herrera
+   발행연도: 2025
+   인용수: 31
+   링크: https://www.semanticscholar.org/paper/d03ed019dcf4f65347f22b4508fdf26c38613b1d
+
+6. Shaping Human-AI Collaboration: Varied Scaffolding Levels in Co-writing with Language Models
+   저자: Paramveer S. Dhillon, Somayeh Molaei, Jiaqi Li, Maximilian Golub, Shaochun Zheng, L. P. Robert
+   발행연도: 2024
+   인용수: 107
+   PDF: https://dl.acm.org/doi/pdf/10.1145/3613904.3642134
+   링크: https://www.semanticscholar.org/paper/7987818066aa92322b16a62b309ab4de98333944
+
+7. Evaluating Human-AI Collaboration: A Review and Methodological Framework
+   저자: George Michael Fragiadakis, Christos Diou, George Kousiouris, Mara Nikolaidou
+   발행연도: 2024
+   인용수: 55
+   링크: https://www.semanticscholar.org/paper/00779a37dc55a6dc1e3fee00baf65714a80f7a98
+
+8. Human–AI collaboration enables more empathic conversations in text-based peer-to-peer mental health support
+   저자: Ashish Sharma, Inna Wanyin Lin, Adam S. Miner, David C. Atkins, Tim Althoff
+   발행연도: 2022
+   인용수: 314
+   링크: https://www.semanticscholar.org/paper/6432bcd4435ab79311f42b0336cef1d6cbf1231f
+
+9. Explainable AI improves task performance in human–AI collaboration
+   저자: J. Senoner, Simon Schallmoser, Bernhard Kratzwald, Stefan Feuerriegel, Torbjørn Netland
+   발행연도: 2024
+   인용수: 57
+   PDF: https://doi.org/10.1038/s41598-024-82501-9
+   링크: https://www.semanticscholar.org/paper/bdba9bd3e75b1899824dcddcaa5a707fe3ad40ee
+
+10. Leveraging Dual Process Theory in Language Agent Framework for Real-time Simultaneous Human-AI Collaboration
+    저자: Shao Zhang, Xihuai Wang, Wenhao Zhang, Chaoran Li, Junru Song, Tingyun Li, Lin Qiu, Xuezhi Cao, Xunliang Cai, Wen Yao, Weinan Zhang, Xinbing Wang, Ying Wen
+    발행연도: 2025
+    인용수: 11
+    링크: https://www.semanticscholar.org/paper/65e3d5e1ba3f5e1d2e3730538dc8cee6e0ee2382
+
+================================================================================
+출처: Semantic Scholar API

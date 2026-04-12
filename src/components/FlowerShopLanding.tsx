@@ -172,7 +172,7 @@ const FlowerShopLanding: React.FC = () => {
   const isMobile = window.innerWidth <= 768;
   const bgVideoSrc = isMobile
     ? 'http://a14u.nrt1.vultrobjects.com/videos/flower_2.mp4'
-    : 'http://a14u.nrt1.vultrobjects.com/videos/Flower.mp4';
+    : 'http://a14u.nrt1.vultrobjects.com/videos/skateboard.mp4';
 
   const videoRef   = useRef<HTMLVideoElement>(null);  // webcam
   const canvasRef  = useRef<HTMLCanvasElement>(null); // hand skeleton
@@ -181,6 +181,7 @@ const FlowerShopLanding: React.FC = () => {
   const targetRef       = useRef(0);
   const rafRef          = useRef<number | undefined>(undefined);
   const handDetectedRef = useRef(false);
+  const camErrorRef     = useRef(false);
 
   const [openness,     setOpenness]     = useState(0);
   const [handDetected, setHandDetected] = useState(false);
@@ -195,7 +196,11 @@ const FlowerShopLanding: React.FC = () => {
 
       const vid = bgVideoRef.current;
       if (vid) {
-        if (handDetectedRef.current && cur > 0.08) {
+        if (camErrorRef.current) {
+          // 카메라 없음 → 정상 속도 자동 재생
+          vid.playbackRate = 1;
+          if (vid.paused) vid.play().catch(() => {});
+        } else if (handDetectedRef.current && cur > 0.08) {
           // 손 펼침 정도 → 재생 속도 (0.1x ~ 2x)
           vid.playbackRate = Math.max(0.1, cur * 2);
           if (vid.paused) vid.play().catch(() => {});
@@ -328,7 +333,10 @@ const FlowerShopLanding: React.FC = () => {
         }
       } catch (err) {
         console.error('[FlowerShop] MediaPipe init error:', err);
-        if (alive) setCamStatus('error');
+        if (alive) {
+          camErrorRef.current = true;
+          setCamStatus('error');
+        }
       }
     };
 

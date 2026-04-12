@@ -30,17 +30,19 @@ export default function Hero({ children, isMobile }: HeroProps) {
         color: 'white',
       }}
     >
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-        {backgroundType === 'SF' ? (
-          <SF />
-        ) : backgroundType === 'SLines' ? (
-          <SLines />
-        ) : backgroundType === 'Outlines' ? (
-          <Outlines />
-        ) : (
-          <Plines theme={plinesTheme} />
-        )}
-      </div>
+      {!isMobile && (
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+          {backgroundType === 'SF' ? (
+            <SF />
+          ) : backgroundType === 'SLines' ? (
+            <SLines />
+          ) : backgroundType === 'Outlines' ? (
+            <Outlines />
+          ) : (
+            <Plines theme={plinesTheme} />
+          )}
+        </div>
+      )}
 
       {/* 테마 스위처 UI (Hero 섹션 상단 또는 하단에 배치) */}
       <div style={{
@@ -125,7 +127,7 @@ export default function Hero({ children, isMobile }: HeroProps) {
               marginBottom: '1rem',
             }}
           >
-            A14U Magazine 3월호
+            A14U Magazine 4월호
           </h1>
           <p
             style={{
@@ -157,7 +159,7 @@ export default function Hero({ children, isMobile }: HeroProps) {
           </div>
         </div>
 
-        {backgroundType === 'Plines' && children && (
+        {/* {backgroundType === 'Plines' && children && (
           <div style={{
             marginTop: '1rem',
             paddingBottom: '4vh',
@@ -167,7 +169,7 @@ export default function Hero({ children, isMobile }: HeroProps) {
           }}>
             {children}
           </div>
-        )}
+        )} */}
       </div>
     </section >
   );

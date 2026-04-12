@@ -259,7 +259,7 @@ export default function GeneratedImagesGallery() {
       {/* Empty */}
       {!loading && !error && results.length === 0 && (
         <div style={{ marginTop: 20, color: "#666" }}>
-          No images found in media/generated_images.
+          No images found.
         </div>
       )}
 
