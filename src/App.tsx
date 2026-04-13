@@ -17,6 +17,7 @@ import FlowerShopLanding from "./components/FlowerShopLanding";
 import FashionTrendCards from "./components/Trends/Fashion";
 import BWEditorialCards from "./components/Trends/Photo";
 import AirbnbResearch from "./components/Trends/airbnb";
+import FurnitureTrendCards from "./components/Trends/Furniture";
 import { createNewsDemoData } from "./components/newsDummyData";
 import { SectionDivider } from "./components/newsUi";
 import type { DailyTweetItem, TopicBlock, DummyPost } from "./components/newsTypes";
@@ -181,6 +182,7 @@ function App() {
           /> */}
         </div>
         <AirbnbResearch />
+        <FurnitureTrendCards />
         {/* <FlowerShopLanding /> */}
         <FashionTrendCards />
         <BWEditorialCards />

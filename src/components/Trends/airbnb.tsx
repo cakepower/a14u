@@ -1161,8 +1161,8 @@ const AirbnbResearch: React.FC = () => {
           </section>
         )}
 
-        {/* Bottom Summary — 공통 */}
-        <section className="mt-24 bg-slate-50 p-10 rounded-3xl">
+        {/* Bottom Summary — 이벤트·가격 탭 제외 */}
+        {activeTab !== 'events' && activeTab !== 'pricing' && <section className="mt-24 bg-slate-50 p-10 rounded-3xl">
           <div className="grid md:grid-cols-2 gap-12">
             <div>
               <h4 className="text-2xl font-serif mb-6 underline underline-offset-4">핵심 기회 키워드</h4>
@@ -1189,7 +1189,7 @@ const AirbnbResearch: React.FC = () => {
               </ul>
             </div>
           </div>
-        </section>
+        </section>}
 
         {/* ── TAB: 이벤트 캘린더 ── */}
         {activeTab === 'events' && (
