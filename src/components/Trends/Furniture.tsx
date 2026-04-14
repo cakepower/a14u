@@ -1,4 +1,8 @@
 import React from 'react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 type LightboxState = { src: string; title: string; tag: string } | null;
 type TabKey = 'trends' | 'market' | 'problems' | 'opportunities';
@@ -240,7 +244,10 @@ const FurnitureTrendCards: React.FC = () => {
   };
 
   return (
-    <div className="bg-white min-h-screen font-sans text-slate-900">
+    <div
+      className="bg-white min-h-screen text-slate-900"
+      style={{ fontFamily: 'Pretendard, system-ui, -apple-system, sans-serif' }}
+    >
 
       {/* ── Hero ── */}
       <header className="relative h-[70vh] flex items-center justify-center overflow-hidden bg-black">
@@ -253,40 +260,46 @@ const FurnitureTrendCards: React.FC = () => {
           <p className="text-white text-xs tracking-[0.5em] uppercase opacity-60 mb-4">오늘의집 리서치 · {TODAY_DATE}</p>
           <h1 className="text-white text-6xl md:text-8xl font-serif italic mb-4">Furniture<br />Trends</h1>
           <p className="text-white text-lg tracking-[0.3em] uppercase opacity-80">2026 홈퍼니싱 인텔리전스</p>
-          <div className="flex justify-center gap-3 mt-6 flex-wrap">
+          <div className="flex justify-center gap-2 mt-6 flex-wrap">
             {['무몰딩', '자연소재', '믹스매치', '조명오브제', '모듈가구', '신혼2인'].map(tag => (
-              <span key={tag} className="text-white/70 text-xs border border-white/30 px-3 py-1 rounded-full">{tag}</span>
+              <Badge key={tag} variant="outline" className="text-white/70 border-white/30 bg-transparent text-xs">{tag}</Badge>
             ))}
           </div>
         </div>
       </header>
 
-      {/* ── Tab Nav ── */}
-      <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 flex gap-1 overflow-x-auto py-3">
-          {[
-            { key: 'trends',       label: '🏠 2026 트렌드' },
-            { key: 'market',       label: '📊 시장 분석' },
-            { key: 'problems',     label: '🔴 소비자 문제' },
-            { key: 'opportunities',label: '🎯 기회 영역' },
-          ].map(tab => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key as TabKey)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                activeTab === tab.key ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      </nav>
+      {/* ── Tabs ── */}
+      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabKey)}>
 
-      <main className="max-w-7xl mx-auto px-6 py-16">
+        {/* Sticky tab nav — scrollable on mobile */}
+        <div className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+          <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-none">
+            <TabsList
+              variant="line"
+              className="flex w-max min-w-full gap-1 px-4 sm:px-6 py-2 bg-transparent h-auto rounded-none"
+            >
+              {[
+                { key: 'trends',        label: '🏠 2026 트렌드' },
+                { key: 'market',        label: '📊 시장 분석' },
+                { key: 'problems',      label: '🔴 소비자 문제' },
+                { key: 'opportunities', label: '🎯 기회 영역' },
+              ].map(tab => (
+                <TabsTrigger
+                  key={tab.key}
+                  value={tab.key}
+                  className="whitespace-nowrap px-3 py-2 text-sm font-medium rounded-md"
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+        </div>
+
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
 
         {/* ══ TAB: 트렌드 ══ */}
-        {activeTab === 'trends' && (
+        <TabsContent value="trends">
           <section>
             <h2 className="text-5xl font-serif mb-2 border-b pb-4">🏠 2026 인테리어·가구 트렌드</h2>
             <p className="text-slate-500 text-sm tracking-widest uppercase mb-12">
@@ -300,12 +313,11 @@ const FurnitureTrendCards: React.FC = () => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {sources.map((src) => (
-                  <a
+                  <Card
                     key={src.id}
-                    href={src.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group rounded-2xl overflow-hidden border border-slate-100 hover:shadow-xl transition-shadow duration-300 flex flex-col"
+                    className="group overflow-hidden border border-slate-100 hover:shadow-xl transition-shadow duration-300 ring-0 p-0"
+                    onClick={() => window.open(src.url, '_blank')}
+                    style={{ cursor: 'pointer' }}
                   >
                     <div className="overflow-hidden h-44 bg-slate-100 relative">
                       <img
@@ -313,12 +325,12 @@ const FurnitureTrendCards: React.FC = () => {
                         alt={src.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <span className="absolute top-3 left-3 bg-slate-900/80 text-white text-xs px-2.5 py-1 rounded-full font-bold backdrop-blur-sm">
+                      <Badge className="absolute top-3 left-3 bg-slate-900/80 text-white border-0 backdrop-blur-sm text-xs">
                         {src.badge}
-                      </span>
+                      </Badge>
                     </div>
-                    <div className="p-5 flex-1 flex flex-col">
-                      <h4 className="font-serif text-base leading-snug mb-2 group-hover:underline line-clamp-2">{src.title}</h4>
+                    <CardContent className="pt-4 flex-1 flex flex-col">
+                      <h4 className="font-medium text-base leading-snug mb-2 group-hover:underline line-clamp-2">{src.title}</h4>
                       <p className="text-slate-400 text-xs mb-3">by {src.author}</p>
                       <div className="flex gap-3 text-xs text-slate-400 mb-4">
                         <span>❤️ {src.likes}</span>
@@ -327,11 +339,11 @@ const FurnitureTrendCards: React.FC = () => {
                       </div>
                       <div className="flex flex-wrap gap-1 mt-auto">
                         {src.tags.slice(0, 3).map(t => (
-                          <span key={t} className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">{t}</span>
+                          <Badge key={t} variant="secondary" className="text-xs">{t}</Badge>
                         ))}
                       </div>
-                    </div>
-                  </a>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             </div>
@@ -398,8 +410,8 @@ const FurnitureTrendCards: React.FC = () => {
                         <div className="flex items-start justify-between gap-4 mb-3">
                           <div>
                             <div className="flex items-center gap-2 mb-1">
-                              <h3 className="font-serif text-2xl">{item.title}</h3>
-                              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${c.badge}`}>{item.growthRate}</span>
+                              <h3 className="font-semibold text-2xl">{item.title}</h3>
+                              <Badge className={`text-xs border-0 ${c.badge}`}>{item.growthRate}</Badge>
                             </div>
                             <p className="text-slate-500 text-sm">{item.subtitle}</p>
                           </div>
@@ -416,7 +428,7 @@ const FurnitureTrendCards: React.FC = () => {
                         <p className="text-slate-700 text-sm leading-relaxed mb-4">{item.description}</p>
                         <div className="flex flex-wrap gap-2 mb-3">
                           {item.tags.map((tag, j) => (
-                            <span key={j} className={`text-xs px-2 py-0.5 rounded-full ${c.badge}`}>{tag}</span>
+                            <Badge key={j} className={`text-xs border-0 ${c.badge}`}>{tag}</Badge>
                           ))}
                         </div>
                         <p className="text-xs text-slate-400 italic">📡 {item.signal}</p>
@@ -427,10 +439,10 @@ const FurnitureTrendCards: React.FC = () => {
               </div>
             </div>
           </section>
-        )}
+        </TabsContent>
 
         {/* ══ TAB: 시장 분석 ══ */}
-        {activeTab === 'market' && (
+        <TabsContent value="market">
           <section>
             <h2 className="text-5xl font-serif mb-2 border-b pb-4">📊 TAM · SAM · SOM 시장 분석</h2>
             <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">
@@ -480,18 +492,18 @@ const FurnitureTrendCards: React.FC = () => {
               </div>
             </div>
           </section>
-        )}
+        </TabsContent>
 
         {/* ══ TAB: 소비자 문제 ══ */}
-        {activeTab === 'problems' && (
+        <TabsContent value="problems">
           <section>
             <h2 className="text-5xl font-serif mb-2 border-b pb-4">🔴 소비자 문제 매트릭스</h2>
             <p className="text-slate-500 text-sm tracking-widest uppercase mb-6">
               WTP 점수 기준 정렬 · 오늘의집 커뮤니티 실제 발언 인용
             </p>
             <div className="flex flex-wrap gap-3 mb-10 text-xs">
-              <span className="flex items-center gap-1.5 bg-red-50 border border-red-200 text-red-700 px-3 py-1.5 rounded-full font-medium">🔴 실제 커뮤니티 불평 인용</span>
-              <span className="flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-700 px-3 py-1.5 rounded-full font-medium">🚀 빠르게 커지는 문제</span>
+              <Badge variant="outline" className="flex items-center gap-1.5 bg-red-50 border-red-200 text-red-700 px-3 py-1.5 rounded-full font-medium h-auto">🔴 실제 커뮤니티 불평 인용</Badge>
+              <Badge variant="outline" className="flex items-center gap-1.5 bg-amber-50 border-amber-200 text-amber-700 px-3 py-1.5 rounded-full font-medium h-auto">🚀 빠르게 커지는 문제</Badge>
             </div>
             <div className="space-y-4">
               {problemMatrix.map((item) => {
@@ -511,10 +523,10 @@ const FurnitureTrendCards: React.FC = () => {
                         <div className="flex flex-wrap items-center gap-2 mb-1">
                           <h4 className="font-serif text-lg">{item.problem}</h4>
                           {isComplaint && (
-                            <span className="text-xs bg-red-100 text-red-700 border border-red-200 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">🔴 불평 {item.complaintCount}회</span>
+                            <Badge variant="outline" className="text-xs bg-red-100 text-red-700 border-red-200 font-bold whitespace-nowrap h-auto">🔴 불평 {item.complaintCount}회</Badge>
                           )}
                           {isGrowing && (
-                            <span className="text-xs bg-amber-100 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">🚀 {item.growthRate}</span>
+                            <Badge variant="outline" className="text-xs bg-amber-100 text-amber-700 border-amber-200 font-bold whitespace-nowrap h-auto">🚀 {item.growthRate}</Badge>
                           )}
                         </div>
                         <p className="text-slate-500 text-sm italic mb-3">{item.quote}</p>
@@ -556,10 +568,10 @@ const FurnitureTrendCards: React.FC = () => {
               })}
             </div>
           </section>
-        )}
+        </TabsContent>
 
         {/* ══ TAB: 기회 영역 ══ */}
-        {activeTab === 'opportunities' && (
+        <TabsContent value="opportunities">
           <section>
             <h2 className="text-5xl font-serif mb-2 border-b pb-4">🎯 시장 기회 영역</h2>
             <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">
@@ -595,7 +607,7 @@ const FurnitureTrendCards: React.FC = () => {
                         <p className="text-xs text-slate-400 uppercase tracking-widest mb-2">액션 아이템</p>
                         <div className="flex flex-wrap gap-2">
                           {opp.actions.map((action, j) => (
-                            <span key={j} className={`text-xs px-3 py-1 rounded-full font-medium ${c.badge}`}>{action}</span>
+                            <Badge key={j} className={`text-xs border-0 h-auto py-1 ${c.badge}`}>{action}</Badge>
                           ))}
                         </div>
                       </div>
@@ -605,7 +617,7 @@ const FurnitureTrendCards: React.FC = () => {
               })}
             </div>
           </section>
-        )}
+        </TabsContent>
 
         {/* ── Bottom Summary ── */}
         <section className="mt-24 bg-slate-50 p-12 rounded-3xl">
@@ -614,7 +626,7 @@ const FurnitureTrendCards: React.FC = () => {
               <h4 className="text-2xl font-serif mb-6 underline underline-offset-4">핵심 기회 키워드</h4>
               <div className="flex flex-wrap gap-2">
                 {['모듈가구', '자연소재케어', '조명큐레이션', '신혼2인세트', '가전코디', '취향믹스매치', '셀프인테리어', '소품취향소비'].map(tag => (
-                  <span key={tag} className="text-sm bg-slate-900 text-white px-3 py-1.5 rounded-full">{tag}</span>
+                  <Badge key={tag} className="text-sm bg-slate-900 text-white border-0 px-3 py-1.5 h-auto rounded-full">{tag}</Badge>
                 ))}
               </div>
             </div>
@@ -631,6 +643,7 @@ const FurnitureTrendCards: React.FC = () => {
           </div>
         </section>
       </main>
+      </Tabs>
 
       {/* ── Lightbox ── */}
       {lightbox && (
@@ -638,7 +651,7 @@ const FurnitureTrendCards: React.FC = () => {
           className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center cursor-zoom-out"
           onClick={() => setLightbox(null)}
         >
-          <button className="absolute top-6 right-8 text-white text-4xl leading-none hover:opacity-70" onClick={() => setLightbox(null)}>×</button>
+          <Button variant="ghost" size="icon" className="absolute top-6 right-8 text-white hover:text-white hover:bg-white/10 w-10 h-10 text-2xl" onClick={() => setLightbox(null)}>×</Button>
           <img
             src={lightbox.src}
             alt={lightbox.title}

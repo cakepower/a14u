@@ -1,4 +1,7 @@
 import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 type LightboxState = { src: string; title: string; publication: string } | null;
 
@@ -151,7 +154,7 @@ const FashionTrendCards: React.FC = () => {
   }, []);
 
   return (
-    <div id="fashion" className="bg-white min-h-screen font-sans text-slate-900">
+    <div id="fashion" className="bg-white min-h-screen text-slate-900" style={{ fontFamily: 'Pretendard, system-ui, -apple-system, sans-serif' }}>
       {/* Hero Section */}
       <header className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-black">
         <img
@@ -181,9 +184,9 @@ const FashionTrendCards: React.FC = () => {
             <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">Fall 2026 · Runway Intelligence</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {vogueItems.map((item, i) => (
-                <div
+                <Card
                   key={i}
-                  className="group cursor-zoom-in overflow-hidden rounded-xl bg-slate-50 hover:shadow-xl transition-shadow duration-300"
+                  className="group cursor-zoom-in overflow-hidden border border-slate-100 hover:shadow-xl transition-shadow duration-300 ring-0 p-0"
                   onClick={() => setLightbox({ src: item.image, title: item.title, publication: 'Vogue' })}
                 >
                   <div className="overflow-hidden h-64">
@@ -193,16 +196,16 @@ const FashionTrendCards: React.FC = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
-                  <div className="p-5">
+                  <CardContent className="pt-5">
                     <h4 className="font-serif text-lg mb-2 leading-snug">{item.title}</h4>
                     <p className="text-slate-600 text-sm leading-relaxed mb-3">{item.summary}</p>
                     <div className="flex flex-wrap gap-1">
                       {item.keywords.map((kw, j) => (
-                        <span key={j} className="text-xs bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full">{kw}</span>
+                        <Badge key={j} variant="secondary" className="text-xs">{kw}</Badge>
                       ))}
                     </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </section>
@@ -211,30 +214,32 @@ const FashionTrendCards: React.FC = () => {
           <section>
             <h3 className="text-5xl font-serif mb-2 border-b pb-4">👗 Elle Edit</h3>
             <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">2025's Biggest Trends · Year in Review</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {elleItems.map((item, i) => (
-                <div
+                <Card
                   key={i}
-                  className="group cursor-zoom-in flex gap-5 items-start hover:bg-slate-50 p-4 rounded-xl transition-colors duration-200"
+                  className="group cursor-zoom-in border border-slate-100 hover:shadow-lg transition-shadow duration-200 ring-0 p-0"
                   onClick={() => setLightbox({ src: item.image, title: item.title, publication: 'Elle' })}
                 >
-                  <div className="overflow-hidden rounded-lg flex-shrink-0 w-36 h-36">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-xl mb-2 leading-snug">{item.title}</h4>
-                    <p className="text-slate-600 text-sm leading-relaxed mb-3">{item.summary}</p>
-                    <div className="flex flex-wrap gap-1">
-                      {item.keywords.map((kw, j) => (
-                        <span key={j} className="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full">{kw}</span>
-                      ))}
+                  <CardContent className="flex gap-5 items-start pt-4">
+                    <div className="overflow-hidden rounded-lg flex-shrink-0 w-32 h-32">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
-                  </div>
-                </div>
+                    <div className="min-w-0">
+                      <h4 className="font-serif text-lg mb-2 leading-snug">{item.title}</h4>
+                      <p className="text-slate-600 text-sm leading-relaxed mb-3">{item.summary}</p>
+                      <div className="flex flex-wrap gap-1">
+                        {item.keywords.map((kw, j) => (
+                          <Badge key={j} variant="outline" className="text-xs text-pink-700 border-pink-200 bg-pink-50">{kw}</Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </section>
@@ -245,9 +250,9 @@ const FashionTrendCards: React.FC = () => {
             <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">Fall 2025 Trend Report · Editor Picks</p>
             <div className="columns-1 md:columns-3 gap-6 space-y-6">
               {cosmoItems.map((item, i) => (
-                <div
+                <Card
                   key={i}
-                  className="group cursor-zoom-in break-inside-avoid overflow-hidden rounded-xl bg-slate-50 hover:shadow-xl transition-shadow duration-300 mb-6"
+                  className="group cursor-zoom-in break-inside-avoid overflow-hidden border border-slate-100 hover:shadow-xl transition-shadow duration-300 mb-6 ring-0 p-0"
                   onClick={() => setLightbox({ src: item.image, title: item.title, publication: 'Cosmopolitan' })}
                 >
                   <div className="overflow-hidden">
@@ -257,16 +262,16 @@ const FashionTrendCards: React.FC = () => {
                       className="w-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
-                  <div className="p-5">
+                  <CardContent className="pt-5">
                     <h4 className="font-serif text-lg mb-2 leading-snug">{item.title}</h4>
                     <p className="text-slate-600 text-sm leading-relaxed mb-3">{item.summary}</p>
                     <div className="flex flex-wrap gap-1">
                       {item.keywords.map((kw, j) => (
-                        <span key={j} className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">{kw}</span>
+                        <Badge key={j} variant="outline" className="text-xs text-amber-700 border-amber-200 bg-amber-50">{kw}</Badge>
                       ))}
                     </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </section>
@@ -314,12 +319,12 @@ const FashionTrendCards: React.FC = () => {
           className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center cursor-zoom-out"
           onClick={() => setLightbox(null)}
         >
-          <button
-            className="absolute top-6 right-8 text-slate-400 hover:text-white text-4xl leading-none transition-colors"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-6 right-8 text-slate-400 hover:text-white hover:bg-white/10 w-10 h-10 text-2xl"
             onClick={() => setLightbox(null)}
-          >
-            ×
-          </button>
+          >×</Button>
           <img
             src={lightbox.src}
             alt={lightbox.title}

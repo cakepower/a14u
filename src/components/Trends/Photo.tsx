@@ -1,4 +1,6 @@
 import React from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 type PhotoItem = {
   image: string;
@@ -265,7 +267,7 @@ const BWEditorialCards: React.FC = () => {
   }, []);
 
   return (
-    <div id="bw-photo" className="bg-black min-h-screen font-serif text-white">
+    <div id="bw-photo" className="bg-black min-h-screen font-serif text-white" style={{ fontFamily: 'Pretendard, system-ui, -apple-system, sans-serif' }}>
 
       {/* Hero */}
       <header className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-black">
@@ -408,9 +410,9 @@ const BWEditorialCards: React.FC = () => {
             <h4 className="text-xl font-serif mb-8 text-zinc-400 tracking-widest uppercase">Visual Language</h4>
             <div className="flex flex-wrap gap-3">
               {visualKeywords.map((kw, i) => (
-                <span key={i} className="text-zinc-400 border border-zinc-700 px-3 py-1 text-xs tracking-widest uppercase">
+                <Badge key={i} variant="outline" className="text-zinc-400 border-zinc-700 bg-transparent px-3 py-1 text-xs tracking-widest uppercase h-auto rounded-none">
                   {kw}
-                </span>
+                </Badge>
               ))}
             </div>
           </div>
@@ -439,12 +441,12 @@ const BWEditorialCards: React.FC = () => {
           className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center cursor-zoom-out"
           onClick={() => setLightbox(null)}
         >
-          <button
-            className="absolute top-6 right-8 text-zinc-400 hover:text-white text-3xl leading-none"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-6 right-8 text-zinc-400 hover:text-white hover:bg-white/10 w-10 h-10 text-2xl"
             onClick={() => setLightbox(null)}
-          >
-            ×
-          </button>
+          >×</Button>
           <img
             src={lightbox.src}
             alt={lightbox.title}
