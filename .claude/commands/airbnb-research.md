@@ -13,16 +13,16 @@ description: 매주 영종도 커플 숙소 시장을 리서치하여 리뷰 수
 PHASE 1 — 데이터 수집 (순차, 메인 에이전트 직접 실행)
   ├─ STEP 1: 리스팅 검색 3개 병렬 (firecrawl_search)
   ├─ STEP 2: 룸 5곳 스크래핑 (firecrawl_scrape × 5, 가능한 병렬)
-  └─ STEP 3: docs/airbnb-yeongjonge-YYYY-MM-DD.md 저장
+  └─ STEP 3: docs/airbnb/airbnb-yeongjonge-YYYY-MM-DD.md 저장
                         ↓
 PHASE 2 — 분석 (3개 서브에이전트 병렬, run_in_background=true)
-  ├─ Agent A │ STEP 4   → docs/analysis-problems-YYYY-MM-DD.md
-  ├─ Agent B │ STEP 4-M → docs/analysis-market-YYYY-MM-DD.md
-  └─ Agent C │ STEP 7   → docs/analysis-toprooms-YYYY-MM-DD.md
+  ├─ Agent A │ STEP 4   → docs/airbnb/analysis-problems-YYYY-MM-DD.md
+  ├─ Agent B │ STEP 4-M → docs/airbnb/analysis-market-YYYY-MM-DD.md
+  └─ Agent C │ STEP 7   → docs/airbnb/analysis-toprooms-YYYY-MM-DD.md
                         ↓ (3개 모두 완료 대기)
 PHASE 3 — 생성 (2개 서브에이전트 병렬, run_in_background=true)
-  ├─ Agent D │ STEP 5+6 → docs/offers-viral-YYYY-MM-DD.md
-  └─ Agent E │ STEP 8+9 → docs/session-YYYY-MM-DD.md
+  ├─ Agent D │ STEP 5+6 → docs/airbnb/offers-viral-YYYY-MM-DD.md
+  └─ Agent E │ STEP 8+9 → docs/airbnb/session-YYYY-MM-DD.md
                              src/components/Trends/airbnb.tsx
 ```
 
@@ -37,7 +37,7 @@ Agent(
   prompt: """
     docs/airbnb-yeongjonge-YYYY-MM-DD.md 를 읽고 숙소 문제 TOP 10을 도출하라.
     각 문제에 WTP(1~10), 긴급도(1~10), complaintCount, growthRate, flags(🔴/🚀) 부여.
-    결과를 docs/analysis-problems-YYYY-MM-DD.md 로 저장. (Write 도구 사용)
+    결과를 docs/airbnb/analysis-problems-YYYY-MM-DD.md 로 저장. (Write 도구 사용)
   """
 )
 
@@ -47,7 +47,7 @@ Agent(
   prompt: """
     docs/airbnb-yeongjonge-YYYY-MM-DD.md 를 읽고 시장 분석을 수행하라.
     TAM/SAM/SOM 추정, 핵심 트렌드 5개, 덜 공략된 기회 5개, 돈의 흐름 분석.
-    결과를 docs/analysis-market-YYYY-MM-DD.md 로 저장. (Write 도구 사용)
+    결과를 docs/airbnb/analysis-market-YYYY-MM-DD.md 로 저장. (Write 도구 사용)
   """
 )
 
@@ -57,7 +57,7 @@ Agent(
   prompt: """
     docs/airbnb-yeongjonge-YYYY-MM-DD.md 의 상위 5개 룸을 분석하라.
     슈퍼호스트 여부, 즉시예약, 제목 키워드, 썸네일 전략, 노출 강점 역산.
-    결과를 docs/analysis-toprooms-YYYY-MM-DD.md 로 저장. (Write 도구 사용)
+    결과를 docs/airbnb/analysis-toprooms-YYYY-MM-DD.md 로 저장. (Write 도구 사용)
   """
 )
 ```
@@ -73,7 +73,7 @@ Agent(
   prompt: """
     docs/analysis-problems-YYYY-MM-DD.md 를 읽고
     고전환 오퍼 5개와 바이럴 훅 20개(SPICE 포함)를 설계하라.
-    결과를 docs/offers-viral-YYYY-MM-DD.md 로 저장.
+    결과를 docs/airbnb/offers-viral-YYYY-MM-DD.md 로 저장.
   """
 )
 
@@ -127,13 +127,13 @@ ToolSearch query: "select:mcp__firecrawl__firecrawl_search,mcp__firecrawl__firec
 ```
 STEP 1 → Airbnb 리스팅 검색 (firecrawl_search × 3 병렬)
 STEP 2 → 상위 숙소 5곳 리뷰 스크래핑 (firecrawl_scrape × 5 순차)
-STEP 3 → 중간 저장: docs/airbnb-yeongjonge-YYYY-MM-DD.md
+STEP 3 → 중간 저장: docs/airbnb/airbnb-yeongjonge-YYYY-MM-DD.md
 STEP 4 → 문제 분석: 긴급도 + WTP 점수화
 STEP 4-M → 시장 분석: TAM/SAM/SOM + 핵심 트렌드 5개 + 덜 공략된 기회 5개 + 돈의 흐름
 STEP 5 → 고전환 오퍼 5개 설계
 STEP 6 → 바이럴 콘텐츠 전략 (훅 20개 + SPICE 구조)
 STEP 7 → Airbnb 상위 노출 룸 5개 분석 (노출 공식 역산)
-STEP 8 → 전체 세션 MD 저장: docs/session-YYYY-MM-DD.md
+STEP 8 → 전체 세션 MD 저장: docs/airbnb/session-YYYY-MM-DD.md
 STEP 9 → React 컴포넌트 생성: src/components/Trends/airbnb.tsx
 ```
 
@@ -192,7 +192,7 @@ Query 3: "영종도 호캉스 커플 베스트 숙소 후기"
 
 ## 4. STEP 3 — 중간 저장: 리뷰 MD 파일
 
-**파일 경로:** `docs/airbnb-yeongjonge-YYYY-MM-DD.md`
+**파일 경로:** `docs/airbnb/airbnb-yeongjonge-YYYY-MM-DD.md`
 
 형식은 아래를 따릅니다:
 
@@ -407,7 +407,7 @@ STEP 1에서 수집한 검색 결과 최상단 5개 룸을 `firecrawl_scrape`로
 
 ## 9. STEP 8 — 전체 세션 MD 저장
 
-**파일 경로:** `docs/session-YYYY-MM-DD.md`
+**파일 경로:** `docs/airbnb/session-YYYY-MM-DD.md`
 
 ```markdown
 # 세션 기록 — YYYY-MM-DD
@@ -450,22 +450,27 @@ STEP 1에서 수집한 검색 결과 최상단 5개 룸을 `firecrawl_scrape`로
 import AirbnbResearch from "./components/Trends/airbnb";
 ```
 
-### Fashion.tsx 스타일 지침
+### 디자인 시스템 지침 (`__context/design-style-guide.md` 기준)
 
-`Fashion.tsx`와 동일한 시각적 언어를 사용합니다:
+컴포넌트 생성 전 `__context/design-style-guide.md` 전체를 Read하세요.
 
-- **배경**: `bg-white min-h-screen font-sans text-slate-900`
-- **히어로**: 검은 배경 + 오션뷰 이미지 오버레이 + 세리프 이탤릭 대형 제목
-- **카드**: `rounded-xl`, hover shadow, `group-hover:scale-105` 이미지 줌
-- **섹션 제목**: `text-5xl font-serif mb-2 border-b pb-4`
-- **배지**: 각 섹션별 색상 — 문제: `bg-red-100 text-red-700`, 오퍼: `bg-blue-100 text-blue-700`, 바이럴: `bg-purple-100 text-purple-700`
-- **하단**: 키워드 태그 + 스타일링 팁 박스 (`bg-slate-50 p-12 rounded-3xl`)
-- **라이트박스**: ESC + 클릭 닫기 (외부 라이브러리 없음)
+탭 아이콘 매핑:
+- 숙소 리뷰: `Home` → `bg-blue-500/10 text-blue-600`
+- 시장 분석: `BarChart2` → `bg-emerald-500/10 text-emerald-600`
+- 문제 분석: `AlertTriangle` → `bg-slate-500/10 text-slate-600`
+- 고전환 오퍼: `Tag` → `bg-slate-500/10 text-slate-600`
+- 바이럴 전략: `Zap` → `bg-slate-500/10 text-slate-600`
+- 인기룸 분석: `Award` → `bg-slate-500/10 text-slate-600`
 
 ### 컴포넌트 섹션 구조
 
 ```tsx
 import React from 'react';
+import {
+  Home, BarChart2, AlertTriangle, Tag, Zap, Award,
+  TrendingUp, Crosshair, DollarSign, Star, CalendarDays,
+  CheckCircle2, XCircle, Info,
+} from 'lucide-react';
 
 type LightboxState = { src: string; title: string; tag: string } | null;
 
@@ -565,6 +570,44 @@ const topRoomsActions = [
   // ... 3~5개
 ];
 
+// ── 이벤트 캘린더 데이터 (event-calendar-update 스킬 파일 기반으로 채움) ──
+const eventCalendar = [
+  {
+    month: "4월",
+    strategy: "이달의 전략 요약",
+    events: [
+      { date: "04.XX~XX", name: "이벤트명", venue: "장소", category: "카테고리", demand: 4 },
+      // demand: 5=★★★★★ / 4=★★★★ / 3=★★★ / 2=★★
+    ],
+  },
+  // ... 해당 연도 주요 월 (5월, 7~8월, 10월 등)
+];
+
+// ── 가격 전략 데이터 (pricing-strategy 스킬 파일 기반으로 채움) ──
+const pricingData = {
+  base: { weekday: 90000, weekend: 120000, peak: 150000 },
+  multipliers: [
+    { stars: 5, label: "★★★★★", mult: "×2.0~3.0", desc: "인스파이어 대형 페스티벌, 해수욕 성수기" },
+    { stars: 4, label: "★★★★", mult: "×1.5~1.8", desc: "인스파이어 K팝·e스포츠, 인천 대형 축제" },
+    { stars: 3, label: "★★★", mult: "×1.2~1.3", desc: "지역 축제, 연휴" },
+    { stars: 2, label: "★★", mult: "×1.0~1.1", desc: "소규모 이벤트, 모니터링 유지" },
+  ],
+  monthly: [
+    {
+      period: "YYYY-MM",
+      label: "X월 (기간)",
+      rows: [
+        { dates: "MM.DD (요일)", event: "이벤트명", demand: 4, price: 180000, minNights: 1 as number | null, timing: "즉시 ⚡" },
+        // timing: "즉시 ⚡" | "D-14 알림" | "기본가"
+      ],
+    },
+  ],
+  actions: [
+    "즉시 적용: 이벤트명 (날짜) → ₩가격 + 최소 N박",
+    // ... pricing-strategy 스킬 출력의 핵심 액션으로 채움
+  ],
+};
+
 const marketAnalysis = {
   tam: {
     label: "TAM — 전체 시장",
@@ -619,7 +662,7 @@ const marketAnalysis = {
 // ── 컴포넌트 ──────────────────────────────────────────────
 const AirbnbResearch: React.FC = () => {
   const [lightbox, setLightbox] = React.useState<LightboxState>(null);
-  const [activeTab, setActiveTab] = React.useState<'listings' | 'market' | 'problems' | 'offers' | 'viral' | 'toprooms'>('listings');
+  const [activeTab, setActiveTab] = React.useState<'listings' | 'market' | 'problems' | 'offers' | 'viral' | 'toprooms' | 'calendar' | 'pricing'>('listings');
 
   React.useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightbox(null); };
@@ -628,7 +671,10 @@ const AirbnbResearch: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen font-sans text-slate-900">
+    <div
+      className="min-h-screen text-slate-900 w-full max-w-full"
+      style={{ background: '#F2F2ED', fontFamily: 'Pretendard, system-ui, -apple-system, sans-serif', overflowX: 'clip' }}
+    >
 
       {/* Hero */}
       <header className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-black">
@@ -639,34 +685,40 @@ const AirbnbResearch: React.FC = () => {
         />
         <div className="relative z-10 text-center px-4">
           <p className="text-white text-xs tracking-[0.5em] uppercase opacity-60 mb-4">영종도 커플 호캉스 · {TODAY_DATE}</p>
-          <h1 className="text-white text-6xl md:text-9xl font-serif italic mb-4">Market Report</h1>
+          <h1 className="text-white text-4xl sm:text-6xl md:text-9xl font-serif italic mb-4">Market Report</h1>
           <p className="text-white text-xl tracking-[0.3em] uppercase opacity-80">Airbnb Intelligence</p>
         </div>
       </header>
 
       {/* Tab Navigation */}
-      <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 flex gap-1 overflow-x-auto py-3">
-          {[
-            { key: 'listings', label: '🏠 숙소 리뷰' },
-            { key: 'market', label: '📊 시장 분석' },
-            { key: 'problems', label: '🔴 문제 분석' },
-            { key: 'offers', label: '💎 고전환 오퍼' },
-            { key: 'viral', label: '⚡ 바이럴 전략' },
-            { key: 'toprooms', label: '🏆 인기룸 분석' },
-          ].map(tab => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key as typeof activeTab)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                activeTab === tab.key
-                  ? 'bg-slate-900 text-white'
-                  : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+      <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm overflow-x-hidden">
+        <div className="max-w-7xl mx-auto sm:overflow-x-auto sm:scrollbar-none overscroll-x-contain">
+          <div className="flex flex-wrap sm:flex-nowrap sm:w-max w-full gap-0.5 sm:gap-1 px-2 sm:px-6 py-1 sm:py-2">
+            {([
+              { key: 'listings', label: '숙소 리뷰', icon: <Home className="w-4 h-4" /> },
+              { key: 'market', label: '시장 분석', icon: <BarChart2 className="w-4 h-4" /> },
+              { key: 'problems', label: '문제 분석', icon: <AlertTriangle className="w-4 h-4" /> },
+              { key: 'offers', label: '고전환 오퍼', icon: <Tag className="w-4 h-4" /> },
+              { key: 'viral', label: '바이럴 전략', icon: <Zap className="w-4 h-4" /> },
+              { key: 'toprooms', label: '인기룸 분석', icon: <Award className="w-4 h-4" /> },
+              { key: 'calendar', label: '이벤트 달력', icon: <CalendarDays className="w-4 h-4" /> },
+              { key: 'pricing', label: '가격 전략', icon: <DollarSign className="w-4 h-4" /> },
+            ] as { key: typeof activeTab; label: string; icon: React.ReactNode }[]).map(tab => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`whitespace-nowrap px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md flex-shrink-0 transition-colors flex items-center gap-1.5 ${
+                  activeTab === tab.key
+                    ? 'bg-slate-900 text-white'
+                    : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                {tab.icon}
+                <span className="hidden sm:inline">{tab.label}</span>
+                <span className="sm:hidden">{tab.label.replace(/\s.+/, '')}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </nav>
 
@@ -675,9 +727,14 @@ const AirbnbResearch: React.FC = () => {
         {/* ── TAB: 숙소 리뷰 ── */}
         {activeTab === 'listings' && (
           <section>
-            <h2 className="text-5xl font-serif mb-2 border-b pb-4">🏠 영종도 커플 오션스테이</h2>
-            <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">Airbnb 실시간 리뷰 수집 · {TODAY_DATE}</p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif mb-2 border-b pb-4 flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-500/10">
+                <Home className="w-6 h-6 text-blue-600" strokeWidth={1.5} />
+              </span>
+              영종도 커플 오션스테이
+            </h2>
+            <p className="text-slate-500 text-xs sm:text-sm tracking-wide sm:tracking-widest uppercase mb-8 sm:mb-10 leading-relaxed">Airbnb 실시간 리뷰 수집 · {TODAY_DATE}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {listings.map((item, i) => (
                 <div
                   key={i}
@@ -690,10 +747,13 @@ const AirbnbResearch: React.FC = () => {
                   </div>
                   <div className="p-5">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-amber-500 font-bold">⭐{item.rating}</span>
+                      <span className="flex items-center gap-1 font-bold" style={{ color: '#F5C800' }}>
+                        <Star className="w-4 h-4" fill="#F5C800" strokeWidth={0} />
+                        {item.rating}
+                      </span>
                       <span className="text-slate-400 text-xs">{item.reviewCount}개 후기</span>
                     </div>
-                    <h4 className="font-serif text-lg mb-1 leading-snug">{item.name}</h4>
+                    <h4 className="font-serif text-lg mb-1 leading-snug" style={{ color: '#111111' }}>{item.name}</h4>
                     <p className="text-slate-500 text-xs mb-3">{item.type}</p>
                     <p className="text-slate-600 text-sm leading-relaxed mb-3">{item.summary}</p>
                     <div className="flex flex-wrap gap-1 mb-3">
@@ -706,6 +766,7 @@ const AirbnbResearch: React.FC = () => {
                       <div>👎 {item.topComplaint}</div>
                     </div>
                   </div>
+                  <div style={{ height: '3px', background: '#F5C800' }} />
                 </div>
               ))}
             </div>
@@ -715,19 +776,30 @@ const AirbnbResearch: React.FC = () => {
         {/* ── TAB: 시장 분석 ── */}
         {activeTab === 'market' && (
           <section>
-            <h2 className="text-5xl font-serif mb-2 border-b pb-4">📊 시장 분석</h2>
-            <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">TAM · SAM · SOM · 핵심 트렌드 · 공백 기회 · 돈의 흐름</p>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif mb-2 border-b pb-4 flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-500/10">
+                <BarChart2 className="w-6 h-6 text-blue-600" strokeWidth={1.5} />
+              </span>
+              시장 분석
+            </h2>
+            <p className="text-slate-500 text-xs sm:text-sm tracking-wide sm:tracking-widest uppercase mb-8 sm:mb-10 leading-relaxed">TAM · SAM · SOM · 핵심 트렌드 · 공백 기회 · 돈의 흐름</p>
 
             {/* TAM / SAM / SOM */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
               {([
-                { ...marketAnalysis.tam, bg: 'bg-slate-900', text: 'text-white', sub: 'text-slate-400' },
-                { ...marketAnalysis.sam, bg: 'bg-blue-700', text: 'text-white', sub: 'text-blue-200' },
-                { ...marketAnalysis.som, bg: 'bg-emerald-600', text: 'text-white', sub: 'text-emerald-100' },
-              ] as Array<typeof marketAnalysis.tam & { bg: string; text: string; sub: string }>).map((item, i) => (
+                { ...marketAnalysis.tam, plainLabel: '국내 단기 숙박 시장 전체', isEstimate: false, bg: 'bg-slate-900', text: 'text-white', sub: 'text-slate-400' },
+                { ...marketAnalysis.sam, plainLabel: '우리가 직접 공략할 수 있는 시장', isEstimate: true, bg: 'bg-blue-700', text: 'text-white', sub: 'text-blue-200' },
+                { ...marketAnalysis.som, plainLabel: '3년 내 현실적으로 잡을 수 있는 규모', isEstimate: true, bg: 'bg-emerald-600', text: 'text-white', sub: 'text-emerald-100' },
+              ] as Array<typeof marketAnalysis.tam & { plainLabel: string; isEstimate: boolean; bg: string; text: string; sub: string }>).map((item, i) => (
                 <div key={i} className={`rounded-2xl p-8 ${item.bg}`}>
-                  <p className={`text-xs font-bold tracking-[0.3em] uppercase mb-3 ${item.sub}`}>{item.label}</p>
-                  <p className={`text-4xl font-serif font-bold mb-3 ${item.text}`}>{item.value}</p>
+                  <div className="flex items-center gap-2 mb-3">
+                    <p className={`text-xs font-bold tracking-[0.3em] uppercase ${item.sub}`}>{item.label}</p>
+                    {item.isEstimate && (
+                      <span className="text-xs px-1.5 py-0.5 rounded font-bold bg-white/20 text-white/80">추정</span>
+                    )}
+                  </div>
+                  <p className={`text-4xl font-serif font-bold mb-2 ${item.text}`}>{item.value}</p>
+                  <p className={`text-xs mb-2 ${item.sub}`}>{item.plainLabel}</p>
                   <p className={`text-sm leading-relaxed mb-2 ${item.text}`}>{item.description}</p>
                   <p className={`text-xs italic ${item.sub}`}>{item.note}</p>
                 </div>
@@ -736,8 +808,11 @@ const AirbnbResearch: React.FC = () => {
 
             {/* 수요를 만드는 핵심 트렌드 5개 */}
             <div className="mb-16">
-              <h3 className="text-2xl font-serif mb-6 flex items-center gap-2">
-                <span>🚀</span> 수요를 만드는 핵심 트렌드
+              <h3 className="text-xl sm:text-2xl font-semibold mb-6 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-500/10">
+                  <TrendingUp className="w-6 h-6 text-blue-600" strokeWidth={1.5} />
+                </span>
+                수요를 만드는 핵심 트렌드
               </h3>
               <div className="space-y-4">
                 {marketAnalysis.trends.map((item, i) => {
@@ -770,8 +845,11 @@ const AirbnbResearch: React.FC = () => {
 
             {/* 아직 덜 공략된 기회 5개 */}
             <div className="mb-16">
-              <h3 className="text-2xl font-serif mb-6 flex items-center gap-2">
-                <span>🎯</span> 아직 덜 공략된 기회
+              <h3 className="text-xl sm:text-2xl font-semibold mb-6 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-green-500/10">
+                  <Crosshair className="w-6 h-6 text-green-600" strokeWidth={1.5} />
+                </span>
+                아직 덜 공략된 기회
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {marketAnalysis.opportunities.map((item, i) => (
@@ -793,8 +871,11 @@ const AirbnbResearch: React.FC = () => {
 
             {/* 이미 돈이 흐르는 영역 */}
             <div>
-              <h3 className="text-2xl font-serif mb-6 flex items-center gap-2">
-                <span>💸</span> 이미 돈이 흐르는 영역
+              <h3 className="text-xl sm:text-2xl font-semibold mb-6 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-yellow-400/10">
+                  <DollarSign className="w-6 h-6 text-yellow-500" strokeWidth={1.5} />
+                </span>
+                이미 돈이 흐르는 영역
               </h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm border-collapse">
@@ -829,8 +910,13 @@ const AirbnbResearch: React.FC = () => {
         {/* ── TAB: 문제 분석 ── */}
         {activeTab === 'problems' && (
           <section>
-            <h2 className="text-5xl font-serif mb-2 border-b pb-4">🔴 숙소 문제 매트릭스</h2>
-            <p className="text-slate-500 text-sm tracking-widest uppercase mb-6">WTP 점수 기준 정렬 · 실제 불평 횟수 · 성장 속도 표시</p>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif mb-2 border-b pb-4 flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-red-500/10">
+                <AlertTriangle className="w-6 h-6 text-red-600" strokeWidth={1.5} />
+              </span>
+              숙소 문제 매트릭스
+            </h2>
+            <p className="text-slate-500 text-xs sm:text-sm tracking-wide sm:tracking-widest uppercase mb-6 leading-relaxed">WTP 점수 기준 정렬 · 실제 불평 횟수 · 성장 속도 표시</p>
 
             {/* 범례 */}
             <div className="flex flex-wrap gap-3 mb-10 text-xs">
@@ -952,8 +1038,13 @@ const AirbnbResearch: React.FC = () => {
         {/* ── TAB: 고전환 오퍼 ── */}
         {activeTab === 'offers' && (
           <section>
-            <h2 className="text-5xl font-serif mb-2 border-b pb-4">💎 고전환 오퍼 설계</h2>
-            <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">Top 5 문제 · 이상적 고객 정의 · 보장 포함</p>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif mb-2 border-b pb-4 flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-500/10">
+                <Tag className="w-6 h-6 text-blue-600" strokeWidth={1.5} />
+              </span>
+              고전환 오퍼 설계
+            </h2>
+            <p className="text-slate-500 text-xs sm:text-sm tracking-wide sm:tracking-widest uppercase mb-8 sm:mb-10 leading-relaxed">Top 5 문제 · 이상적 고객 정의 · 보장 포함</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {offers.map((offer, i) => (
                 <div key={i} className="rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow">
@@ -996,8 +1087,13 @@ const AirbnbResearch: React.FC = () => {
         {/* ── TAB: 바이럴 전략 ── */}
         {activeTab === 'viral' && (
           <section>
-            <h2 className="text-5xl font-serif mb-2 border-b pb-4">⚡ 바이럴 콘텐츠 전략</h2>
-            <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">고전환 훅 20개 · SPICE 구조 · 플랫폼별 전략</p>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif mb-2 border-b pb-4 flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-purple-500/10">
+                <Zap className="w-6 h-6 text-purple-600" strokeWidth={1.5} />
+              </span>
+              바이럴 콘텐츠 전략
+            </h2>
+            <p className="text-slate-500 text-xs sm:text-sm tracking-wide sm:tracking-widest uppercase mb-8 sm:mb-10 leading-relaxed">고전환 훅 20개 · SPICE 구조 · 플랫폼별 전략</p>
             <div className="columns-1 md:columns-2 gap-6 space-y-4">
               {viralHooks.map((hook, i) => {
                 const colorMap: Record<string, string> = {
@@ -1025,8 +1121,13 @@ const AirbnbResearch: React.FC = () => {
         {/* ── TAB: 인기룸 분석 ── */}
         {activeTab === 'toprooms' && (
           <section>
-            <h2 className="text-5xl font-serif mb-2 border-b pb-4">🏆 Airbnb 상위 노출 룸 분석</h2>
-            <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">검색 1–5위 룸 · 노출 공식 역산 · 즉시 적용 액션</p>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif mb-2 border-b pb-4 flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-yellow-400/10">
+                <Award className="w-6 h-6 text-yellow-500" strokeWidth={1.5} />
+              </span>
+              Airbnb 상위 노출 룸 분석
+            </h2>
+            <p className="text-slate-500 text-xs sm:text-sm tracking-wide sm:tracking-widest uppercase mb-8 sm:mb-10 leading-relaxed">검색 1–5위 룸 · 노출 공식 역산 · 즉시 적용 액션</p>
 
             {/* 룸 카드 5개 */}
             <div className="space-y-6 mb-16">
@@ -1062,7 +1163,10 @@ const AirbnbResearch: React.FC = () => {
                         <div>
                           <h4 className="font-serif text-xl leading-snug">{room.name}</h4>
                           <div className="flex items-center gap-2 mt-1 text-sm text-slate-500">
-                            <span className="text-amber-500 font-bold">⭐{room.rating}</span>
+                            <span className="flex items-center gap-1 font-bold" style={{ color: '#F5C800' }}>
+                              <Star className="w-4 h-4" fill="#F5C800" strokeWidth={0} />
+                              {room.rating}
+                            </span>
                             <span>{room.reviewCount}개 후기</span>
                             <span className="text-slate-300">|</span>
                             <span>최근 후기 {room.lastReviewDate}</span>
@@ -1115,7 +1219,12 @@ const AirbnbResearch: React.FC = () => {
 
             {/* 공통 패턴 테이블 */}
             <div className="mb-12">
-              <h3 className="text-2xl font-serif mb-6">📊 상위 노출 공통 패턴</h3>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-6 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-500/10">
+                  <BarChart2 className="w-6 h-6 text-blue-600" strokeWidth={1.5} />
+                </span>
+                상위 노출 공통 패턴
+              </h3>
               <div className="overflow-x-auto rounded-xl border border-slate-200">
                 <table className="w-full text-sm border-collapse">
                   <thead>
@@ -1155,7 +1264,12 @@ const AirbnbResearch: React.FC = () => {
 
             {/* 즉시 적용 액션 */}
             <div className="bg-slate-900 text-white rounded-2xl p-8">
-              <h3 className="text-2xl font-serif mb-6">⚡ 우리 룸에 즉시 적용 가능한 것</h3>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-6 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-yellow-400/10">
+                  <Zap className="w-6 h-6 text-yellow-500" strokeWidth={1.5} />
+                </span>
+                우리 룸에 즉시 적용 가능한 것
+              </h3>
               <ol className="space-y-3">
                 {topRoomsActions.map((action, i) => (
                   <li key={i} className="flex items-start gap-3">
@@ -1171,7 +1285,7 @@ const AirbnbResearch: React.FC = () => {
         )}
 
         {/* Bottom Summary */}
-        <section className="mt-24 bg-slate-50 p-12 rounded-3xl">
+        <section className="mt-24 bg-white border border-slate-200 p-8 sm:p-10 rounded-3xl">
           <div className="grid md:grid-cols-2 gap-12">
             <div>
               <h4 className="text-2xl font-serif mb-6 underline underline-offset-4">핵심 기회 키워드</h4>
@@ -1248,8 +1362,8 @@ export default AirbnbResearch;
 ### 파일 저장 체크리스트
 
 ```
-□ docs/airbnb-yeongjonge-YYYY-MM-DD.md  — STEP 3에서 저장
-□ docs/session-YYYY-MM-DD.md            — STEP 8에서 저장  
+□ docs/airbnb/airbnb-yeongjonge-YYYY-MM-DD.md  — STEP 3에서 저장
+□ docs/airbnb/session-YYYY-MM-DD.md            — STEP 8에서 저장  
 □ src/components/Trends/airbnb.tsx      — STEP 9에서 저장 (덮어쓰기)
 ```
 

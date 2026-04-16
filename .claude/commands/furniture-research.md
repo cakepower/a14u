@@ -256,7 +256,7 @@ const sources = [
 
 ```tsx
 type TabKey = 'trends' | 'market' | 'problems' | 'opportunities';
-// 탭: 🏠 2026 트렌드 / 📊 시장 분석 / 🔴 소비자 문제 / 🎯 기회 영역
+// 탭: <Home /> 2026 트렌드 / <BarChart2 /> 시장 분석 / <AlertTriangle /> 소비자 문제 / <Crosshair /> 기회 영역
 ```
 
 **④ 트렌드 탭 렌더링 순서**
@@ -265,16 +265,20 @@ type TabKey = 'trends' | 'market' | 'problems' | 'opportunities';
 2. **아티클별 이미지 갤러리** — 소스별로 구분, `aspect-square` 그리드 (5열)
 3. **트렌드 인사이트** — 6개 트렌드 항목 (이미지 + 설명 + 수요 점수)
 
-### 스타일 가이드 (Fashion.tsx / airbnb.tsx 동일 언어)
+### 스타일 가이드 (`__context/design-style-guide.md` 기준)
 
-- **배경**: `bg-white min-h-screen font-sans text-slate-900`
-- **히어로**: 검은 배경 + ohou.se 이미지 오버레이(opacity-40) + 세리프 이탤릭 대형 제목
-- **카드**: `rounded-2xl`, hover shadow, `group-hover:scale-105` 이미지 줌
-- **섹션 제목**: `text-5xl font-serif mb-2 border-b pb-4`
-- **배지**: 문제: `bg-red-100 text-red-700`, 기회: `bg-emerald-100 text-emerald-700`
-- **갤러리**: `aspect-square` 그리드 + hover 어두워지는 오버레이 + caption
-- **라이트박스**: ESC + 클릭 닫기 (외부 라이브러리 없음)
-- **푸터**: 출처 URL 링크 나열
+컴포넌트 생성 전 `__context/design-style-guide.md` 전체를 Read하세요.
+
+섹션별 아이콘 매핑:
+- 트렌드 탭: `Home` → `bg-blue-500/10 text-blue-600`
+- 시장 분석: `BarChart2` → `bg-blue-500/10 text-blue-600`
+- 소비자 문제: `AlertTriangle` → `bg-red-500/10 text-red-600`
+- 기회 영역: `Crosshair` → `bg-green-500/10 text-green-600`
+
+Lucide import: `import { Home, BarChart2, AlertTriangle, Crosshair, Tag, TrendingUp } from 'lucide-react';`
+
+갤러리: `aspect-square` 그리드 + hover 어두워지는 오버레이 + caption
+푸터: 출처 URL 링크 나열
 
 ### 컴포넌트 데이터 타입
 

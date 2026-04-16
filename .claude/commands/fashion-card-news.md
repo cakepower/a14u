@@ -50,118 +50,119 @@ import FashionTrendCards from "./components/Trends/Fashion";
 
 Generate the component using **Tailwind CSS** and fill the placeholders with scraped data.
 
-```tsx
+**디자인 시스템 (`__context/design-style-guide.md` 기준):**
 
+컴포넌트 생성 전 `__context/design-style-guide.md` 전체를 Read하세요.
+
+섹션별 아이콘 매핑:
+- Vogue: `Layers` → `bg-blue-500/10 text-blue-600`
+- Elle: `Scissors` → `bg-purple-500/10 text-purple-600`
+- Cosmopolitan: `Sparkles` → `bg-yellow-400/10 text-yellow-500`
+
+```tsx
 import React from 'react';
+import { Layers, Scissors, Sparkles } from 'lucide-react';
 
 const FashionTrendReport: React.FC = () => {
-
   return (
-
-    <div className="bg-white min-h-screen font-sans text-slate-900">
+    <div
+      className="min-h-screen text-slate-900 w-full max-w-full"
+      style={{ background: '#F2F2ED', fontFamily: 'Pretendard, system-ui, -apple-system, sans-serif', overflowX: 'clip' }}
+    >
 
       {/* Hero Section */}
-
       <header className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-black">
-
         <img
-
           src="{{HERO_IMAGE_URL}}"
-
           className="absolute inset-0 w-full h-full object-cover opacity-70"
-
           alt="Fashion Hero"
-
         />
-
         <div className="relative z-10 text-center px-4">
-
-          <h1 className="text-white text-6xl md:text-9xl font-serif italic mb-4">{{SEASON_TITLE}}</h1>
-
+          <p className="text-white text-xs tracking-[0.5em] uppercase opacity-60 mb-4">Fashion Intelligence · {{TODAY_DATE}}</p>
+          <h1 className="text-white text-4xl sm:text-6xl md:text-9xl font-serif italic mb-4">{{SEASON_TITLE}}</h1>
           <p className="text-white text-xl tracking-[0.3em] uppercase opacity-80">Trend Intelligence Report</p>
-
         </div>
-
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-24">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
 
         {/* Executive Summary */}
-
-        <section className="mb-32 text-center max-w-3xl mx-auto">
-
-          <p className="text-3xl font-light leading-relaxed italic text-slate-700">"{{EXECUTIVE_SUMMARY}}"</p>
-
+        <section className="mb-24 text-center max-w-3xl mx-auto">
+          <p className="text-xl sm:text-3xl font-light leading-relaxed italic text-slate-700">"{{EXECUTIVE_SUMMARY}}"</p>
         </section>
 
         {/* Dynamic Magazine Grids */}
-
-        <div className="space-y-40">
+        <div className="space-y-32 sm:space-y-40">
 
           {/* Vogue (Grid) */}
-
           <section>
-
-            <h3 className="text-5xl font-serif mb-12 border-b pb-4">💎 Vogue Insights</h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">{{VOGUE_ITEMS}}</div>
-
+            <h3 className="text-2xl sm:text-4xl md:text-5xl font-serif mb-2 border-b pb-4 flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-500/10">
+                <Layers className="w-6 h-6 text-blue-600" strokeWidth={1.5} />
+              </span>
+              Vogue Insights
+            </h3>
+            <p className="text-slate-500 text-xs sm:text-sm tracking-wide sm:tracking-widest uppercase mb-8 sm:mb-10 leading-relaxed">Vogue · 시즌 트렌드 · {{TODAY_DATE}}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {/* 각 카드: bg-white rounded-xl overflow-hidden hover:shadow-md transition-shadow */}
+              {/* 카드 하단: <div style={{ height: '3px', background: '#F5C800' }} /> */}
+              {{VOGUE_ITEMS}}
+            </div>
           </section>
 
           {/* Elle (Featured) */}
-
           <section>
-
-            <h3 className="text-5xl font-serif mb-12 border-b pb-4">👗 Elle Edit</h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">{{ELLE_ITEMS}}</div>
-
+            <h3 className="text-2xl sm:text-4xl md:text-5xl font-serif mb-2 border-b pb-4 flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-purple-500/10">
+                <Scissors className="w-6 h-6 text-purple-600" strokeWidth={1.5} />
+              </span>
+              Elle Edit
+            </h3>
+            <p className="text-slate-500 text-xs sm:text-sm tracking-wide sm:tracking-widest uppercase mb-8 sm:mb-10 leading-relaxed">Elle · 에디터 픽 · {{TODAY_DATE}}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {{ELLE_ITEMS}}
+            </div>
           </section>
 
           {/* Cosmo (Masonry) */}
-
           <section>
-
-            <h3 className="text-5xl font-serif mb-12 border-b pb-4">🌟 Cosmopolitan Style</h3>
-
+            <h3 className="text-2xl sm:text-4xl md:text-5xl font-serif mb-2 border-b pb-4 flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-amber-500/10">
+                <Sparkles className="w-6 h-6 text-amber-600" strokeWidth={1.5} />
+              </span>
+              Cosmopolitan Style
+            </h3>
+            <p className="text-slate-500 text-xs sm:text-sm tracking-wide sm:tracking-widest uppercase mb-8 sm:mb-10 leading-relaxed">Cosmopolitan · 스타일 리포트 · {{TODAY_DATE}}</p>
             <div className="columns-1 md:columns-3 gap-6 space-y-6">{{COSMO_ITEMS}}</div>
-
           </section>
 
         </div>
 
         {/* Intelligence & Styling */}
-
-        <section className="mt-40 grid md:grid-cols-2 gap-20 bg-slate-50 p-12 rounded-3xl">
-
-          <div>
-
-            <h4 className="text-2xl font-serif mb-8 underline">Trend Keywords</h4>
-
-            <div className="space-y-4">{{KEYWORD_LIST}}</div>
-
+        <section className="mt-24 sm:mt-40 bg-white border border-slate-200 p-8 sm:p-10 rounded-3xl">
+          <div className="grid md:grid-cols-2 gap-12 sm:gap-20">
+            <div>
+              <h4 className="text-xl sm:text-2xl font-semibold mb-6 flex flex-wrap items-center gap-2">Trend Keywords</h4>
+              <div className="space-y-4">{{KEYWORD_LIST}}</div>
+            </div>
+            <div className="bg-slate-900 text-white p-8 sm:p-10 rounded-2xl">
+              <h4 className="text-xl sm:text-2xl font-semibold mb-6">Styling Advice</h4>
+              <ul className="space-y-6 font-light">{{STYLING_LIST}}</ul>
+            </div>
           </div>
-
-          <div className="bg-slate-900 text-white p-10 rounded-2xl">
-
-            <h4 className="text-2xl font-serif mb-8 text-blue-400">Styling Advice</h4>
-
-            <ul className="space-y-6 font-light">{{STYLING_LIST}}</ul>
-
-          </div>
-
         </section>
 
       </main>
 
+      <footer className="text-center py-12 text-slate-400 text-xs tracking-widest uppercase border-t border-slate-200">
+        Generated {{TODAY_DATE}} · Fashion Trend Intelligence · Firecrawl MCP
+      </footer>
+
     </div>
-
   );
-
 };
 
 export default FashionTrendReport;
-
 ```
 
 ## 4. Lightbox (Photo Popup)

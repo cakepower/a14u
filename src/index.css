@@ -120,7 +120,10 @@ body {
   color: #ffffff;
 }
 
-/* 스크롤바 약하게만 보이게 (선택 사항) */
+/* 모바일 가로 스크롤 완전 차단 */
+html {
+  overflow-x: hidden;
+}
 body {
   overflow-x: hidden;
 }

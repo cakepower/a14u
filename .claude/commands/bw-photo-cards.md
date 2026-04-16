@@ -64,12 +64,27 @@ import BWEditorialCards from "./components/Trends/Photo";
 
 Generate the component using **Tailwind CSS** with a strict **monochrome palette** (`black`, `white`, `gray-*`, `zinc-*` only — no color utilities).
 
+**디자인 시스템 (`__context/design-style-guide.md` 기준):**
+
+컴포넌트 생성 전 `__context/design-style-guide.md` 전체를 Read하세요.
+단, 이 컴포넌트는 의도적 모노크롬 다크 테마입니다 — 배경 `bg-black`, 색상은 `gray-*`/`zinc-*`만 허용, 아이콘 래퍼는 `bg-white/10 text-zinc-300` 사용 (Semantic Color System 예외).
+
+섹션 아이콘 매핑:
+- Magnum Photos: `Camera` → `bg-white/10 text-zinc-300`
+- Yanidel: `Eye` → `bg-white/10 text-zinc-300`
+- Reminders Photography Stronghold: `Globe` → `bg-white/10 text-zinc-300`
+- Phil Penman: `Aperture` → `bg-white/10 text-zinc-300`
+
 ```tsx
 import React from 'react';
+import { Camera, Eye, Globe, Aperture } from 'lucide-react';
 
 const BWEditorialCards: React.FC = () => {
   return (
-    <div className="bg-black min-h-screen font-serif text-white">
+    <div
+      className="bg-black min-h-screen font-serif text-white w-full max-w-full"
+      style={{ overflowX: 'clip' }}
+    >
 
       {/* Hero */}
       <header className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-black">
@@ -80,18 +95,18 @@ const BWEditorialCards: React.FC = () => {
         />
         <div className="relative z-10 text-center px-4">
           <p className="text-zinc-400 tracking-[0.5em] uppercase text-sm mb-6">Editorial</p>
-          <h1 className="text-white text-7xl md:text-[10rem] font-serif italic leading-none mb-4">
+          <h1 className="text-white text-4xl sm:text-7xl md:text-[10rem] font-serif italic leading-none mb-4">
             {{EDITION_TITLE}}
           </h1>
           <p className="text-zinc-300 text-lg tracking-[0.2em] uppercase">Photography Review</p>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-24">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-24">
 
         {/* Editorial Note */}
         <section className="mb-32 max-w-2xl mx-auto text-center border-t border-b border-zinc-700 py-16">
-          <p className="text-2xl font-light leading-relaxed text-zinc-300 italic">
+          <p className="text-xl sm:text-2xl font-light leading-relaxed text-zinc-300 italic">
             "{{EDITORIAL_NOTE}}"
           </p>
         </section>
@@ -101,28 +116,48 @@ const BWEditorialCards: React.FC = () => {
 
           {/* Magnum Photos — Full-bleed staggered grid */}
           <section>
-            <h3 className="text-4xl font-serif mb-2 text-white">Magnum Photos</h3>
+            <h3 className="text-2xl sm:text-4xl font-serif mb-2 text-white flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-white/10">
+                <Camera className="w-6 h-6 text-zinc-300" strokeWidth={1.5} />
+              </span>
+              Magnum Photos
+            </h3>
             <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">Classic Street</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">{{MAGNUM_ITEMS}}</div>
           </section>
 
           {/* Yanidel — Large feature */}
           <section>
-            <h3 className="text-4xl font-serif mb-2 text-white">Yanidel</h3>
+            <h3 className="text-2xl sm:text-4xl font-serif mb-2 text-white flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-white/10">
+                <Eye className="w-6 h-6 text-zinc-300" strokeWidth={1.5} />
+              </span>
+              Yanidel
+            </h3>
             <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">Paris Street Photography · Yannick Lebreton</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">{{YANIDEL_ITEMS}}</div>
           </section>
 
           {/* Reminders Photography Stronghold — Masonry */}
           <section>
-            <h3 className="text-4xl font-serif mb-2 text-white">Reminders Photography Stronghold</h3>
+            <h3 className="text-2xl sm:text-4xl font-serif mb-2 text-white flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-white/10">
+                <Globe className="w-6 h-6 text-zinc-300" strokeWidth={1.5} />
+              </span>
+              Reminders Photography Stronghold
+            </h3>
             <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">Asian Documentary Street</p>
             <div className="columns-1 md:columns-3 gap-4 space-y-4">{{REMINDERS_ITEMS}}</div>
           </section>
 
           {/* Phil Penman — Full-bleed staggered grid */}
           <section>
-            <h3 className="text-4xl font-serif mb-2 text-white">Phil Penman</h3>
+            <h3 className="text-2xl sm:text-4xl font-serif mb-2 text-white flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-white/10">
+                <Aperture className="w-6 h-6 text-zinc-300" strokeWidth={1.5} />
+              </span>
+              Phil Penman
+            </h3>
             <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">{{PHILPENMAN_SERIES_TITLE}}</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">{{PHILPENMAN_ITEMS}}</div>
           </section>
