@@ -139,7 +139,7 @@ export default function Hero({ children, isMobile }: HeroProps) {
             A14U는 인공지능이 결합된 사물과의 관계를 새로운 시각으로 바라봅니다.
           </p>
 
-          <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', pointerEvents: 'auto' }}>
+          <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', pointerEvents: 'auto', alignItems: 'flex-start' }}>
             <button
               onClick={() => {
                 window.location.href = 'https://www.cakepower.net/blog';
@@ -154,7 +154,23 @@ export default function Hero({ children, isMobile }: HeroProps) {
                 cursor: 'pointer',
               }}
             >
-              Go Back to Blog
+              Go to Blog
+            </button>
+            <button
+              onClick={() => {
+                window.location.href = 'https://www.cakepower.net/toons/';
+              }}
+              style={{
+                padding: '0.9rem 1.8rem',
+                borderRadius: '999px',
+                border: 'none',
+                background: 'linear-gradient(135deg, #7c3aed, #22d3ee)',
+                color: 'white',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              Go to Toons
             </button>
           </div>
         </div>
