@@ -1,6 +1,5 @@
 import React from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Camera, Eye, Globe, Aperture } from 'lucide-react';
 
 type PhotoItem = {
   image: string;
@@ -11,250 +10,194 @@ type PhotoItem = {
 
 const magnumImages: PhotoItem[] = [
   {
-    image: 'https://www.magnumphotos.com/wp-content/uploads/2026/01/NYC109511_-340x277.jpg',
-    title: 'Arnold Schwarzenegger',
-    caption: 'Behind the image — iconic portrait by Thomas Hoepker',
-    photographer: 'Thomas Hoepker',
+    image: 'https://content.magnumphotos.com/wp-content/uploads/2021/03/cortex/nyc42419-scaled-1280x997.jpg',
+    title: 'James Dean, New York City',
+    caption: 'New York, 1955',
+    photographer: 'Dennis Stock',
   },
   {
-    image: 'https://www.magnumphotos.com/wp-content/uploads/2025/11/Scan008-2-340x227.jpg',
-    title: 'AIDS at the Ambassador Hotel',
-    caption: "Paul Fusco's poignant portrayal of the AIDS crisis in Los Angeles",
-    photographer: 'Paul Fusco',
+    image: 'https://content.magnumphotos.com/wp-content/uploads/2021/03/cortex/nyc42421-1280x1637.jpg',
+    title: 'James Dean, Times Square',
+    caption: 'New York, 1955',
+    photographer: 'Dennis Stock',
   },
   {
-    image: 'https://www.magnumphotos.com/wp-content/uploads/2025/01/NYC7042_-340x228.jpg',
-    title: 'Muhammad Ali, Chicago',
-    caption: 'Behind the image — the boxing legend in Chicago',
-    photographer: 'Thomas Hoepker',
+    image: 'https://content.magnumphotos.com/wp-content/uploads/2021/03/NYC41744-scaled-1280x1808.jpg',
+    title: 'James Dean, Manhattan Rain',
+    caption: 'New York, 1955',
+    photographer: 'Dennis Stock',
   },
   {
-    image: 'https://www.magnumphotos.com/wp-content/uploads/2026/01/MG1359280_-340x187.jpg',
-    title: 'A Certain Nature, After Giverny',
-    caption: "Jean Gaumy's visual study of nature's transformations",
-    photographer: 'Jean Gaumy',
+    image: 'https://content.magnumphotos.com/wp-content/uploads/2021/03/cortex/nyc43702-scaled-1280x1869.jpg',
+    title: 'James Dean, Portrait Study',
+    caption: 'New York, 1955',
+    photographer: 'Dennis Stock',
   },
   {
-    image: 'https://www.magnumphotos.com/wp-content/uploads/2025/10/POM2025193G0121-copy-340x453.jpg',
-    title: 'Summertime: Margate',
-    caption: 'Olivia Arthur — life in Margate during the summer season',
-    photographer: 'Olivia Arthur',
+    image: 'https://content.magnumphotos.com/wp-content/uploads/2017/09/cortex/par30351-teaser-story-big.jpg',
+    title: 'Mexico City, 1934',
+    caption: 'Mexico City, 1934',
+    photographer: 'Henri Cartier-Bresson',
   },
   {
-    image: 'https://www.magnumphotos.com/wp-content/uploads/2026/01/PAR120141_-340x228.jpg',
-    title: 'Gathered Leaves',
-    caption: 'Compelling conceptual narratives — Alec Soth at Magnum Gallery',
-    photographer: 'Alec Soth',
+    image: 'https://content.magnumphotos.com/wp-content/uploads/2017/09/cortex/par74491-teaser-story-big.jpg',
+    title: 'Oaxaca Market, Mexico',
+    caption: 'Oaxaca, 1963',
+    photographer: 'Henri Cartier-Bresson',
   },
   {
-    image: 'https://www.magnumphotos.com/wp-content/uploads/2024/09/PAR21396_-340x224.jpg',
-    title: 'Democracy on the Brink',
-    caption: 'Critical reflections on the state of democracy',
-    photographer: 'Emin Özmen',
+    image: 'https://content.magnumphotos.com/wp-content/uploads/2017/09/cortex/par74847-teaser-xxl.jpg',
+    title: 'Mexico — Decisive Moment',
+    caption: 'Mexico, 1963',
+    photographer: 'Henri Cartier-Bresson',
   },
   {
-    image: 'https://www.magnumphotos.com/wp-content/uploads/2026/03/LON8632_-340x227.jpg',
-    title: 'Martin Parr: In Plain View',
-    caption: 'Candid street photography of everyday life at Magnum Gallery',
-    photographer: 'Martin Parr',
+    image: 'https://content.magnumphotos.com/wp-content/uploads/2017/09/cortex/par30358-teaser-story-big.jpg',
+    title: 'Mexico City Street Life',
+    caption: 'Mexico City, 1934',
+    photographer: 'Henri Cartier-Bresson',
   },
 ];
 
 const yanidelImages: PhotoItem[] = [
   {
+    image: 'https://yanidel.net/wp-content/uploads/2024/01/L1170095-2.jpg',
+    title: 'Argentina — World Cup',
+    caption: '2022 World Cup Celebrations',
+    photographer: 'Yannick Lebreton',
+  },
+  {
+    image: 'https://yanidel.net/wp-content/uploads/2023/08/a-first-date-at-the-pizzeria.jpg',
+    title: 'First Date at the Pizzeria',
+    caption: 'Paris Street, 2023',
+    photographer: 'Yannick Lebreton',
+  },
+  {
+    image: 'https://yanidel.net/wp-content/uploads/2023/07/M1233849b.jpg',
+    title: 'Tales of Superheroes',
+    caption: 'Buenos Aires, 2023',
+    photographer: 'Yannick Lebreton',
+  },
+  {
+    image: 'https://yanidel.net/wp-content/uploads/2023/06/M1232982.jpg',
+    title: 'The Desired Loneliness of Fishermen',
+    caption: 'Argentina, 2023',
+    photographer: 'Yannick Lebreton',
+  },
+  {
+    image: 'https://yanidel.net/wp-content/uploads/2023/05/M1232417.jpg',
+    title: 'Phenix Girl',
+    caption: 'Buenos Aires, 2023',
+    photographer: 'Yannick Lebreton',
+  },
+  {
     image: 'https://yanidel.net/wp-content/uploads/2022/06/Auburn-and-red-girl.jpg',
-    title: 'Auburn and Red Girl',
-    caption: 'A Paris street encounter in the golden hour',
-    photographer: 'Yanidel',
-  },
-  {
-    image: 'https://yanidel.net/wp-content/uploads/2022/06/untitled-1084731.jpg',
-    title: 'Untitled',
-    caption: 'Anonymous moment in the city of light',
-    photographer: 'Yanidel',
-  },
-  {
-    image: 'https://yanidel.net/wp-content/uploads/2022/06/2012-22.jpg',
-    title: '2012',
-    caption: 'A year distilled in silver and shadow',
-    photographer: 'Yanidel',
-  },
-  {
-    image: 'https://yanidel.net/wp-content/uploads/2022/06/Fangio-mom-1024x1024.jpg',
-    title: 'Fangio Mom',
-    caption: 'Fleeting human geometry on Parisian streets',
-    photographer: 'Yanidel',
-  },
-  {
-    image: 'https://yanidel.net/wp-content/uploads/2022/06/L1163086-1024x1024.jpg',
-    title: 'L1163086',
-    caption: 'Light and shadow on the boulevards',
-    photographer: 'Yanidel',
-  },
-  {
-    image: 'https://yanidel.net/wp-content/uploads/2022/06/DM9-1136299-1024x1024.jpg',
-    title: 'DM9-1136299',
-    caption: 'Street geometry of central Paris',
-    photographer: 'Yanidel',
-  },
-  {
-    image: 'https://yanidel.net/wp-content/uploads/2022/06/L1159737-1024x1024.jpg',
-    title: 'L1159737',
-    caption: 'Captured movement in the 6th arrondissement',
-    photographer: 'Yanidel',
-  },
-  {
-    image: 'https://yanidel.net/wp-content/uploads/2022/06/ASL1113564-1024x1024.jpg',
-    title: 'ASL1113564',
-    caption: 'The decisive moment along the Seine',
-    photographer: 'Yanidel',
+    title: 'Auburn Street Portrait',
+    caption: 'Paris, 2022',
+    photographer: 'Yannick Lebreton',
   },
 ];
 
 const remindersImages: PhotoItem[] = [
   {
+    image: 'https://reminders-project.org/wp-content/uploads/D3A1638-2-940x1175.jpg',
+    title: 'Kherson: On Nights of Falling Missiles',
+    caption: 'Ko Sasaki · Exhibition 2025',
+    photographer: 'Ko Sasaki',
+  },
+  {
     image: 'https://reminders-project.org/wp-content/uploads/Threshold-Images-in-Flux-940x1253.jpg',
     title: 'Threshold — Images in Flux',
-    caption: 'RPS KYOTO PAPEROLES. Apr 18–May 10, 2026.',
-    photographer: 'Tamaki Yoshida & Kazuhiko Matsumura',
-  },
-  {
-    image: 'https://reminders-project.org/wp-content/uploads/01_Tamaki-Yohidsa-@Tamaki-Yoshida-scaled.jpg',
-    title: 'Threshold I',
-    caption: 'Wildlife as mirror of human presence',
+    caption: 'Tamaki Yoshida & Kazuhiko Matsumura · RPS Kyoto',
     photographer: 'Tamaki Yoshida',
   },
   {
-    image: 'https://reminders-project.org/wp-content/uploads/02_Tamaki-Yohidsa-@Tamaki-Yoshida-scaled.jpg',
-    title: 'Threshold II',
-    caption: 'Borderlands between nature and civilization',
-    photographer: 'Tamaki Yoshida',
+    image: 'https://reminders-project.org/wp-content/uploads/17-11-940x1410.jpg',
+    title: 'The Weeping Fig',
+    caption: 'Katelyn-Jane Dunn · Open Studio',
+    photographer: 'Katelyn-Jane Dunn',
   },
   {
-    image: 'https://reminders-project.org/wp-content/uploads/03_Tamaki-Yohidsa-@Tamaki-Yoshida-scaled.jpg',
-    title: 'Threshold III',
-    caption: 'Traces that linger between life and death',
-    photographer: 'Tamaki Yoshida',
+    image: 'https://reminders-project.org/wp-content/uploads/3-25-940x668.jpg',
+    title: "The End's Approach",
+    caption: 'Manami Uetake · RPS 2025',
+    photographer: 'Manami Uetake',
   },
   {
-    image: 'https://reminders-project.org/wp-content/uploads/04_Tamaki-Yohidsa-@Tamaki-Yoshida-scaled.jpg',
-    title: 'Threshold IV',
-    caption: 'In the in-between of perception and reality',
-    photographer: 'Tamaki Yoshida',
-  },
-  {
-    image: 'https://reminders-project.org/wp-content/uploads/01_Kazuhiko-Matsumura_@Kyoto-Simbun-NewspaperHeartstrings.jpg',
-    title: 'Heartstrings I',
-    caption: 'Long-term inquiry into dementia and family',
-    photographer: 'Kazuhiko Matsumura',
-  },
-  {
-    image: 'https://reminders-project.org/wp-content/uploads/02_Kazuhiko-Matsumura_@Kyoto-Simbun-NewspaperHeartstrings.jpg',
-    title: 'Heartstrings II',
-    caption: 'Relationships shaped over time',
-    photographer: 'Kazuhiko Matsumura',
-  },
-  {
-    image: 'https://reminders-project.org/wp-content/uploads/03_Kazuhiko-Matsumura_@Kyoto-Simbun-NewspaperHeartstrings.jpg',
-    title: 'Heartstrings III',
-    caption: 'Social security, care, and lived memory',
-    photographer: 'Kazuhiko Matsumura',
-  },
-  {
-    image: 'https://reminders-project.org/wp-content/uploads/04_Kazuhiko-Matsumura_@Kyoto-Simbun-NewspaperHeartstrings.jpg',
-    title: 'Heartstrings IV',
-    caption: 'The history of families and communities',
-    photographer: 'Kazuhiko Matsumura',
+    image: 'https://reminders-project.org/wp-content/uploads/671826958_18097062278023777_627636589639553798_n-940x1253.jpg',
+    title: 'Conditions of the Image',
+    caption: 'Seeing and Understanding · Talk Series 2026',
+    photographer: 'Reminders Project',
   },
   {
     image: 'https://reminders-project.org/wp-content/uploads/01a-1-940x627.jpg',
     title: 'The Weeping Fig',
-    caption: "Artist book by Katelyn-Jane Dunn. Now available for order.",
+    caption: 'Artist Book Launch · Katelyn-Jane Dunn',
     photographer: 'Katelyn-Jane Dunn',
+  },
+  {
+    image: 'https://reminders-project.org/wp-content/uploads/A4_omote_RPS2026_OL2-940x1330.jpg',
+    title: 'Photobook as Object 2026',
+    caption: 'Showcase · Jan Rosseel & Yumi Goto',
+    photographer: 'Various',
+  },
+  {
+    image: 'https://reminders-project.org/wp-content/uploads/%E8%A1%A8%E7%B4%99jpg-940x627.jpg',
+    title: 'JONOKUCHI',
+    caption: 'Tamaki Yoshida Artist Book',
+    photographer: 'Tamaki Yoshida',
   },
 ];
 
 const philpenmanImages: PhotoItem[] = [
   {
-    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/1c/1cb2a97ecc464caa9a741a4b65dfcc93/240813_atlantic_city_034.jpg',
-    title: 'Atlantic City 034',
-    caption: 'August 2024. Atlantic City.',
+    image: 'https://static-assets.artlogic.net/w_4000,h_2500,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/65/65b0ec28aa1f4a3491e6dada50947395/220611_for_ig__046.jpg',
+    title: 'September 11 — The Scene',
+    caption: 'World Trade Center, 2001',
     photographer: 'Phil Penman',
   },
   {
-    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/exhibitions/images/feature_panels/1775/200711_atlantic_city_126.jpg',
-    title: 'Atlantic City 126',
-    caption: 'July 2020. Atlantic City.',
+    image: 'https://static-assets.artlogic.net/w_4000,h_2500,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/cf/cf041e6dfe9f44159d77210e6227e78d/220611_for_ig__034.jpg',
+    title: 'Running Firemen',
+    caption: 'September 11, 2001 · New York',
     photographer: 'Phil Penman',
   },
   {
-    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/exhibitions/images/feature_panels/1775/240813_atlantic_city_106.jpg',
-    title: 'Atlantic City 106',
-    caption: 'August 2024. Atlantic City.',
+    image: 'https://static-assets.artlogic.net/w_4000,h_2500,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/0c/0cad501927434e7dbd3f91dd46b3993a/220611_for_ig__054.jpg',
+    title: 'After the Towers',
+    caption: 'September 11, 2001 · Lower Manhattan',
     photographer: 'Phil Penman',
   },
   {
-    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/exhibitions/images/feature_panels/1775/200730__atlantic_city_nj_184.jpg',
-    title: 'Atlantic City NJ 184',
-    caption: 'July 2020. Atlantic City, New Jersey.',
+    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/cd/cd09a3f5a465425da48c98c4533c1048/201117_nyc_street_scenes_71.jpg',
+    title: 'NYC Street Scene',
+    caption: 'New York City, November 2020',
     photographer: 'Phil Penman',
   },
   {
-    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/1c/1cf08287e9b14ca4b87d93bb9f10129c/200711_atlantic_city_129.jpg',
-    title: 'Atlantic City 129',
-    caption: 'July 2020. Atlantic City.',
+    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/13/13e88f543ce14f4198fd3aa90677c4e2/200324_nyc_midtown_corona_virus_19.jpg',
+    title: 'Empty Midtown',
+    caption: 'New York Pandemic, March 24, 2020',
     photographer: 'Phil Penman',
   },
   {
-    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/96/968dd982c4f0470598e3a823d132af6d/240813_atlantic_city_121.jpg',
-    title: 'Atlantic City 121',
-    caption: 'August 2024. Atlantic City.',
+    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/b3/b37a3235432d4fe596f7b6d33d0acf01/210418_nyc_street_series_073.jpg',
+    title: 'Spring Street Series',
+    caption: 'New York City, April 2021',
     photographer: 'Phil Penman',
   },
   {
-    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/e6/e61c2187c3144b96940ee3f63ade3317/250712_atlantic_city_012.jpg',
-    title: 'Atlantic City 012',
-    caption: 'July 2025. Atlantic City.',
+    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/11/117bad30e26b4ccbb1960e3c706a8dc5/170114_team_sky_camp_019.jpg',
+    title: 'Team Sky Training Camp',
+    caption: 'Mallorca, January 2017',
     photographer: 'Phil Penman',
   },
   {
-    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/0d/0dba2a477065477bbbb0bbeb0b08f68c/250712_atlantic_city_133.jpg',
-    title: 'Atlantic City 133',
-    caption: 'July 2025. Atlantic City.',
+    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/e2/e211869fde464b16868be71546472ab1/210207_coney_island_snowstorm_069.jpg',
+    title: 'Coney Island Snowstorm',
+    caption: 'Brooklyn, February 2021',
     photographer: 'Phil Penman',
   },
-  {
-    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/1a/1a78bdb45c574c0cb2bc379d7005f592/200711_atlantic_city_032.jpg',
-    title: 'Atlantic City 032',
-    caption: 'July 2020. Atlantic City.',
-    photographer: 'Phil Penman',
-  },
-  {
-    image: 'https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/c6/c62de1f627e748b0bec33d64cbf4b2a7/230805_atlantic_city_049.jpg',
-    title: 'Atlantic City 049',
-    caption: 'August 2023. Atlantic City.',
-    photographer: 'Phil Penman',
-  },
-];
-
-const visualKeywords = [
-  'chiaroscuro', 'grain', 'geometric shadow', 'decisive moment', 'available light',
-  'tonal contrast', 'negative space', 'threshold', 'human presence',
-  'documentary', 'reportage', 'street narrative', 'silver gelatin', 'urban solitude',
-];
-
-const photographerCredits = [
-  { name: 'Thomas Hoepker', note: 'Magnum Photos' },
-  { name: 'Paul Fusco', note: 'Magnum Photos' },
-  { name: 'Jean Gaumy', note: 'Magnum Photos' },
-  { name: 'Olivia Arthur', note: 'Magnum Photos' },
-  { name: 'Alec Soth', note: 'Magnum Photos' },
-  { name: 'Emin Özmen', note: 'Magnum Photos' },
-  { name: 'Martin Parr', note: 'Magnum Photos' },
-  { name: 'Yannick Lebreton', note: 'Yanidel — Paris Street Photography' },
-  { name: 'Tamaki Yoshida', note: 'Reminders Photography Stronghold · RPS Kyoto Paperoles' },
-  { name: 'Kazuhiko Matsumura', note: 'Kyoto Shimbun · World Press Photo' },
-  { name: 'Phil Penman', note: 'Atlantic City Street Scenes' },
 ];
 
 const BWEditorialCards: React.FC = () => {
@@ -267,47 +210,54 @@ const BWEditorialCards: React.FC = () => {
   }, []);
 
   return (
-    <div id="bw-photo" className="bg-black min-h-screen font-serif text-white" style={{ fontFamily: 'Pretendard, system-ui, -apple-system, sans-serif' }}>
+    <div
+      className="bg-black min-h-screen font-serif text-white w-full max-w-full"
+      style={{ overflowX: 'clip' }}
+    >
 
       {/* Hero */}
       <header className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-black">
         <img
-          src="https://static-assets.artlogic.net/w_2400,c_limit,f_auto,fl_lossy,q_auto/ws-philpenman/usr/images/feature_panels/image/items/1c/1cb2a97ecc464caa9a741a4b65dfcc93/240813_atlantic_city_034.jpg"
+          src="https://content.magnumphotos.com/wp-content/uploads/2017/09/cortex/par30351-teaser-story-big.jpg"
           className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale"
-          alt="Editorial Hero"
+          alt="Editorial Hero — Henri Cartier-Bresson, Mexico City 1934"
         />
         <div className="relative z-10 text-center px-4">
-          <p className="text-zinc-400 tracking-[0.5em] uppercase text-sm mb-6">Editorial</p>
-          <h1 className="text-white text-7xl md:text-[10rem] font-serif italic leading-none mb-4">
-            Threshold
+          <p className="text-zinc-400 tracking-[0.5em] uppercase text-sm mb-6">Editorial · 2026-05-01</p>
+          <h1 className="text-white text-4xl sm:text-7xl md:text-[10rem] font-serif italic leading-none mb-4">
+            The Street &amp; The Sublime
           </h1>
           <p className="text-zinc-300 text-lg tracking-[0.2em] uppercase">Photography Review</p>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-24">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-24">
 
         {/* Editorial Note */}
         <section className="mb-32 max-w-2xl mx-auto text-center border-t border-b border-zinc-700 py-16">
-          <p className="text-2xl font-light leading-relaxed text-zinc-300 italic">
-            "Between chiaroscuro and grain, four photographic visions converge — Magnum's documentary
-            legacy, Yanidel's Parisian geometry, the intimate inquiry of Reminders Photography
-            Stronghold, and Phil Penman's Atlantic City chronicles. Each image refuses to resolve.
-            Monochrome is not an absence of color; it is an abundance of shadow."
+          <p className="text-xl sm:text-2xl font-light leading-relaxed text-zinc-300 italic">
+            "From Cartier-Bresson's decisive moment in Mexico to Dennis Stock's James Dean in rain-soaked New York — these photographs share an instinct for the threshold between public and private, between seeing and being seen."
           </p>
         </section>
 
         <div className="space-y-40">
 
-          {/* Magnum Photos — Full-bleed staggered grid */}
+          {/* Magnum Photos — Staggered 4-col grid */}
           <section>
-            <h3 className="text-4xl font-serif mb-2 text-white">Magnum Photos</h3>
-            <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">Classic Street &amp; Documentary</p>
+            <h3 className="text-2xl sm:text-4xl font-serif mb-2 text-white flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-white/10">
+                <Camera className="w-6 h-6 text-zinc-300" strokeWidth={1.5} />
+              </span>
+              Magnum Photos
+            </h3>
+            <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">
+              Dennis Stock · Henri Cartier-Bresson — Classic Street
+            </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               {magnumImages.map((item, i) => (
                 <div
                   key={i}
-                  className="relative overflow-hidden group aspect-[3/4] cursor-zoom-in"
+                  className={`relative overflow-hidden group cursor-zoom-in ${i % 3 === 0 ? 'aspect-[3/4]' : 'aspect-square'}`}
                   onClick={() => setLightbox({ src: item.image, title: item.title, photographer: item.photographer })}
                 >
                   <img
@@ -315,37 +265,43 @@ const BWEditorialCards: React.FC = () => {
                     alt={item.title}
                     className="grayscale w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                    <p className="text-white text-sm font-serif">{item.title}</p>
-                    <p className="text-zinc-400 text-xs mt-1">{item.caption}</p>
-                    <p className="text-zinc-500 text-xs mt-1 tracking-widest uppercase">{item.photographer}</p>
+                  <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <p className="text-white text-xs font-serif leading-snug">{item.title}</p>
+                    <p className="text-zinc-400 text-[10px] mt-0.5">{item.caption}</p>
                   </div>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* Yanidel — Large feature */}
+          {/* Yanidel — Large 2-col feature */}
           <section>
-            <h3 className="text-4xl font-serif mb-2 text-white">Yanidel</h3>
-            <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">Paris Street Photography · Yannick Lebreton</p>
+            <h3 className="text-2xl sm:text-4xl font-serif mb-2 text-white flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-white/10">
+                <Eye className="w-6 h-6 text-zinc-300" strokeWidth={1.5} />
+              </span>
+              Yanidel
+            </h3>
+            <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">
+              Paris Street Photography · Yannick Lebreton
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {yanidelImages.map((item, i) => (
                 <div
                   key={i}
-                  className="cursor-zoom-in group"
+                  className="relative overflow-hidden cursor-zoom-in group"
                   onClick={() => setLightbox({ src: item.image, title: item.title, photographer: item.photographer })}
                 >
-                  <div className="relative overflow-hidden aspect-[4/3]">
+                  <div className={`overflow-hidden ${i === 0 ? 'aspect-[4/3]' : 'aspect-[3/2]'}`}>
                     <img
                       src={item.image}
                       alt={item.title}
                       className="grayscale w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
-                  <div className="mt-4">
-                    <p className="text-white font-serif text-xl">{item.title}</p>
-                    <p className="text-zinc-500 text-sm mt-2 leading-relaxed">{item.caption}</p>
+                  <div className="mt-3">
+                    <p className="text-white font-serif text-base leading-snug">{item.title}</p>
+                    <p className="text-zinc-500 text-xs mt-1 tracking-wide">{item.caption}</p>
                   </div>
                 </div>
               ))}
@@ -354,8 +310,15 @@ const BWEditorialCards: React.FC = () => {
 
           {/* Reminders Photography Stronghold — Masonry */}
           <section>
-            <h3 className="text-4xl font-serif mb-2 text-white">Reminders Photography Stronghold</h3>
-            <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">Asian Documentary · Photobook Culture · RPS Kyoto Paperoles</p>
+            <h3 className="text-2xl sm:text-4xl font-serif mb-2 text-white flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-white/10">
+                <Globe className="w-6 h-6 text-zinc-300" strokeWidth={1.5} />
+              </span>
+              Reminders Photography Stronghold
+            </h3>
+            <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">
+              Asian Documentary · Kyoto &amp; Beyond
+            </p>
             <div className="columns-1 md:columns-3 gap-4 space-y-4">
               {remindersImages.map((item, i) => (
                 <div
@@ -370,22 +333,29 @@ const BWEditorialCards: React.FC = () => {
                       className="grayscale w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
-                  <p className="text-zinc-400 text-xs mt-2 tracking-wider uppercase">{item.title}</p>
-                  <p className="text-zinc-600 text-xs mt-1">{item.photographer}</p>
+                  <p className="text-zinc-400 text-xs mt-2 tracking-wider uppercase leading-snug">{item.title}</p>
+                  <p className="text-zinc-600 text-[10px] mt-0.5">{item.caption}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* Phil Penman — Full-bleed staggered grid */}
+          {/* Phil Penman — Staggered 4-col grid */}
           <section>
-            <h3 className="text-4xl font-serif mb-2 text-white">Phil Penman</h3>
-            <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">Atlantic City Street Scenes</p>
+            <h3 className="text-2xl sm:text-4xl font-serif mb-2 text-white flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg bg-white/10">
+                <Aperture className="w-6 h-6 text-zinc-300" strokeWidth={1.5} />
+              </span>
+              Phil Penman
+            </h3>
+            <p className="text-zinc-500 tracking-widest uppercase text-xs mb-12">
+              NYC Street Scenes · Features Edition
+            </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               {philpenmanImages.map((item, i) => (
                 <div
                   key={i}
-                  className="relative overflow-hidden group aspect-[3/4] cursor-zoom-in"
+                  className={`relative overflow-hidden group cursor-zoom-in ${i % 5 === 0 ? 'col-span-2 aspect-[16/9]' : 'aspect-[3/4]'}`}
                   onClick={() => setLightbox({ src: item.image, title: item.title, photographer: item.photographer })}
                 >
                   <img
@@ -393,9 +363,9 @@ const BWEditorialCards: React.FC = () => {
                     alt={item.title}
                     className="grayscale w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                    <p className="text-white text-sm font-serif">{item.title}</p>
-                    <p className="text-zinc-400 text-xs mt-1">{item.caption}</p>
+                  <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <p className="text-white text-xs font-serif leading-snug">{item.title}</p>
+                    <p className="text-zinc-400 text-[10px] mt-0.5">{item.caption}</p>
                   </div>
                 </div>
               ))}
@@ -409,20 +379,30 @@ const BWEditorialCards: React.FC = () => {
           <div>
             <h4 className="text-xl font-serif mb-8 text-zinc-400 tracking-widest uppercase">Visual Language</h4>
             <div className="flex flex-wrap gap-3">
-              {visualKeywords.map((kw, i) => (
-                <Badge key={i} variant="outline" className="text-zinc-400 border-zinc-700 bg-transparent px-3 py-1 text-xs tracking-widest uppercase h-auto rounded-none">
+              {['chiaroscuro', 'grain texture', 'decisive moment', 'negative space', 'urban solitude', 'stark contrast', 'documentary realism', 'geometric shadow', 'flash photography', 'night street'].map((kw) => (
+                <span
+                  key={kw}
+                  className="text-zinc-300 text-xs tracking-widest uppercase border border-zinc-700 px-3 py-1.5"
+                >
                   {kw}
-                </Badge>
+                </span>
               ))}
             </div>
           </div>
           <div>
             <h4 className="text-xl font-serif mb-8 text-zinc-400 tracking-widest uppercase">Photographers</h4>
             <ul className="space-y-3 text-zinc-300 font-light">
-              {photographerCredits.map((p, i) => (
-                <li key={i}>
+              {[
+                { name: 'Dennis Stock', note: 'Magnum Photos — James Dean, New York 1955' },
+                { name: 'Henri Cartier-Bresson', note: 'Magnum Photos — Mexico City, 1934–1963' },
+                { name: 'Yannick Lebreton', note: 'Yanidel — Paris & Buenos Aires' },
+                { name: 'Ko Sasaki', note: 'Reminders — Kherson Documentary, 2025' },
+                { name: 'Tamaki Yoshida', note: 'Reminders — JONOKUCHI, 2026' },
+                { name: 'Phil Penman', note: 'Features — NYC Street & September 11' },
+              ].map((p) => (
+                <li key={p.name} className="flex flex-col">
                   <span className="text-white font-serif">{p.name}</span>
-                  <span className="text-zinc-600 text-sm ml-2">— {p.note}</span>
+                  <span className="text-zinc-600 text-xs tracking-wide mt-0.5">{p.note}</span>
                 </li>
               ))}
             </ul>
@@ -432,7 +412,7 @@ const BWEditorialCards: React.FC = () => {
       </main>
 
       <footer className="text-center py-12 text-zinc-600 text-xs tracking-widest uppercase border-t border-zinc-900">
-        Generated 2026-04-10 · B&amp;W Editorial Intelligence
+        Generated 2026-05-01 · B&amp;W Editorial Intelligence
       </footer>
 
       {/* Lightbox */}
@@ -441,12 +421,12 @@ const BWEditorialCards: React.FC = () => {
           className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center cursor-zoom-out"
           onClick={() => setLightbox(null)}
         >
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-6 right-8 text-zinc-400 hover:text-white hover:bg-white/10 w-10 h-10 text-2xl"
+          <button
+            className="absolute top-6 right-8 text-zinc-400 hover:text-white text-3xl leading-none"
             onClick={() => setLightbox(null)}
-          >×</Button>
+          >
+            ×
+          </button>
           <img
             src={lightbox.src}
             alt={lightbox.title}

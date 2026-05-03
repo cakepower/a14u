@@ -450,9 +450,9 @@ STEP 1에서 수집한 검색 결과 최상단 5개 룸을 `firecrawl_scrape`로
 import AirbnbResearch from "./components/Trends/airbnb";
 ```
 
-### 디자인 시스템 지침 (`__context/design-style-guide.md` 기준)
+### 디자인 시스템 지침 (`__context/design.md` 기준)
 
-컴포넌트 생성 전 `__context/design-style-guide.md` 전체를 Read하세요.
+컴포넌트 생성 전 `__context/design.md` 전체를 Read하세요.
 
 탭 아이콘 매핑:
 - 숙소 리뷰: `Home` → `bg-blue-500/10 text-blue-600`

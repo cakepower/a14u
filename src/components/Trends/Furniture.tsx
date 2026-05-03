@@ -1,11 +1,47 @@
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 
 type LightboxState = { src: string; title: string; tag: string } | null;
 type TabKey = 'trends' | 'market' | 'problems' | 'opportunities';
+
+const SPRING = 'cubic-bezier(0.16, 1, 0.3, 1)';
+
+// ── Solar-style inline SVG icons ──────────────────────────────────────────────
+const IconHome = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <path stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9.5Z" />
+    <path stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" d="M9 21V13h6v8" />
+  </svg>
+);
+
+const IconChart = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <path stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18" />
+    <path stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M7 16.5l4-5.5 4 3 4-7" />
+  </svg>
+);
+
+const IconAlert = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <path stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+    <path stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" d="M12 9v4M12 17h.01" />
+  </svg>
+);
+
+const IconTarget = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="12" cy="12" r="1.5" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+);
+
+const IconPin = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <path stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M12 22v-8M15.5 8V4H8.5v4l-2 4h11l-2-4Z" />
+  </svg>
+);
 
 // ── 상수 ────────────────────────────────────────────────────────────────────
 const TODAY_DATE = '2026-04-13';
@@ -58,35 +94,28 @@ const sources = [
     author: '집들이에디터',
     likes: 26, scraps: 157, views: 7505,
     cover: `${BASE_IMG}/cards/project/171388264178904403.jpg`,
-    badge: '★ 조회 7,505',
+    badge: '조회 7,505',
     tags: ['#신혼부부', '#2인최적화', '#굳이의낭만', '#가전오브제화', '#취향팔레트'],
     images: [
-      // 2인 최적화 — 싱글베드
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470566105153600.jpg`, caption: '싱글베드 2개로 따로 또 같이 — 동그리ㅎㅎㅎ 님', trend: '2인최적화' },
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470566187622464.jpg`, caption: '멀티패널 분리형 침대 배치', trend: '2인최적화' },
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470566252859520.jpg`, caption: '각자의 수면 공간 — 수면 질 개선', trend: '2인최적화' },
-      // 공유 라운지
       { url: `${BASE_IMG}/cards/project/171385816501315681.jpg`, caption: '따로 또 같이 공유 라운지 — 쿠우홈 님', trend: '라운지' },
       { url: `${BASE_IMG}/cards/project/171360277379578339.jpg`, caption: '사람 중심 가구 배치 — 대화 구조 핵심', trend: '라운지' },
-      // 굳이의 낭만 — 다이닝
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470574060277888.jpg`, caption: '느리게 일상을 공유하는 다이닝 — honeymoon.house 님', trend: '굳이낭만' },
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470574129598464.jpg`, caption: '솥밥 짓는 시간도 이벤트가 되는 주방', trend: '굳이낭만' },
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470574009704512.jpg`, caption: '거실로 옮긴 다이닝 — 느린 시간 선택', trend: '굳이낭만' },
-      // 음악 라운지
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470576965017600.jpg`, caption: '음악과 책이 있는 라운지 거실 — JULY.APT 님', trend: '굳이낭만' },
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470576326664256.jpg`, caption: 'LP·CD 수납장과 스피커 중심 음악 공간', trend: '굳이낭만' },
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470576636657728.jpg`, caption: '소파 옆 독서 공간 — 둘만의 자리', trend: '굳이낭만' },
-      // 가전 오브제화
       { url: `${BASE_IMG}/cards/project/173297553366617974.jpg`, caption: '가전이 인테리어 일부가 된 주방 — 노랭홈 님', trend: '가전오브제' },
       { url: `${BASE_IMG}/cards/project/173297622337563733.jpg`, caption: '냉장고·오븐·커피머신 소재·컬러 통일', trend: '가전오브제' },
       { url: `${BASE_IMG}/cards/project/173303257913722647.jpg`, caption: '빌트인 정수기까지 톤 맞춘 프리미엄 주방', trend: '가전오브제' },
       { url: `${BASE_IMG}/cards/project/173297775211927566.jpg`, caption: '아일랜드 상판 빌트인 식기세척기 — 오브제 역할', trend: '가전오브제' },
       { url: `${BASE_IMG}/cards/project/173296722349808168.jpg`, caption: '거실의 소형 가전도 공간 오브제로', trend: '가전오브제' },
-      // 모듈 아일랜드
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470582438469760.png`, caption: '모듈장 아일랜드 겸 와인셀러 — nizi.zip 님', trend: '모듈' },
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470582368252032.jpg`, caption: '낮엔 작업실, 저녁엔 와인바로 변하는 공간', trend: '모듈' },
       { url: `${BASE_PRS}/contents/uploads/cards/project/v1-470582646964224.jpg`, caption: '반대편은 소가전·주방용품 수납 — 유연한 모듈', trend: '모듈' },
-      // 취향 팔레트
       { url: `${BASE_IMG}/cards/project/171876979701756529.jpg`, caption: '블랙으로 중심 잡은 취향 믹스매치 — jiiiyeon_ine 님', trend: '취향팔레트' },
       { url: `${BASE_IMG}/cards/project/171862443478873996.jpg`, caption: '작업 공간에서도 드러나는 두 취향의 균형', trend: '취향팔레트' },
       { url: `${BASE_IMG}/cards/projects/175075376513714820.jpg`, caption: '모던+동양미 오브제존 조화 — joienevv 님', trend: '취향팔레트' },
@@ -170,16 +199,16 @@ const marketData = {
 
 // ── 소비자 문제 TOP 10 ────────────────────────────────────────────────────────
 const problemMatrix = [
-  { rank: 1, problem: '고가 가구 내구성 불일치', urgency: 9, wtp: 9, complaintCount: 4, growthRate: '↑ 급증', flags: ['🔴', '🚀'], quote: '"침대 프레임 진짜 힘주지 마세요..ㅠㅠ" / "중고방어도 안 됩니다"' },
-  { rank: 2, problem: '이사 시 대형 가구 이동 불가', urgency: 8, wtp: 9, complaintCount: 3, growthRate: '↑ 급증', flags: ['🔴', '🚀'], quote: '"이사 때 이동 어려움" / "너무 비싼 가구 특히 프레임은 피해라"' },
-  { rank: 3, problem: '트렌드 교체 주기 가속', urgency: 7, wtp: 8, complaintCount: 2, growthRate: '↑ 급증', flags: ['🚀'], quote: '"오래 써도 질리지 않을까요?" — 상담 현장 1위 질문' },
-  { rank: 4, problem: '자연소재 유지보수 비용 불명확', urgency: 7, wtp: 8, complaintCount: 2, growthRate: '↑ 증가', flags: ['🔴', '🚀'], quote: '"관리하기 어렵지는 않을까요?" / "유지보수 비용이 많이 들까요?"' },
-  { rank: 5, problem: '가전 오브제화 실패', urgency: 6, wtp: 7, complaintCount: 2, growthRate: '↑ 급증', flags: ['🚀'], quote: '"냉장고·오븐·커피머신 톤 맞추기" — 제품 선택지 부족·비용 과다' },
-  { rank: 6, problem: '구매 후 공간 크기 미스매치', urgency: 8, wtp: 7, complaintCount: 3, growthRate: '↑ 증가', flags: ['🔴'], quote: '"소파 넓어서 손님 침대로 사용" — 크기 예측 실패 빈발' },
-  { rank: 7, problem: '조명 설계 전문성 부족', urgency: 6, wtp: 7, complaintCount: 1, growthRate: '↑ 급증', flags: ['🚀'], quote: '"밝기보다 분위기" 트렌드 전환 → 설계 난도 급상승' },
-  { rank: 8, problem: '취향 믹스매치 실패', urgency: 5, wtp: 6, complaintCount: 1, growthRate: '↑ 급증', flags: ['🚀'], quote: '"같아야가 아닌 어울려야" — 결과물 기대 이하' },
-  { rank: 9, problem: '리모델링 비용 과다·정보 비대칭', urgency: 6, wtp: 6, complaintCount: 1, growthRate: '↑ 증가', flags: ['🚀'], quote: '무몰딩·오픈형 주방 시공비 예산 초과 — 전문가 상담 수요 급증' },
-  { rank: 10, problem: '가구 구매 실패 후 중고 처분 불가', urgency: 5, wtp: 6, complaintCount: 2, growthRate: '↑ 증가', flags: ['🔴'], quote: '"가구는 비싼거 사는게 아닙니다 ㅎㅋ"' },
+  { rank: 1, problem: '고가 가구 내구성 불일치', urgency: 9, wtp: 9, complaintCount: 4, growthRate: '↑ 급증', flags: ['red', 'grow'], quote: '"침대 프레임 진짜 힘주지 마세요..ㅠㅠ" / "중고방어도 안 됩니다"' },
+  { rank: 2, problem: '이사 시 대형 가구 이동 불가', urgency: 8, wtp: 9, complaintCount: 3, growthRate: '↑ 급증', flags: ['red', 'grow'], quote: '"이사 때 이동 어려움" / "너무 비싼 가구 특히 프레임은 피해라"' },
+  { rank: 3, problem: '트렌드 교체 주기 가속', urgency: 7, wtp: 8, complaintCount: 2, growthRate: '↑ 급증', flags: ['grow'], quote: '"오래 써도 질리지 않을까요?" — 상담 현장 1위 질문' },
+  { rank: 4, problem: '자연소재 유지보수 비용 불명확', urgency: 7, wtp: 8, complaintCount: 2, growthRate: '↑ 증가', flags: ['red', 'grow'], quote: '"관리하기 어렵지는 않을까요?" / "유지보수 비용이 많이 들까요?"' },
+  { rank: 5, problem: '가전 오브제화 실패', urgency: 6, wtp: 7, complaintCount: 2, growthRate: '↑ 급증', flags: ['grow'], quote: '"냉장고·오븐·커피머신 톤 맞추기" — 제품 선택지 부족·비용 과다' },
+  { rank: 6, problem: '구매 후 공간 크기 미스매치', urgency: 8, wtp: 7, complaintCount: 3, growthRate: '↑ 증가', flags: ['red'], quote: '"소파 넓어서 손님 침대로 사용" — 크기 예측 실패 빈발' },
+  { rank: 7, problem: '조명 설계 전문성 부족', urgency: 6, wtp: 7, complaintCount: 1, growthRate: '↑ 급증', flags: ['grow'], quote: '"밝기보다 분위기" 트렌드 전환 → 설계 난도 급상승' },
+  { rank: 8, problem: '취향 믹스매치 실패', urgency: 5, wtp: 6, complaintCount: 1, growthRate: '↑ 급증', flags: ['grow'], quote: '"같아야가 아닌 어울려야" — 결과물 기대 이하' },
+  { rank: 9, problem: '리모델링 비용 과다·정보 비대칭', urgency: 6, wtp: 6, complaintCount: 1, growthRate: '↑ 증가', flags: ['grow'], quote: '무몰딩·오픈형 주방 시공비 예산 초과 — 전문가 상담 수요 급증' },
+  { rank: 10, problem: '가구 구매 실패 후 중고 처분 불가', urgency: 5, wtp: 6, complaintCount: 2, growthRate: '↑ 증가', flags: ['red'], quote: '"가구는 비싼거 사는게 아닙니다 ㅎㅋ"' },
 ];
 
 // ── 기회 영역 ────────────────────────────────────────────────────────────────
@@ -222,15 +251,31 @@ const opportunities = [
 ];
 
 // ── 컴포넌트 ─────────────────────────────────────────────────────────────────
-
 const FurnitureTrendCards: React.FC = () => {
   const [lightbox, setLightbox] = React.useState<LightboxState>(null);
   const [activeTab, setActiveTab] = React.useState<TabKey>('trends');
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightbox(null); };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightbox(null); };
+    window.addEventListener('keydown', handleKey);
+
+    const container = containerRef.current;
+    if (container) {
+      const els = container.querySelectorAll<HTMLElement>('[data-sr]');
+      const observer = new IntersectionObserver(
+        (entries) => entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add('sr-visible');
+            observer.unobserve(entry.target);
+          }
+        }),
+        { threshold: 0.05, rootMargin: '0px 0px -40px 0px' }
+      );
+      els.forEach((el) => observer.observe(el));
+      return () => { window.removeEventListener('keydown', handleKey); observer.disconnect(); };
+    }
+    return () => window.removeEventListener('keydown', handleKey);
   }, []);
 
   const colorMap: Record<string, { border: string; badge: string; bg: string; text: string }> = {
@@ -243,14 +288,35 @@ const FurnitureTrendCards: React.FC = () => {
     rose:    { border: 'border-rose-300',    badge: 'bg-rose-100 text-rose-700',       bg: 'bg-rose-50',     text: 'text-rose-700' },
   };
 
+  // ── Eyebrow tag helper ──────────────────────────────────────────────────────
+  const Eyebrow = ({ label, tint = 'neutral' }: { label: string; tint?: 'neutral' | 'red' | 'green' | 'amber' }) => {
+    const styles: Record<string, React.CSSProperties> = {
+      neutral: { background: 'rgba(0,0,0,0.06)', color: '#888' },
+      red:     { background: 'rgba(220,38,38,0.08)', color: '#dc2626' },
+      green:   { background: 'rgba(16,185,129,0.08)', color: '#059669' },
+      amber:   { background: 'rgba(245,158,11,0.10)', color: '#d97706' },
+    };
+    return (
+      <span className="block mb-3 rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.15em] font-semibold w-fit"
+        style={styles[tint]}>
+        {label}
+      </span>
+    );
+  };
+
   return (
     <div
+      ref={containerRef}
       className="bg-white min-h-screen text-slate-900"
       style={{ fontFamily: 'Pretendard, system-ui, -apple-system, sans-serif' }}
     >
+      <style>{`
+        [data-sr] { opacity: 0; transform: translateY(1.5rem); transition: opacity 0.65s ${SPRING}, transform 0.65s ${SPRING}; }
+        [data-sr].sr-visible { opacity: 1; transform: translateY(0); }
+      `}</style>
 
       {/* ── Hero ── */}
-      <header className="relative h-[70vh] flex items-center justify-center overflow-hidden bg-black">
+      <header className="relative min-h-[70dvh] flex items-center justify-center overflow-hidden bg-[#0a0a0a]">
         <img
           src={`${BASE_PRS}/content/uploads/cards/advice/v1-477286334566464.jpg`}
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -258,11 +324,16 @@ const FurnitureTrendCards: React.FC = () => {
         />
         <div className="relative z-10 text-center px-4">
           <p className="text-white text-xs tracking-[0.5em] uppercase opacity-60 mb-4">오늘의집 리서치 · {TODAY_DATE}</p>
-          <h1 className="text-white text-6xl md:text-8xl font-serif italic mb-4">Furniture<br />Trends</h1>
-          <p className="text-white text-lg tracking-[0.3em] uppercase opacity-80">2026 홈퍼니싱 인텔리전스</p>
+          <h1 className="text-white text-5xl sm:text-6xl md:text-8xl font-serif italic tracking-tight mb-4">
+            Furniture<br />Trends
+          </h1>
+          <p className="text-white text-sm sm:text-lg tracking-[0.3em] uppercase opacity-80">2026 홈퍼니싱 인텔리전스</p>
           <div className="flex justify-center gap-2 mt-6 flex-wrap">
             {['무몰딩', '자연소재', '믹스매치', '조명오브제', '모듈가구', '신혼2인'].map(tag => (
-              <Badge key={tag} variant="outline" className="text-white/70 border-white/30 bg-transparent text-xs">{tag}</Badge>
+              <span key={tag}
+                className="text-white/70 border border-white/30 text-xs px-3 py-1 rounded-full">
+                {tag}
+              </span>
             ))}
           </div>
         </div>
@@ -271,7 +342,7 @@ const FurnitureTrendCards: React.FC = () => {
       {/* ── Tabs ── */}
       <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabKey)}>
 
-        {/* Sticky tab nav — scrollable on mobile */}
+        {/* Sticky tab nav */}
         <div className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
           <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-none">
             <TabsList
@@ -279,17 +350,17 @@ const FurnitureTrendCards: React.FC = () => {
               className="flex w-max min-w-full gap-1 px-4 sm:px-6 py-2 bg-transparent h-auto rounded-none"
             >
               {[
-                { key: 'trends',        label: '🏠 2026 트렌드' },
-                { key: 'market',        label: '📊 시장 분석' },
-                { key: 'problems',      label: '🔴 소비자 문제' },
-                { key: 'opportunities', label: '🎯 기회 영역' },
+                { key: 'trends',        icon: <IconHome className="w-4 h-4" />,   label: '2026 트렌드' },
+                { key: 'market',        icon: <IconChart className="w-4 h-4" />,  label: '시장 분석' },
+                { key: 'problems',      icon: <IconAlert className="w-4 h-4" />,  label: '소비자 문제' },
+                { key: 'opportunities', icon: <IconTarget className="w-4 h-4" />, label: '기회 영역' },
               ].map(tab => (
                 <TabsTrigger
                   key={tab.key}
                   value={tab.key}
-                  className="whitespace-nowrap px-3 py-2 text-sm font-medium rounded-md"
+                  className="whitespace-nowrap px-3 py-2 text-sm font-medium rounded-md flex items-center gap-1.5"
                 >
-                  {tab.label}
+                  {tab.icon}{tab.label}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -300,59 +371,71 @@ const FurnitureTrendCards: React.FC = () => {
 
         {/* ══ TAB: 트렌드 ══ */}
         <TabsContent value="trends">
-          <section>
-            <h2 className="text-5xl font-serif mb-2 border-b pb-4">🏠 2026 인테리어·가구 트렌드</h2>
-            <p className="text-slate-500 text-sm tracking-widest uppercase mb-12">
+          <section data-sr>
+            <Eyebrow label="Trend Intelligence" />
+            <h2 className="text-4xl sm:text-5xl font-serif tracking-tight mb-2 border-b border-slate-200 pb-4">
+              2026 인테리어·가구 트렌드
+            </h2>
+            <p className="text-slate-400 text-xs sm:text-sm tracking-widest uppercase mb-12">
               오늘의집 실시간 스크래핑 · Firecrawl MCP · {TODAY_DATE}
             </p>
 
             {/* ── 출처 아티클 카드 ── */}
             <div className="mb-16">
-              <h3 className="text-2xl font-serif mb-6 flex items-center gap-2">
-                <span className="text-slate-400 text-base">📌</span> 출처 아티클
-              </h3>
+              <div className="flex items-center gap-2 mb-6">
+                <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100">
+                  <IconPin className="w-4 h-4 text-slate-500" />
+                </span>
+                <h3 className="text-xl sm:text-2xl font-serif tracking-tight">출처 아티클</h3>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {sources.map((src) => (
-                  <Card
+                  <div
                     key={src.id}
-                    className="group overflow-hidden border border-slate-100 hover:shadow-xl transition-shadow duration-300 ring-0 p-0"
+                    className="group cursor-pointer bg-black/[0.04] ring-1 ring-black/[0.05] p-[5px] rounded-[18px] hover:scale-[1.02] active:scale-[0.98]"
+                    style={{ transition: `transform 0.45s ${SPRING}` }}
                     onClick={() => window.open(src.url, '_blank')}
-                    style={{ cursor: 'pointer' }}
                   >
-                    <div className="overflow-hidden h-44 bg-slate-100 relative">
-                      <img
-                        src={src.cover}
-                        alt={src.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <Badge className="absolute top-3 left-3 bg-slate-900/80 text-white border-0 backdrop-blur-sm text-xs">
-                        {src.badge}
-                      </Badge>
+                    <div className="bg-white rounded-[13px] overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
+                      <div className="overflow-hidden h-44 bg-slate-100 relative">
+                        <img
+                          src={src.cover}
+                          alt={src.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-105"
+                          style={{ transition: `transform 0.45s ${SPRING}` }}
+                        />
+                        <span className="absolute top-3 left-3 bg-[#0a0a0a]/80 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-sm">
+                          {src.badge}
+                        </span>
+                      </div>
+                      <div className="pt-4 px-5 pb-1 flex-1 flex flex-col">
+                        <h4 className="text-[0.9rem] font-semibold leading-snug text-[#111] mb-2 group-hover:underline line-clamp-2">{src.title}</h4>
+                        <p className="text-slate-400 text-xs mb-3" style={{ wordBreak: 'keep-all' }}>by {src.author}</p>
+                        <div className="flex gap-3 text-xs text-slate-400 mb-4">
+                          <span>{src.likes} 좋아요</span>
+                          <span>{src.scraps} 스크랩</span>
+                          <span>{src.views.toLocaleString()} 조회</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1 pb-4">
+                          {src.tags.slice(0, 3).map(t => (
+                            <span key={t} className="bg-[#111]/5 text-[#333] text-[10px] font-medium px-2 py-0.5 rounded-full">{t}</span>
+                          ))}
+                        </div>
+                      </div>
+                      <div style={{ height: '2px', background: '#F5C800' }} />
                     </div>
-                    <CardContent className="pt-4 flex-1 flex flex-col">
-                      <h4 className="font-medium text-base leading-snug mb-2 group-hover:underline line-clamp-2">{src.title}</h4>
-                      <p className="text-slate-400 text-xs mb-3">by {src.author}</p>
-                      <div className="flex gap-3 text-xs text-slate-400 mb-4">
-                        <span>❤️ {src.likes}</span>
-                        <span>🔖 {src.scraps}</span>
-                        <span>👁 {src.views.toLocaleString()}</span>
-                      </div>
-                      <div className="flex flex-wrap gap-1 mt-auto">
-                        {src.tags.slice(0, 3).map(t => (
-                          <Badge key={t} variant="secondary" className="text-xs">{t}</Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* ── 아티클별 이미지 갤러리 ── */}
             {sources.map((src) => (
-              <div key={src.id} className="mb-16">
+              <div key={src.id} className="mb-16" data-sr>
                 <div className="flex items-center justify-between mb-5">
-                  <h3 className="text-xl font-serif">
+                  <h3 className="text-xl font-serif tracking-tight">
                     {src.title.split('｜')[0]}
                     <span className="text-slate-400 text-sm font-sans ml-2">— {src.images.length}장</span>
                   </h3>
@@ -361,6 +444,7 @@ const FurnitureTrendCards: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-blue-600 hover:underline flex items-center gap-1 shrink-0"
+                    style={{ transition: `color 0.3s ${SPRING}` }}
                   >
                     원문 보기 ↗
                   </a>
@@ -370,19 +454,31 @@ const FurnitureTrendCards: React.FC = () => {
                     <div
                       key={idx}
                       className="group relative aspect-square overflow-hidden rounded-xl bg-slate-100 cursor-zoom-in"
+                      style={{ transition: `transform 0.45s ${SPRING}` }}
                       onClick={() => setLightbox({ src: img.url, title: img.caption, tag: img.trend })}
                     >
                       <img
                         src={img.url}
                         alt={img.caption}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-110"
+                        style={{ transition: `transform 0.45s ${SPRING}` }}
                         loading="lazy"
+                        decoding="async"
                       />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300" />
-                      <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <p className="text-white text-xs leading-snug line-clamp-2">{img.caption}</p>
+                      <div
+                        className="absolute inset-0 bg-black/0 group-hover:bg-black/40"
+                        style={{ transition: `background-color 0.45s ${SPRING}` }}
+                      />
+                      <div
+                        className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100"
+                        style={{ transition: `opacity 0.45s ${SPRING}` }}
+                      >
+                        <p className="text-white text-xs leading-snug line-clamp-2" style={{ wordBreak: 'keep-all' }}>{img.caption}</p>
                       </div>
-                      <span className="absolute top-2 right-2 bg-white/80 backdrop-blur-sm text-slate-700 text-[10px] px-1.5 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span
+                        className="absolute top-2 right-2 bg-white/80 backdrop-blur-sm text-slate-700 text-[10px] px-1.5 py-0.5 rounded-full opacity-0 group-hover:opacity-100"
+                        style={{ transition: `opacity 0.45s ${SPRING}` }}
+                      >
                         #{img.trend}
                       </span>
                     </div>
@@ -392,46 +488,64 @@ const FurnitureTrendCards: React.FC = () => {
             ))}
 
             {/* ── 2026 트렌드 인사이트 ── */}
-            <div>
-              <h3 className="text-2xl font-serif mb-6 border-t pt-8">📐 2026 트렌드 인사이트</h3>
-              <div className="space-y-6">
+            <div data-sr>
+              <div className="border-t border-slate-200 pt-8 mb-6">
+                <Eyebrow label="Trend Insights" />
+                <h3 className="text-xl sm:text-2xl font-serif tracking-tight">2026 트렌드 인사이트</h3>
+              </div>
+              <div className="space-y-5">
                 {trends2026.map((item) => {
                   const c = colorMap[item.color] ?? colorMap.slate;
                   return (
-                    <div key={item.rank} className={`flex gap-0 rounded-2xl overflow-hidden border-l-4 hover:shadow-lg transition-shadow ${c.border}`}>
+                    <div
+                      key={item.rank}
+                      className={`flex gap-0 rounded-2xl overflow-hidden border-l-4 ${c.border}`}
+                      style={{ transition: `box-shadow 0.45s ${SPRING}` }}
+                      onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.1)')}
+                      onMouseLeave={(e) => (e.currentTarget.style.boxShadow = 'none')}
+                    >
                       <div
                         className="relative w-44 md:w-56 flex-shrink-0 cursor-zoom-in overflow-hidden bg-slate-100"
                         onClick={() => setLightbox({ src: item.image, title: item.title, tag: item.tags[0] })}
                       >
-                        <img src={item.image} alt={item.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-                        <div className="absolute top-3 left-3 bg-black/75 text-white text-xs font-bold px-2 py-0.5 rounded-full">#{item.rank}</div>
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover hover:scale-105"
+                          style={{ transition: `transform 0.45s ${SPRING}` }}
+                        />
+                        <div className="absolute top-3 left-3 bg-[#0a0a0a]/75 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                          #{item.rank}
+                        </div>
                       </div>
                       <div className={`flex-1 p-6 ${c.bg}`}>
                         <div className="flex items-start justify-between gap-4 mb-3">
                           <div>
                             <div className="flex items-center gap-2 mb-1">
-                              <h3 className="font-semibold text-2xl">{item.title}</h3>
-                              <Badge className={`text-xs border-0 ${c.badge}`}>{item.growthRate}</Badge>
+                              <h3 className="font-semibold text-xl sm:text-2xl tracking-tight">{item.title}</h3>
+                              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${c.badge}`}>{item.growthRate}</span>
                             </div>
                             <p className="text-slate-500 text-sm">{item.subtitle}</p>
                           </div>
                           <div className="flex-shrink-0 text-center">
                             <div
                               className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow"
-                              style={{ background: `hsl(${Math.max(0, 120 - item.demandScore * 10)}, 65%, 45%)` }}
+                              style={{ background: `hsl(${Math.max(0, 120 - item.demandScore * 10)}, 60%, 42%)` }}
                             >
                               {item.demandScore}
                             </div>
                             <p className="text-xs text-slate-400 mt-1">수요</p>
                           </div>
                         </div>
-                        <p className="text-slate-700 text-sm leading-relaxed mb-4">{item.description}</p>
-                        <div className="flex flex-wrap gap-2 mb-3">
+                        <p className="text-slate-700 text-sm leading-relaxed mb-4" style={{ wordBreak: 'keep-all' }}>{item.description}</p>
+                        <div className="flex flex-wrap gap-1.5 mb-3">
                           {item.tags.map((tag, j) => (
-                            <Badge key={j} className={`text-xs border-0 ${c.badge}`}>{tag}</Badge>
+                            <span key={j} className={`text-xs font-medium px-2 py-0.5 rounded-full ${c.badge}`}>{tag}</span>
                           ))}
                         </div>
-                        <p className="text-xs text-slate-400 italic">📡 {item.signal}</p>
+                        <p className="text-xs text-slate-400 italic border-l-2 border-slate-200 pl-2" style={{ wordBreak: 'keep-all' }}>{item.signal}</p>
                       </div>
                     </div>
                   );
@@ -443,49 +557,62 @@ const FurnitureTrendCards: React.FC = () => {
 
         {/* ══ TAB: 시장 분석 ══ */}
         <TabsContent value="market">
-          <section>
-            <h2 className="text-5xl font-serif mb-2 border-b pb-4">📊 TAM · SAM · SOM 시장 분석</h2>
-            <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">
+          <section data-sr>
+            <Eyebrow label="Market Analysis" />
+            <h2 className="text-4xl sm:text-5xl font-serif tracking-tight mb-2 border-b border-slate-200 pb-4">
+              TAM · SAM · SOM 시장 분석
+            </h2>
+            <p className="text-slate-400 text-xs sm:text-sm tracking-widest uppercase mb-10">
               KOSIS × 엠브레인 트렌드모니터 × Archisketch × 금융감독원 공시
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-16">
               {[
-                { ...marketData.tam, bg: 'bg-slate-900', text: 'text-white', sub: 'text-slate-400' },
-                { ...marketData.sam, bg: 'bg-blue-700',  text: 'text-white', sub: 'text-blue-200' },
-                { ...marketData.som, bg: 'bg-emerald-600', text: 'text-white', sub: 'text-emerald-100' },
+                { ...marketData.tam, bg: 'bg-[#0a0a0a]', text: 'text-white', sub: 'text-slate-400' },
+                { ...marketData.sam, bg: 'bg-zinc-700',  text: 'text-white', sub: 'text-zinc-300' },
+                { ...marketData.som, bg: 'bg-zinc-600',  text: 'text-white', sub: 'text-zinc-200' },
               ].map((item, i) => (
                 <div key={i} className={`rounded-2xl p-8 ${item.bg}`}>
                   <p className={`text-xs font-bold tracking-[0.3em] uppercase mb-3 ${item.sub}`}>{item.label}</p>
                   <p className={`text-4xl font-serif font-bold mb-3 ${item.text}`}>{item.value}</p>
-                  <p className={`text-sm leading-relaxed mb-2 ${item.text}`}>{item.desc}</p>
+                  <p className={`text-sm leading-relaxed mb-2 ${item.text}`} style={{ wordBreak: 'keep-all' }}>{item.desc}</p>
                   <p className={`text-xs italic ${item.sub}`}>{item.note}</p>
                 </div>
               ))}
             </div>
-            <div className="mb-16">
-              <h3 className="text-2xl font-serif mb-6">📈 핵심 시장 통계</h3>
+
+            <div className="mb-16" data-sr>
+              <Eyebrow label="Key Statistics" />
+              <h3 className="text-xl sm:text-2xl font-serif tracking-tight mb-6">핵심 시장 통계</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {marketData.stats.map((stat, i) => {
                   const c = colorMap[stat.color] ?? colorMap.slate;
                   return (
-                    <div key={i} className={`rounded-xl p-5 border ${c.bg} ${c.border}`}>
+                    <div
+                      key={i}
+                      className={`rounded-xl p-5 border ${c.bg} ${c.border}`}
+                      style={{ transition: `transform 0.45s ${SPRING}, box-shadow 0.45s ${SPRING}` }}
+                      onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
+                    >
                       <p className={`text-3xl font-bold font-serif mb-1 ${c.text}`}>{stat.value}</p>
-                      <p className="font-medium text-slate-800 text-sm mb-1">{stat.label}</p>
-                      <p className="text-xs text-slate-500">{stat.sub}</p>
+                      <p className="font-semibold text-slate-800 text-sm mb-1" style={{ wordBreak: 'keep-all' }}>{stat.label}</p>
+                      <p className="text-xs text-slate-500" style={{ wordBreak: 'keep-all' }}>{stat.sub}</p>
                     </div>
                   );
                 })}
               </div>
             </div>
-            <div>
-              <h3 className="text-2xl font-serif mb-6">⚠️ 시장 리스크</h3>
+
+            <div data-sr>
+              <Eyebrow label="Risk Signals" tint="red" />
+              <h3 className="text-xl sm:text-2xl font-serif tracking-tight mb-6">시장 리스크</h3>
               <div className="space-y-3">
                 {marketData.risks.map((risk, i) => (
                   <div key={i} className="flex gap-4 p-4 rounded-xl bg-red-50 border border-red-100">
-                    <span className="text-red-500 font-bold text-lg flex-shrink-0">!</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 mt-2" />
                     <div>
-                      <p className="font-medium text-red-800 mb-0.5">{risk.label}</p>
-                      <p className="text-sm text-slate-600">{risk.desc}</p>
+                      <p className="font-semibold text-red-800 mb-0.5 text-sm">{risk.label}</p>
+                      <p className="text-sm text-slate-600" style={{ wordBreak: 'keep-all' }}>{risk.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -496,19 +623,28 @@ const FurnitureTrendCards: React.FC = () => {
 
         {/* ══ TAB: 소비자 문제 ══ */}
         <TabsContent value="problems">
-          <section>
-            <h2 className="text-5xl font-serif mb-2 border-b pb-4">🔴 소비자 문제 매트릭스</h2>
-            <p className="text-slate-500 text-sm tracking-widest uppercase mb-6">
+          <section data-sr>
+            <Eyebrow label="Consumer Pain Points" tint="red" />
+            <h2 className="text-4xl sm:text-5xl font-serif tracking-tight mb-2 border-b border-slate-200 pb-4">
+              소비자 문제 매트릭스
+            </h2>
+            <p className="text-slate-400 text-xs sm:text-sm tracking-widest uppercase mb-6">
               WTP 점수 기준 정렬 · 오늘의집 커뮤니티 실제 발언 인용
             </p>
             <div className="flex flex-wrap gap-3 mb-10 text-xs">
-              <Badge variant="outline" className="flex items-center gap-1.5 bg-red-50 border-red-200 text-red-700 px-3 py-1.5 rounded-full font-medium h-auto">🔴 실제 커뮤니티 불평 인용</Badge>
-              <Badge variant="outline" className="flex items-center gap-1.5 bg-amber-50 border-amber-200 text-amber-700 px-3 py-1.5 rounded-full font-medium h-auto">🚀 빠르게 커지는 문제</Badge>
+              <span className="flex items-center gap-1.5 bg-red-50 border border-red-200 text-red-700 px-3 py-1.5 rounded-full font-medium">
+                <span className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
+                실제 커뮤니티 불평 인용
+              </span>
+              <span className="flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-700 px-3 py-1.5 rounded-full font-medium">
+                <span className="text-amber-600 font-bold">↑</span>
+                빠르게 커지는 문제
+              </span>
             </div>
             <div className="space-y-4">
               {problemMatrix.map((item) => {
-                const isComplaint = item.flags.includes('🔴');
-                const isGrowing   = item.flags.includes('🚀');
+                const isComplaint = item.flags.includes('red');
+                const isGrowing   = item.flags.includes('grow');
                 const score = item.urgency + item.wtp;
                 const cardBg = isComplaint && isGrowing
                   ? 'bg-red-50 border border-red-200'
@@ -516,29 +652,39 @@ const FurnitureTrendCards: React.FC = () => {
                   : isGrowing   ? 'bg-amber-50 border border-amber-100'
                   : 'bg-slate-50 border border-slate-100';
                 return (
-                  <div key={item.rank} className={`rounded-xl p-5 hover:shadow-md transition-shadow ${cardBg}`}>
+                  <div
+                    key={item.rank}
+                    className={`rounded-xl p-5 ${cardBg}`}
+                    style={{ transition: `box-shadow 0.45s ${SPRING}` }}
+                    onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.boxShadow = 'none')}
+                  >
                     <div className="flex items-start gap-4">
                       <span className="text-2xl font-bold text-slate-300 w-8 flex-shrink-0 leading-none mt-1">#{item.rank}</span>
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2 mb-1">
-                          <h4 className="font-serif text-lg">{item.problem}</h4>
+                          <h4 className="font-serif text-lg tracking-tight" style={{ wordBreak: 'keep-all' }}>{item.problem}</h4>
                           {isComplaint && (
-                            <Badge variant="outline" className="text-xs bg-red-100 text-red-700 border-red-200 font-bold whitespace-nowrap h-auto">🔴 불평 {item.complaintCount}회</Badge>
+                            <span className="text-xs bg-red-100 text-red-700 border border-red-200 font-bold whitespace-nowrap px-2 py-0.5 rounded-full">
+                              불평 {item.complaintCount}회
+                            </span>
                           )}
                           {isGrowing && (
-                            <Badge variant="outline" className="text-xs bg-amber-100 text-amber-700 border-amber-200 font-bold whitespace-nowrap h-auto">🚀 {item.growthRate}</Badge>
+                            <span className="text-xs bg-amber-100 text-amber-700 border border-amber-200 font-bold whitespace-nowrap px-2 py-0.5 rounded-full">
+                              {item.growthRate}
+                            </span>
                           )}
                         </div>
-                        <p className="text-slate-500 text-sm italic mb-3">{item.quote}</p>
+                        <p className="text-slate-500 text-sm italic mb-3 border-l-2 border-slate-200 pl-2" style={{ wordBreak: 'keep-all' }}>{item.quote}</p>
                         {(['wtp', 'urgency'] as const).map((key) => {
                           const val = item[key];
-                          const label = key === 'wtp' ? '💰 WTP' : '🔥 긴급도';
+                          const label = key === 'wtp' ? 'WTP' : '긴급도';
                           const highColor   = key === 'wtp' ? 'bg-emerald-500' : 'bg-red-500';
                           const midColor    = key === 'wtp' ? 'bg-emerald-300' : 'bg-red-300';
                           const scoreColor  = key === 'wtp' ? 'text-emerald-600' : 'text-red-600';
                           return (
                             <div key={key} className="flex items-center gap-2 mb-1">
-                              <span className="text-xs text-slate-400 w-20">{label}</span>
+                              <span className="text-xs text-slate-400 w-16 font-medium">{label}</span>
                               <div className="flex gap-0.5">
                                 {Array.from({ length: 10 }, (_, n) => (
                                   <div key={n} className={`w-4 h-4 rounded-sm ${
@@ -556,7 +702,7 @@ const FurnitureTrendCards: React.FC = () => {
                       <div className="flex-shrink-0 flex flex-col items-center gap-1">
                         <div
                           className="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md"
-                          style={{ background: `hsl(${Math.max(0, 120 - score * 5)}, 70%, 45%)` }}
+                          style={{ background: `hsl(${Math.max(0, 120 - score * 5)}, 65%, 42%)` }}
                         >
                           {score}
                         </div>
@@ -572,42 +718,51 @@ const FurnitureTrendCards: React.FC = () => {
 
         {/* ══ TAB: 기회 영역 ══ */}
         <TabsContent value="opportunities">
-          <section>
-            <h2 className="text-5xl font-serif mb-2 border-b pb-4">🎯 시장 기회 영역</h2>
-            <p className="text-slate-500 text-sm tracking-widest uppercase mb-10">
+          <section data-sr>
+            <Eyebrow label="Opportunity Matrix" tint="green" />
+            <h2 className="text-4xl sm:text-5xl font-serif tracking-tight mb-2 border-b border-slate-200 pb-4">
+              시장 기회 영역
+            </h2>
+            <p className="text-slate-400 text-xs sm:text-sm tracking-widest uppercase mb-10">
               소비자 문제 WTP × 오늘의집 트렌드 신호 교차 분석
             </p>
-            <div className="space-y-8">
+            <div className="space-y-6">
               {opportunities.map((opp) => {
                 const c = colorMap[opp.color] ?? colorMap.slate;
                 return (
-                  <div key={opp.rank} className={`rounded-2xl border overflow-hidden ${c.border}`}>
+                  <div
+                    key={opp.rank}
+                    className={`rounded-2xl border overflow-hidden ${c.border}`}
+                    style={{ transition: `transform 0.45s ${SPRING}, box-shadow 0.45s ${SPRING}` }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.005)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.08)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
+                  >
                     <div className={`px-6 py-4 ${c.bg}`}>
                       <div className="flex items-center gap-3">
                         <span className={`text-3xl font-bold opacity-30 ${c.text}`}>0{opp.rank}</span>
                         <div>
-                          <h3 className="font-serif text-2xl">{opp.title}</h3>
-                          <p className={`text-xs font-bold uppercase tracking-widest ${c.text}`}>기회 영역</p>
+                          <h3 className="font-serif text-xl sm:text-2xl tracking-tight" style={{ wordBreak: 'keep-all' }}>{opp.title}</h3>
+                          <p className={`text-[10px] font-bold uppercase tracking-[0.15em] ${c.text}`}>기회 영역</p>
                         </div>
                       </div>
                     </div>
                     <div className="p-6">
-                      <p className="text-slate-700 leading-relaxed mb-4">{opp.desc}</p>
+                      <p className="text-slate-700 leading-relaxed mb-4" style={{ wordBreak: 'keep-all' }}>{opp.desc}</p>
                       <div className="grid md:grid-cols-2 gap-4 mb-4">
-                        <div className="bg-slate-50 rounded-lg p-4">
-                          <p className="text-xs text-slate-400 uppercase tracking-widest mb-1">근거 신호</p>
-                          <p className="text-sm text-slate-600">{opp.evidence}</p>
+                        <div className="bg-slate-50 rounded-xl p-4">
+                          <p className="text-[10px] text-slate-400 uppercase tracking-[0.15em] mb-1 font-semibold">근거 신호</p>
+                          <p className="text-sm text-slate-600" style={{ wordBreak: 'keep-all' }}>{opp.evidence}</p>
                         </div>
-                        <div className={`rounded-lg p-4 ${c.bg}`}>
-                          <p className="text-xs text-slate-400 uppercase tracking-widest mb-1">수익 포텐셜</p>
-                          <p className={`text-sm font-medium ${c.text}`}>{opp.potential}</p>
+                        <div className={`rounded-xl p-4 ${c.bg}`}>
+                          <p className="text-[10px] text-slate-400 uppercase tracking-[0.15em] mb-1 font-semibold">수익 포텐셜</p>
+                          <p className={`text-sm font-medium ${c.text}`} style={{ wordBreak: 'keep-all' }}>{opp.potential}</p>
                         </div>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-400 uppercase tracking-widest mb-2">액션 아이템</p>
+                        <p className="text-[10px] text-slate-400 uppercase tracking-[0.15em] mb-2 font-semibold">액션 아이템</p>
                         <div className="flex flex-wrap gap-2">
                           {opp.actions.map((action, j) => (
-                            <Badge key={j} className={`text-xs border-0 h-auto py-1 ${c.badge}`}>{action}</Badge>
+                            <span key={j} className={`text-xs font-medium px-3 py-1 rounded-full ${c.badge}`}>{action}</span>
                           ))}
                         </div>
                       </div>
@@ -620,38 +775,52 @@ const FurnitureTrendCards: React.FC = () => {
         </TabsContent>
 
         {/* ── Bottom Summary ── */}
-        <section className="mt-24 bg-slate-50 p-12 rounded-3xl">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h4 className="text-2xl font-serif mb-6 underline underline-offset-4">핵심 기회 키워드</h4>
-              <div className="flex flex-wrap gap-2">
-                {['모듈가구', '자연소재케어', '조명큐레이션', '신혼2인세트', '가전코디', '취향믹스매치', '셀프인테리어', '소품취향소비'].map(tag => (
-                  <Badge key={tag} className="text-sm bg-slate-900 text-white border-0 px-3 py-1.5 h-auto rounded-full">{tag}</Badge>
-                ))}
+        <section className="mt-24 bg-black/[0.04] ring-1 ring-black/[0.05] p-[5px] rounded-[24px]" data-sr>
+          <div className="bg-white rounded-[19px] p-10 sm:p-12 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9)]">
+            <div className="grid md:grid-cols-2 gap-12">
+              <div>
+                <Eyebrow label="Cross-Tab Summary" />
+                <h4 className="text-xl sm:text-2xl font-serif tracking-tight mb-6">핵심 기회 키워드</h4>
+                <div className="flex flex-wrap gap-2">
+                  {['모듈가구', '자연소재케어', '조명큐레이션', '신혼2인세트', '가전코디', '취향믹스매치', '셀프인테리어', '소품취향소비'].map(tag => (
+                    <span key={tag}
+                      className="text-sm bg-[#0a0a0a] text-white px-3 py-1.5 rounded-full font-medium">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div>
-              <h4 className="text-2xl font-serif mb-6 underline underline-offset-4">이번 주 액션 아이템</h4>
-              <ul className="space-y-3 text-slate-600 text-sm">
-                <li className="flex gap-2"><span className="text-slate-400">01</span> 오늘의집 모듈 가구 카테고리 입점 — "이사 대비" 키워드 선점</li>
-                <li className="flex gap-2"><span className="text-slate-400">02</span> 신혼 2인 최적화 콘텐츠 집들이 작성 → 조회수 7,000+ 달성 목표</li>
-                <li className="flex gap-2"><span className="text-slate-400">03</span> 조명 3종 세트 패키지 기획 — 수납·러그·조명 홈퍼니싱 TOP3 공략</li>
-                <li className="flex gap-2"><span className="text-slate-400">04</span> "가구는 비싼거 사는게 아닙니다" 공감 바이럴 훅 → 가성비 모듈 브랜딩</li>
-                <li className="flex gap-2"><span className="text-slate-400">05</span> 자연소재 케어 가이드 무료 배포 → 잠재 고객 DB 확보</li>
-              </ul>
+              <div>
+                <Eyebrow label="This Week" tint="amber" />
+                <h4 className="text-xl sm:text-2xl font-serif tracking-tight mb-6">이번 주 액션 아이템</h4>
+                <ul className="space-y-3 text-slate-600 text-sm">
+                  <li className="flex gap-3" style={{ wordBreak: 'keep-all' }}><span className="text-slate-300 font-medium flex-shrink-0">01</span> 오늘의집 모듈 가구 카테고리 입점 — "이사 대비" 키워드 선점</li>
+                  <li className="flex gap-3" style={{ wordBreak: 'keep-all' }}><span className="text-slate-300 font-medium flex-shrink-0">02</span> 신혼 2인 최적화 콘텐츠 집들이 작성 → 조회수 7,000+ 달성 목표</li>
+                  <li className="flex gap-3" style={{ wordBreak: 'keep-all' }}><span className="text-slate-300 font-medium flex-shrink-0">03</span> 조명 3종 세트 패키지 기획 — 수납·러그·조명 홈퍼니싱 TOP3 공략</li>
+                  <li className="flex gap-3" style={{ wordBreak: 'keep-all' }}><span className="text-slate-300 font-medium flex-shrink-0">04</span> "가구는 비싼거 사는게 아닙니다" 공감 바이럴 훅 → 가성비 모듈 브랜딩</li>
+                  <li className="flex gap-3" style={{ wordBreak: 'keep-all' }}><span className="text-slate-300 font-medium flex-shrink-0">05</span> 자연소재 케어 가이드 무료 배포 → 잠재 고객 DB 확보</li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>
+
       </main>
       </Tabs>
 
       {/* ── Lightbox ── */}
       {lightbox && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center cursor-zoom-out"
+          className="fixed inset-0 z-50 bg-black/92 flex flex-col items-center justify-center cursor-zoom-out"
           onClick={() => setLightbox(null)}
         >
-          <Button variant="ghost" size="icon" className="absolute top-6 right-8 text-white hover:text-white hover:bg-white/10 w-10 h-10 text-2xl" onClick={() => setLightbox(null)}>×</Button>
+          <button
+            className="absolute top-6 right-8 text-slate-400 hover:text-white text-4xl leading-none"
+            style={{ transition: `color 0.3s ${SPRING}` }}
+            onClick={() => setLightbox(null)}
+          >
+            ×
+          </button>
           <img
             src={lightbox.src}
             alt={lightbox.title}
@@ -659,7 +828,7 @@ const FurnitureTrendCards: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           />
           <div className="mt-6 text-center px-4">
-            <p className="text-white font-serif text-xl">{lightbox.title}</p>
+            <p className="text-white font-serif text-xl" style={{ wordBreak: 'keep-all' }}>{lightbox.title}</p>
             <span className="inline-block mt-2 bg-white/20 text-white text-xs px-3 py-1 rounded-full tracking-widest uppercase">{lightbox.tag}</span>
           </div>
         </div>
@@ -669,9 +838,11 @@ const FurnitureTrendCards: React.FC = () => {
         <p className="text-slate-400 text-xs tracking-widest uppercase">
           Generated {TODAY_DATE} · 오늘의집 Market Intelligence · Firecrawl MCP
         </p>
-        <div className="flex justify-center gap-4 text-xs">
+        <div className="flex justify-center gap-4 text-xs flex-wrap">
           {sources.map(src => (
-            <a key={src.id} href={src.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline hover:text-blue-600 transition-colors">
+            <a key={src.id} href={src.url} target="_blank" rel="noopener noreferrer"
+              className="text-blue-400 hover:underline hover:text-blue-600"
+              style={{ transition: `color 0.3s ${SPRING}` }}>
               {src.url.replace('https://', '')}
             </a>
           ))}
