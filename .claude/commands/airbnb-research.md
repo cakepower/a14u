@@ -472,7 +472,6 @@ import {
   CheckCircle2, XCircle, Info,
 } from 'lucide-react';
 
-type LightboxState = { src: string; title: string; tag: string } | null;
 
 // ── 데이터 ──────────────────────────────────────────────
 const listings = [
@@ -661,14 +660,7 @@ const marketAnalysis = {
 
 // ── 컴포넌트 ──────────────────────────────────────────────
 const AirbnbResearch: React.FC = () => {
-  const [lightbox, setLightbox] = React.useState<LightboxState>(null);
   const [activeTab, setActiveTab] = React.useState<'listings' | 'market' | 'problems' | 'offers' | 'viral' | 'toprooms' | 'calendar' | 'pricing'>('listings');
-
-  React.useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightbox(null); };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, []);
 
   return (
     <div
@@ -738,13 +730,12 @@ const AirbnbResearch: React.FC = () => {
               {listings.map((item, i) => (
                 <div
                   key={i}
-                  className="group cursor-zoom-in overflow-hidden rounded-xl bg-slate-50 hover:shadow-xl transition-shadow duration-300"
-                  onClick={() => setLightbox({ src: item.image, title: item.name, tag: item.tags[0] })}
+                  className="group overflow-hidden rounded-xl bg-slate-50 hover:shadow-xl transition-shadow duration-300"
                 >
-                  <div className="overflow-hidden h-48">
+                  <a href={item.url} target="_blank" rel="noopener noreferrer" className="block overflow-hidden h-48 cursor-pointer">
                     <img src={item.image} alt={item.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  </div>
+                  </a>
                   <div className="p-5">
                     <div className="flex items-center justify-between mb-2">
                       <span className="flex items-center gap-1 font-bold" style={{ color: '#F5C800' }}>
@@ -1138,9 +1129,11 @@ const AirbnbResearch: React.FC = () => {
                 >
                   <div className="flex flex-col md:flex-row">
                     {/* 썸네일 */}
-                    <div
-                      className="relative md:w-56 h-44 md:h-auto flex-shrink-0 cursor-zoom-in overflow-hidden bg-slate-100"
-                      onClick={() => setLightbox({ src: room.image, title: room.name, tag: `#${room.rank}위 노출` })}
+                    <a
+                      href={room.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="relative md:w-56 h-44 md:h-auto flex-shrink-0 cursor-pointer overflow-hidden bg-slate-100 block"
                     >
                       <img
                         src={room.image}
@@ -1155,7 +1148,7 @@ const AirbnbResearch: React.FC = () => {
                           슈퍼호스트
                         </div>
                       )}
-                    </div>
+                    </a>
 
                     {/* 정보 */}
                     <div className="flex-1 p-5">
@@ -1303,29 +1296,6 @@ const AirbnbResearch: React.FC = () => {
         </section>
 
       </main>
-
-      {/* Lightbox */}
-      {lightbox && (
-        <div
-          className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center cursor-zoom-out"
-          onClick={() => setLightbox(null)}
-        >
-          <button
-            className="absolute top-6 right-8 text-white text-4xl leading-none hover:opacity-70"
-            onClick={() => setLightbox(null)}
-          >×</button>
-          <img
-            src={lightbox.src}
-            alt={lightbox.title}
-            className="max-h-[85vh] max-w-[90vw] object-contain rounded-xl"
-            onClick={(e) => e.stopPropagation()}
-          />
-          <div className="mt-6 text-center">
-            <p className="text-white font-serif text-xl">{lightbox.title}</p>
-            <p className="text-slate-400 text-sm mt-1 tracking-widest uppercase">{lightbox.tag}</p>
-          </div>
-        </div>
-      )}
 
       <footer className="text-center py-12 text-slate-400 text-xs tracking-widest uppercase border-t border-slate-100">
         Generated {TODAY_DATE} · Airbnb Market Intelligence · Firecrawl MCP
